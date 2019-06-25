@@ -2,11 +2,54 @@
 \chapter{Metodologia}
 \label{cap:metodologia}
 
-Descreva aqui o que vai fazer ou fez para cumprir seus objetivos...
+RQ1: How often do breaking changes manifest in the client package?
 
-(ATENÇÃO - veja com o seu orientador se você vai ter este capítulo e se este vai ter nome!)
+A stack trace is a report that provides information about program subroutines. It is commonly used for certain kinds of debugging, where a stack trace can help software engineers figure out where a problem lies or how various subroutines work together during execution. When npm install or npm test results in an error, it raises a stack trace. All information about the error and the calls to providers are shown in the stack trace. Figure \ref{fig:trace} shows a generic example of a stack trace of one error.
 
-TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{figuras/stack_trace.jpeg}
+    \caption{Generic stack-trace}
+    \label{fig:trace}
+\end{figure}{}
+
+The stack trace is the base to analyze and an error.
+All releases of any package that broke in the npm install or npm test were analyzed manually. The first step to analyze an error is differentiate between an error that wasn't caused by any provider, which is an error that occurred exclusively in the client package where the providers didn’t influence, and a breaking change error, that the errors occurred in provider package and it broke a client. There are two ways to conduct this step.
+
+The first way is to take a look at the stack trace of the error and verify the calls to providers. When in the stack trace there isn't called to any providers, the error probably doesn’t refer a breaking change, because any provider was called in this error. So, the error is in the client code. To confirm this, the next commit in GitHub, after the release of the client, is verified. The objective is to verify if the error was fixed in any client commit. If true, the error is confirmed as a non-breaking change.
+Some types of errors can be resolved in the code of the client. This error isn’t breaking change. Errors like SyntaxError, where the client wrote the wrong code. Example:
+
+const a = b = b;
+
+In these errors, the npm raises a SyntaxError. If the error is in the client code, nor is it necessary to look at GitHub, because, for sure, the error is a non-breaking change. So, the code was fixed and the npm install or npm test is executed again to verify if any other error appeared.
+
+The second way is when the errors can be a breaking change. This often occurs when the stack trace contains calls to any providers. However, providers like Mocha, Istanbul, Jasmine and so on, that is, test frameworks, and task runners, like Grunt, it is shown in stack trace but usually has no errors, because they only execute the files to test/tasks. So, when one of these providers is at the bottom of the stack tracer, they just called/execute the files/providers that contain the errors. Then, there’s a high probability that this error is a breaking change and this error can be caused by any provider.
+To confirm this, the best place is in the GitHub. The repository of the package contains all the information about the development. There are many ways to retrieve information. The easiest and most reliable way is to verify in a changelog file. These files, in general, are the CHANGELOG.md, HISTORY.md and others like this. These files contain the description of all changes about all packages releases. And many breaking changes are described there. For example, the release 5.0.0 of Mocha contains a breaking change and was documented in CHANGELOG.md. Figure \ref{fig:bc_documentation} show this documentation.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{figuras/bc_documentation.jpeg}
+    \caption{Breaking Change documentation in README}
+    \label{fig:bc_documentation}
+\end{figure}{}
+
+Other types of changelogs are the release notes. These are found in the comments of release. However, many and many repositories don’t contain a changelog file. Then, the next step is the search for any issue that contains some information about the error. In general, the issues contain much information, because of the developers and the owners of the package comment about the error. And more, many related issues are linked, increasing the number of information. Also, pull request works in the same way as issues.
+Another important way is to install another release of the provider. So, is possible to find out from which release the error started or which release the error was fixed. Also, there are other ways to verify if the error is in the provider. This is, compare the diff code between two provider releases; verify the provider commits; and change provider code.
+The Figure ? show a summary of these steps.
+
+Some integrated systems can help to discover breaking changes. These systems are Travis, Jenkins, Codeship, CircleCI and so on, and store the results of the npm install and npm test in the moment of a commit. It can help in the following way: if in the commit of a release the status of npm install or npm test was a success, and now is an error, then it occurred by updating a provider. However, just some of the sorted packages contain an integrated system.
+
+So, from all release analyze was saved many informations:
+
+\begin{enumerate}
+    \item Documentation about the error: issue, changelog, pull-request and so on;
+    \item Who fixed the error: client or provider;
+    \item How long did the error take to get fixed;
+    \item Fixed in major, minor or patch; and
+    \item In how many releases the error existed.
+\end{enumerate}{}
+
+Nor all information may be recovered. For example, if an error wasn’t fixed, then neither the client nor the provider repaired the error.
 
 %---------------------------------------------------%
 \section{Considerações Finais}
