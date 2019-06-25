@@ -27,6 +27,23 @@ TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO TE
 
 Descreva o seu Problema de Pesquisa com as questões de pesquisa que seu trabalho irá tentar responder.
 
+\begin{itemize}
+    \item How often do breaking changes manifest in the client package?
+\end{itemize}
+Currently, the npm packages contain most of 11 billion weekly downloads and most of 45 billions of downloads a month. Npm packages are used by millions of peoples and projects around the world. They are free, small and easy to use. However, the simple release that contains an error can affect a lot of other packages because the many projects depend on each other directly or indirectly, and when one introduces a breaking change, many and many are affected. However, an unspoken release that contains some error may cause the same loss - and worse. To avoid this, npm use ranges based in SEMVER to prevent these errors from affecting the packages. Prior research shows that the distinction between breaking and non-breaking changes isn’t always clear, and it may be difficult for the library developer to decide how to increment version numbers for a new release \cite{noregrets2018}. Therefore, understanding how often provider packages publish breaking changes can help client packages to make better decisions about how and when to update a provider version.
+
+To answers this research question, we’ve focused on three points: 1) how many times each provider package publish a release containing breaking change - and what is the percentage of releases with breaking change; 2) in which release level breaking changes are typically introduced based in SEMVER - patch, minor or major; 3) what is the percentage of the clients of a provider that updates towards a release with breaking change. To analyze all points, 385 packages from npm has sorted from all npm packages. These, just that contained two requirements have been sorted: 1) should contain one or more dependencies, otherwise, there aren’t providers to test; 2) contains a valid script to run the test.
+
+\begin{itemize}
+    \item What issues in the provider package cause the manifestation of a breaking change?
+\end{itemize}
+
+\begin{itemize}
+    \item How do client packages recover from the manifestation of breaking change?
+\end{itemize}
+Break changes appear in few times. But, once a breaking change appears, the provider should fix. It’s necessary because, in the npm ecosystem, where hundreds of thousands of packages are connected, a single wrong release can break a lot of other packages. An example of this is the package called left-pad, which was removed from npm by your developer and break many thousands of projects on 2.5 hours.
+
+The responsibility to fix the release is from the provider, but, sometimes, the provider cannot fix the release/package for some reason. Then, the customer gets this responsibility because your wrong provider affects it and all of your customers are also affected. In the example of left-pad, the provider never published a new release and, for all packages to continue working, the client's packages that have fixed this error publishing a new package with the same name and the same code.
 \section{Objetivos}
 \label{cap:introducao:sec:objetivos}
 
