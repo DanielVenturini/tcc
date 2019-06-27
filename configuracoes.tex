@@ -167,6 +167,26 @@ framexrightmargin=10pt
   	emphstyle=[2]\color{DarkGreen},
 	backgroundcolor={}
 }
+% Javascript Style
+\lstdefinestyle{Javascript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, const},
+  keywordstyle=\color{green}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstset{
+  language=Javascript,
+  tabsize=2,
+  literate={{=}{{\textcolor{blue}{=}}}1}
+}
 % Bash Style.
 \lstdefinestyle{bash}{
 	language=bash,
