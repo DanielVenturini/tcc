@@ -37,6 +37,7 @@ To answers this research question, we’ve focused on three points: 1) how many 
 \begin{itemize}
     \item How do client packages recover from the manifestation of breaking change?
 \end{itemize}
+
 Break changes appear in few times. But, once a breaking change appears, the provider should fix. It’s necessary because, in the npm ecosystem, where hundreds of thousands of packages are connected, a single wrong release can break a lot of other packages. An example of this is the package called left-pad, which was removed from npm by your developer and break many thousands of projects on 2.5 hours.
 
 The responsibility to fix the release is from the provider, but, sometimes, the provider cannot fix the release/package for some reason. Then, the customer gets this responsibility because your wrong provider affects it and all of your customers are also affected. In the example of left-pad, the provider never published a new release and, for all packages to continue working, the client's packages that have fixed this error publishing a new package with the same name and the same code.
