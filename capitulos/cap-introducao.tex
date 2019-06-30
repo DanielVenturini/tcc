@@ -40,7 +40,12 @@ To answers this research question, we’ve focused on three points: 1) how many 
 
 Break changes appear in few times. But, once a breaking change appears, the provider should fix. It’s necessary because, in the npm ecosystem, where hundreds of thousands of packages are connected, a single wrong release can break a lot of other packages. An example of this is the package called \textit{left-pad}, which was removed from npm by your developer and break many thousands of projects on 2.5 hours.
 
-The responsibility to fix the release is from the provider, but, sometimes, the provider cannot fix the release/package for some reason. Then, the customer gets this responsibility because your wrong provider affects it and all of your customers are also affected. In the example of left-pad, the provider never published a new release and, for all packages to continue working, the client's packages that have fixed this error publishing a new package with the same name and the same code.
+The responsibility to fix the release is from the provider, but, sometimes, the provider cannot fix the release/package for some reason. Then, the customer gets this responsibility because your wrong provider affects it and all of your customers are also affected. In the example of \textit{left-pad}, the provider never published a new release and, for all packages to continue working, the client's packages that have fixed this error publishing a new package with the same name and the same code.
+
+However, the client may not know how to solve the problem. If the client is a simple user that only knows a little bit about the internal works from the provider, he can hardly solve in its own code an error that is being caused by the provider. This is very bad for the clients because he should fix the error, change to a previous version or choose other provider.
+
+To answer the final research question, we analyze three points: 1) What happened so the provider couldn’t fix the code; 2) How the client fix the error or just notified the provider; 3) How many times the client fix the error. All information about this research question is on the \textit{issues, pull-requests}, and \textit{release-notes}.
+
 \section{Objetivos}
 \label{cap:introducao:sec:objetivos}
 
