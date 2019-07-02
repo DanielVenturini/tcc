@@ -2,7 +2,9 @@
 \chapter{Metodologia}
 \label{cap:metodologia}
 
-RQ1: How often do breaking changes manifest in the client package?
+\begin{itemize}
+    \item RQ1: How often do breaking changes manifest in the client package?
+\end{itemize}
 
 A stack trace is a report that provides information about program subroutines. It is commonly used for certain kinds of debugging, where a stack trace can help software engineers figure out where a problem lies or how various subroutines work together during execution. When \textit{npm install} or \textit{npm test} results in an error, it raises a stack trace. All information about the error and the calls to providers are shown in the stack trace. Figure \ref{fig:trace} shows a generic example of a stack trace of one error.
 
@@ -62,6 +64,16 @@ So, from all release analyze was saved many informations:
 \end{enumerate}{}
 
 Nor all information may be recovered. For example, if an error wasn’t fixed, then neither the client nor the provider repaired the error.
+
+\begin{itemize}
+    \item RQ2: What issues in the provider package cause the manifestation of a breaking change?
+\end{itemize}
+
+\begin{itemize}
+    \item RQ3: How do client packages recover from the manifestation of breaking change?
+\end{itemize}
+
+
 
 %---------------------------------------------------%
 \section{Considerações Finais}
