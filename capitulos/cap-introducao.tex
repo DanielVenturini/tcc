@@ -38,7 +38,7 @@ Since the provider has unexpected behavior, there's a breaking change. It can ca
 
 The provider may contain multiple errors in his code. A simple semantic wrong line can break all execution because the \textit{Javascript} code isn't compiled. The types of errors in \textit{breaking changes} are many.  The error can be a change in the rules of behavior of the provider, in which this update in the behavior should be inserted in a \textit{major} release. Also, the type of returned object that isn't expected by the client can break it. And, of course, many and many other types of error.
 
-However, the provider can has a provider that contains an error. In this cause, the first provider doesn't contain an error, but, for a wrong provider, one error is propagated to the client. This is a transitive breaking change and, in our research, is a normal cause of \textit{breaking change}.
+However, the provider can have a provider that contains an error. In this cause, the first provider doesn't contain an error, but, for a wrong provider, one error is propagated to the client. This is a transitive breaking change and, in our research, is a normal cause of \textit{breaking change}.
 
 To answer this research question, we analyze one by one and we categorized the type of \textit{breaking change}. Also, the types were quantified by category, by the number of releases and the number of clients that were affected by this category of breaking change.
 
