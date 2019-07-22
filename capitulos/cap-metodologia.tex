@@ -63,7 +63,7 @@ So, from all release analyze was saved many informations:
     \item In how many releases the error existed.
 \end{enumerate}{}
 
-Nor all information may be recovered. For example, if an error wasn’t fixed, then neither the client nor the provider repaired the error.
+Nor all information may be recovered. For example, if an error wasn't fixed, then neither the client nor the provider repaired the error.
 
 \begin{itemize}
     \item RQ2: What issues in the provider package cause the manifestation of a breaking change?
@@ -78,7 +78,9 @@ For each error in \textit{npm install} or \textit{npm test}, it was manually ana
     \label{fig:error_category}
 \end{figure}
 
-The first error in the Figure \ref{fig:error_category} is 
+The first error in the Figure \ref{fig:error_category} is obvious: the client tries to access a variable like a function when it isn't a function. The second error talks about a property \textit{writable} that is access by an undefined object. There isn't any information about the function-related error, but, in manually analyze, it was observed that the provider change the name of a function. For this, in this code, the variable \textit{this.stream.writable} is undefined.
+
+Once the provider causing the \textit{breaking change} has been discovered, there are several ways to find out the real reason that caused the error. These ways are described in Section \ref{cap:metodologia}. Then, all \textit{breaking changes} are classified based on his type.
 
 \begin{itemize}
     \item RQ3: How do client packages recover from the manifestation of breaking change?
