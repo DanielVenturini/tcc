@@ -3,17 +3,17 @@
 % carrega o arquivo configuracoes.tex que contém os pacotes e comandos Latex.
 \include{configuracoes}
 % carrega o arquivo constantes.tex que contém dados do curso/monografia que NÃO DEVEM ser alterados. 
-\include{constantes}
+%\include{constantes}
 % carrega o arquivo variaveis.tex que contém dados do acadêmico/monografia que DEVEM ser alterados.
-\include{variaveis}
+%\include{variaveis}
 
 % carrega o arquivo listaabreviaturas.tex que está dentro do diretório pretextual, esse arquivo contém as siglas utilizadas na monografia.
 \include{pretextual/listaabreviaturas} % usando glossaries
 
 \begin{document}
 	
-\frontmatter
-\maketitle
+%\frontmatter
+%\maketitle
 
 % Dedicatória é opcional, para usar descomentar a linha a seguir e edite o arquivo pretextual/dedicatoria.tex
 %\dedicate{\input{pretextual/dedicatoria}} % Opcional - descomentar para usar
@@ -35,7 +35,7 @@
 % Sumário
 %\tableofcontents
 
-\mainmatter
+%\mainmatter
 
 % Capítulos da monografia:
 %\include{capitulos/cap-introducao}
@@ -45,14 +45,15 @@
 %\include{capitulos/cap-metodologia} % Esse capítulo e nome é apenas uma sugestão.
 %\include{capitulos/cap-experimentos-resultados} % Esse capítulo e nome é apenas uma sugestão.
 %\include{capitulos/cap-conclusoes} % Esse capítulo e nome é apenas uma sugestão.
+\include{capitulos/cap-traduzido} % Esse capítulo e nome é apenas uma sugestão.
 
 % Apendices.
 %\appendix
 %\include{postextual/ape-instalacao-ferramentas}
 
 %bibliografia
-%\bibliographystyle{abntex2-alf}
-%\bibliography{main} % geração automática das referências a partir do arquivo main.bib
+\bibliographystyle{abntex2-alf}
+\bibliography{main} % geração automática das referências a partir do arquivo main.bib
 
-\backmatter
+%\backmatter
 \end{document}
