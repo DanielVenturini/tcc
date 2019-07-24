@@ -2,9 +2,8 @@
 \chapter{Metodologia}
 \label{cap:metodologia}
 
-\begin{itemize}
-    \item RQ1: How often do breaking changes manifest in the client package?
-\end{itemize}
+\section{RQ1: How often do breaking changes manifest in the client package?}
+\label{cap:metodologia:sec:rq1}
 
 A stack trace is a report that provides information about program subroutines. It is commonly used for certain kinds of debugging, where a stack trace can help software engineers figure out where a problem lies or how various subroutines work together during execution. When \textit{npm install} or \textit{npm test} results in an error, it raises a stack trace. All information about the error and the calls to providers are shown in the stack trace. Figure \ref{fig:trace} shows a generic example of a stack trace of one error.
 
@@ -49,6 +48,7 @@ The Figure \ref{fig:step_analyze} show a summary of these steps.
     \caption{Steps to analyze an error}
     \label{fig:step_analyze}
 \end{figure}
+
 Some integrated systems can help to discover breaking changes. These systems are \textit{Travis, Jenkins, Codeship, CircleCI} and so on, and store the results of the npm install and npm test in the moment of a commit. It can help in the following way: if in the commit of a release the status of npm install or npm test was a success, and now is an error, then it occurred by a provider because the code of client is the same in the working tree and only the provider code was updated. However, just some of the sorted packages contain an integrated system.
 
 Another detail is the packages that connect with some type of service likes, \textit{MySql, CouchDB, Redis} and so on. From all 385 packages, x required one of these services. When the \textit{npm install} or \textit{npm test} raises an error because of the connection, in manual analyze the required services were ability and re-executed the package. So, if the error was persister because the connection, the package was classified was \textit{Undiscovered Error}.
@@ -65,9 +65,8 @@ So, from all release analyze was saved many informations:
 
 Nor all information may be recovered. For example, if an error wasn't fixed, then neither the client nor the provider repaired the error.
 
-\begin{itemize}
-    \item RQ2: What issues in the provider package cause the manifestation of a breaking change?
-\end{itemize}
+\section{RQ2: What issues in the provider package cause the manifestation of a breaking change?}
+\label{cap:metodologia:sec:rq2}
 
 For each error in \textit{npm install} or \textit{npm test}, it was manually analyzed. The objective is to do a grouping of similar errors and categorize then. For example, Figure \ref{fig:error_category} shows two errors in which one a function was renamed and the client tries to access the previous name.
 
@@ -82,9 +81,8 @@ The first error in the Figure \ref{fig:error_category} is obvious: the client tr
 
 Once the provider causing the \textit{breaking change} has been discovered, there are several ways to find out the real reason that caused the error. These ways are described in Section \ref{cap:metodologia}. Then, all \textit{breaking changes} are classified based on his type.
 
-\begin{itemize}
-    \item RQ3: How do client packages recover from the manifestation of breaking change?
-\end{itemize}
+\section{RQ3: How do client packages recover from the manifestation of breaking change?}
+\label{cap:metodologia:sec:rq3}
 
 Since the customer recovers from the error, there are two ways to know how it recoverer. The first way is when the provider fixes his code and the client just updates the string of versioning in \textit{package.json}, if it needs. To the provider fixes the error, one issue may be done in his repository. The second way is when the client must do some work to fix the code. In this case, the client can fix the provider code and do a pull-request or change his code to work with the provider. And of course, may have cases that anyone does nothing. There is a breaking change and it’s never been fixed.
 
