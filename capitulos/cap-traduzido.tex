@@ -46,15 +46,16 @@ O melhor local para se confirmar esta evidência é o \textit{GitHub}. Neste, os
 
 Assim, foi observado a versão do provedor que possivelmente causou o erro e foi verificado no seu \textit{CHANGELOG} -- caso existisse -- se contém alguma informação pertinente ao erro que foi apresentado pelo \gls{NPM} quando resultou em erro. Então foi salva as informações sobre este erro: a versão que iniciou, a versão que foi corrigido, uma breve descrição para facilitar a classificação da \textit{breaking change}, quem consertou o erro: cliente ou provedor; o tempo total até ser corrigido, quantas \textit{releases} o provedor levou para corrigir e em qual nível do \gls{SEMVER} o erro foi consertado.
 
-Other types of changelogs are the release notes. These are found in the comments of release. However, many and many repositories don’t contain a changelog file. Then, the next step is the search for any issue that contains some information about the error. In general, the issues contain much information, because of the developers and the owners of the package comment about the error. And more, many related issues are linked, increasing the number of information. Also, pull request works in the same way as issues.
+Há ainda outros tipos de documentações parecidas com os \textit{changelogs}. Uma delas são as \textit{releases notes}. Elas são observações importantes sobre as alterações introduzidas por cada \textit{release}. Além disso, foi verificado nas \textit{issues} dos repositórios. Lá, muitas informações foram encontradas. E muito mais, pois há uma grande rede interligada de \textit{issues} e \textit{pull-requests} no qual uma \textit{issue} é marcada em outra \textit{issue}, que é marcada em um \textit{pull-request} e assim por diante. Deste modo, uma simples \textit{issue}/\textit{pull-request} contém muita informação.
 
-Another important way is to install another release of the provider. So, it's possible to find out from which release the error started or which release the error was fixed. Also, there are other ways to verify if the error is in the provider. This is, compare the diff code between two provider releases; verify the provider commits; and change provider code.
-The Figure \ref{fig:step_analyze} show a summary of these steps.
+Um ponto que foi muito importante para descobrir as versões que foram introduzidas as \textit{breaking changes} é a instalação de versões prévias e sucessivas dos provedores. Com isso, foi possível testar a partir de qual versão o erro foi introduzido e consertado e descobrir qual foi o verdadeiro provedor causador do erro. Também, alguns outros recursos foram utilizados para buscar as informações desta questão de pesquisa, tais como, o uso da ferramenta \textit{npm-diff}\footnote{https://github.com/danielventurini/npm-diff}, que provê os \textit{diff} do código entre duas \textit{releases} de um determinado projeto, no qual foi verificado o que realmente foi introduzido e o que foi removido com mais detalhes.
+
+A Figura \ref{fig:step_analyze} exemplifica as técnicas para utilizadas para responder esta questão de pesquisa.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.35]{figuras/step_analyze.jpeg}
-    \caption{Steps to analyze an error}
+    \caption{Passos para analisar um erro}
     \label{fig:step_analyze}
 \end{figure}
 
