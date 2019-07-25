@@ -14,8 +14,7 @@ Para analisar todos esses pontos, os pacotes sorteados foram clonados do \textit
 
 \subsection{Approach}
 \label{apr:rq1}
-
-A stack trace is a report that provides information about program subroutines. It is commonly used for certain kinds of debugging, where a stack trace can help software engineers figure out where a problem lies or how various subroutines work together during execution. When \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test} results in an error, it raises a stack trace. All information about the error and the calls to providers are shown in the stack trace. Figure \ref{fig:trace} shows a generic example of a stack trace of one error.
+Um \textit{stack trace} contém as informações sobre as subrotinas de um programa. É comumente utilizado para certos tipos de \textit{debugs}, nos quais eles auxiliam a visualizar e rastrear um determinado evento/erro. Quando os comandos \textit{npm install} e \textit{npm test} resultam em erro, o \Gls{NPM} mostra o erro e todas as chamadas de função, incluindo as invocações para os provedores. A Figura \ref{fig:trace} mostra um exemplo genérico de um \textit{stack trace} mostrado pelo \Gls{NPM} após a ocorrência de um erro.
 
 \begin{figure}
     \centering
@@ -24,13 +23,11 @@ A stack trace is a report that provides information about program subroutines. I
     \label{fig:trace}
 \end{figure}{}
 
-The stack trace is the base to analyze and an error.
-All releases of any package that broke in the \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test} were analyzed manually. The first step to analyze an error is differentiated between an error that wasn't caused by any provider, which is an error that occurred exclusively in the client package where the providers didn’t influence, and a breaking change error, that the errors occurred in provider package and it broke a client. There are two ways to conduct this step.
+O \textit{stack trace} é a base para analisar um erro. A primeira etapa da análise de um erro é diferenciar entre um erro que foi causado pelo próprio pacote cliente, no qual não houve influência de nenhum provedor, portanto não caracteriza uma \textit{breaking change}, e um erro que foi causado por algum dos provedores, no qual se propagou para o pacote cliente e interrompeu-lhe a execução. Há duas maneiras que foi utilizada para realizar esta análise.
 
-The first way is to take a look at the stack trace of the error and verify the calls to providers. When in the stack trace there isn't called to any providers, the error probably doesn’t refer a breaking change, because any provider was called in this error. So, the error is in the client code. To confirm this, the next commit in GitHub, after the release of the client, is verified. The objective is to verify if the error was fixed in any client commit. If true, the error is confirmed as a non-breaking change.
-Some types of errors can be resolved in the code of the client. This error isn’t breaking change. Errors like \textit{SyntaxError} and \textit{ReferenceError}, where the client wrote the wrong code. Example:
+A primeira maneira foi verificar diretamente no \textit{stack trace} do erro e procurar as chamadas de função para os provedores. Quando não há chamada para os provedores no \textit{stack trace}, provavelmente o erro não se trata de uma \textit{breaking change}, porque nenhum provedor influenciou em nada na execução até acontecer o erro. Então, a falha pode estar apenas no código do cliente. Para confirmar isto, foi procurado no \textit{GitHub} do cliente os próximos \textit{commits} e verificado se o desenvolvedor realizou alguns \textit{commits} com a intenção de consertar algum erro - mensagens do tipo \textit{fix error}, \textit{fix bugs} etc. Se sim, o código do cliente foi alterado para verificar se as modificações presentes nos \textit{commits} realmente refletem a correção do erro. Então este caso foi confirmado como um \textit{non-breaking change} e foi descartado. Entretanto, alguns tipos de erros já indicam exatamente onde o erro aconteceu. São os \textit{SyntaxError} e \textit{ReferenceError}, no qual já se sabe onde e porque ocorreu. O Código \ref{cod:syntax:error} mostra um exemplo deste tipo de erro.
 
-\begin{lstlisting}[style=Javascript, label=cod:syntax:error, caption={Reference Error code in JavaScript}]
+\begin{lstlisting}[style=Javascript, label=cod:syntax:error, caption={Código com um Reference Error}]
 const a = 0 = 0;
 \end{lstlisting}
 
