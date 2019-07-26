@@ -50,7 +50,7 @@ Há ainda outros tipos de documentações parecidas com os \textit{changelogs}. 
 
 Um ponto que foi muito importante para descobrir as versões que foram introduzidas as \textit{breaking changes} é a instalação de versões prévias e sucessivas dos provedores. Com isso, foi possível testar a partir de qual versão o erro foi introduzido e consertado e descobrir qual foi o verdadeiro provedor causador do erro. Também, alguns outros recursos foram utilizados para buscar as informações desta questão de pesquisa, tais como, o uso da ferramenta \textit{npm-diff}\footnote{https://github.com/danielventurini/npm-diff}, que provê os \textit{diff} do código entre duas \textit{releases} de um determinado projeto, no qual foi verificado o que realmente foi introduzido e o que foi removido com mais detalhes.
 
-A Figura \ref{fig:step_analyze} exemplifica as técnicas para utilizadas para responder esta questão de pesquisa.
+A Figura \ref{fig:step_analyze} exemplifica as técnicas utilizadas para responder esta questão de pesquisa.
 
 \begin{figure}
     \centering
@@ -59,21 +59,19 @@ A Figura \ref{fig:step_analyze} exemplifica as técnicas para utilizadas para re
     \label{fig:step_analyze}
 \end{figure}
 
-Some integrated systems can help to discover breaking changes. These systems are \textit{Travis, Jenkins, Codeship, CircleCI} and so on, and store the results of the \Gls{NPM} install and \Gls{NPM} test in the moment of a commit. It can help in the following way: if in the commit of a release the status of \Gls{NPM} install or \Gls{NPM} test was a success, and now is an error, then it occurred by a provider because the code of client is the same in the working tree and only the provider code was updated. However, just some of the sorted packages contain an integrated system.
+Vale ressaltar que alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis, Jenkins, Codeship, CicleCI} etc. que, quando o desenvolvedor realizou o \textit{commit}, esses sistemas executaram o \textit{npm install} e o \textit{npm test}. Isto colaborou da seguinte maneira: se o \textit{commit} da \textit{release} foi salvo o resultado do \textit{npm install} e \textit{npm test} como sucesso e, ao executá-los nesta pesquisa foi resultado em erro, indica que há uma \textit{breaking change}, uma vez que o código do cliente está no mesmo index do \textit{working tree}, apenas os provedores que foram atualizados e, para o range aceito, geraram erros, resultando em \textit{breaking changes}. Entretanto, nem todos os projetos utilizavam estes sistemas integrados, mas quando dispunham, foi de grande valia.
 
-Another detail is the packages that connect with some type of service likes, \textit{MySql, CouchDB, Redis} and so on. From all 385 packages, x required one of these services. When the \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test} raises an error because of the connection, in manual analyze the required services were ability and re-executed the package. So, if the error was persister because the connection, the package was classified was \textit{Undiscovered Error}.
+Outro detalhe importante se refere aos projetos que utilizavam algum tipo de sistemas terceiros como o \textit{MySql, CouchDB, Redis} etc. Então, quando foi gerado um erro pela falta de um destes, fez-se a habilitação destes e o pacote foi re-executado. Entretanto, quando os pacotes requeriam previamente uma configuração para executar, tais como a criação de tabelas em banco de dados, esta configuração foi feita, seguindo o modelo disponibilizado pelo desenvolvedor afim de realizar os teste, e novamente foi executado o pacote.
 
-So, from all release analyze was saved many informations:
+Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seguintes informações:
 
 \begin{enumerate}
-    \item Documentation about the error: issue, changelog, pull-request and so on;
-    \item Who fixed the error: client or provider;
-    \item How long did the error take to get fixed;
-    \item Fixed in major, minor or patch; and
-    \item In how many releases the error existed.
+    \item Em que local o erro foi documentado: \textit{issue, changelog, pull-request} etc;
+    \item Quem consertou o erro: cliente ou providor;
+    \item Em qual nível do \textit{SEMVER} o erro foi reparado;
+    \item Quanto tempo o erro levou até ser corrigido; e
+    \item Por quantas \textit{releases} o erro persistiu.
 \end{enumerate}{}
-
-Nor all information may be recovered. For example, if an error wasn't fixed, then neither the client nor the provider repaired the error.
 
 \subsection{Findings}
 \label{fin:rq1}
