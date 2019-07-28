@@ -83,13 +83,11 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
 \subsection{Motivation}
 \label{mot:rq2}
 
-Since the provider has unexpected behavior, there's a breaking change. It can cause a change in client behavior and, in the worst cause, can break all the execution if the error isn't previous catch by the client. However, the client doesn't expect an error.
+Uma vez que o provedor teve um comportamento inesperado pelo cliente, há \textit{breaking changes}. Isso pode causar uma mudança no comportamento do pacote cliente e, no pior caso, causar o encerramento de toda a execução se o cliente previamente na tratou um determinado erro. Entretanto, um cliente nunca espera que o provedor tenha um erro e, por isso, não fica tratando todas as chamadas para o cliente com \textit{try catch}. Assim, o cliente confia que o provedor esteja executando da maneira que foi especificado.
 
-The provider may contain multiple errors in his code. A simple semantic wrong line can break all execution because the \textit{Javascript} code isn't compiled. The types of errors in \textit{breaking changes} are many.  The error can be a change in the rules of behavior of the provider, in which this update in the behavior should be inserted in a \textit{major} release. Also, the type of returned object that isn't expected by the client can break it. And, of course, many and many other types of error.
+Um provedor pode conter múltiplos tipos de erros. Uma simples linha escrita semanticamente errada, por exemplo, pode causar no encerramento da execução, uma vez que os códigos \textit{Javascript} não são compilados. Entretanto, um erro pode não estar no provedor diretamente. Isto é devido ao fato deste contém um segundo provedor que seja o causador da \textit{breaking change}. Então, o erro é propagado do segundo provedor para o primeiro e, por fim, alcança o cliente. Isto é uma \textit{breaking change} transitiva e, na nossa pesquisa, é tratada como um caso normal de \textit{breaking change}.
 
-However, the provider can have a provider that contains an error. In this cause, the first provider doesn't contain an error, but, for a wrong provider, one error is propagated to the client. This is a transitive breaking change and, in our research, is a normal cause of \textit{breaking change}.
-
-To answer this research question, we analyze one by one and we categorized the type of \textit{breaking change}. Also, the types were quantified by category, by the number of releases and the number of clients that were affected by this category of breaking change.
+Para responder essa questão de pesquisa, foi analisado caso a caso dos erros e as \textit{breaking changes} foram categorizadas pelo tipo da \textit{breaking change}. Também, os tipos foram quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}.
 
 \subsection{Approach}
 \label{apr:rq2}
