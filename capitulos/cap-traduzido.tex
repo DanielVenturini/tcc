@@ -83,18 +83,16 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
 \subsection{Motivation}
 \label{mot:rq2}
 
-Since the provider has unexpected behavior, there's a breaking change. It can cause a change in client behavior and, in the worst cause, can break all the execution if the error isn't previous catch by the client. However, the client doesn't expect an error.
+Uma vez que o provedor teve um comportamento inesperado pelo cliente, há \textit{breaking changes}. Isso pode causar uma mudança no comportamento do pacote cliente e, no pior caso, causar o encerramento de toda a execução se o cliente previamente na tratou um determinado erro. Entretanto, um cliente nunca espera que o provedor tenha um erro e, por isso, não fica tratando todas as chamadas para o cliente com \textit{try catch}. Assim, o cliente confia que o provedor esteja executando da maneira que foi especificado.
 
-The provider may contain multiple errors in his code. A simple semantic wrong line can break all execution because the \textit{Javascript} code isn't compiled. The types of errors in \textit{breaking changes} are many.  The error can be a change in the rules of behavior of the provider, in which this update in the behavior should be inserted in a \textit{major} release. Also, the type of returned object that isn't expected by the client can break it. And, of course, many and many other types of error.
+Um provedor pode conter múltiplos tipos de erros. Uma simples linha escrita semanticamente errada, por exemplo, pode causar no encerramento da execução, uma vez que os códigos \textit{Javascript} não são compilados. Entretanto, um erro pode não estar no provedor diretamente. Isto é devido ao fato deste contém um segundo provedor que seja o causador da \textit{breaking change}. Então, o erro é propagado do segundo provedor para o primeiro e, por fim, alcança o cliente. Isto é uma \textit{breaking change} transitiva e, na nossa pesquisa, é tratada como um caso normal de \textit{breaking change}.
 
-However, the provider can have a provider that contains an error. In this cause, the first provider doesn't contain an error, but, for a wrong provider, one error is propagated to the client. This is a transitive breaking change and, in our research, is a normal cause of \textit{breaking change}.
-
-To answer this research question, we analyze one by one and we categorized the type of \textit{breaking change}. Also, the types were quantified by category, by the number of releases and the number of clients that were affected by this category of breaking change.
+Para responder essa questão de pesquisa, foi analisado caso a caso dos erros e as \textit{breaking changes} foram categorizadas pelo tipo da \textit{breaking change}. Também, os tipos foram quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}.
 
 \subsection{Approach}
 \label{apr:rq2}
 
-For each error in \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test}, it was manually analyzed. The objective is to do a grouping of similar errors and categorize then. For example, Figure \ref{fig:error_category} shows two errors in which one a function was renamed and the client tries to access the previous name.
+Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm test} foram analisados manualmente. O objetivo era descobrir o real motivo que origino o erro e agrupa-los por suas similaridades. A Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros, apesar da mensagem do \textit{stack trace}.
 
 \begin{figure}[!h]
     \centering
@@ -103,9 +101,7 @@ For each error in \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test}, it was 
     \label{fig:error_category}
 \end{figure}
 
-The first error in the Figure \ref{fig:error_category} is obvious: the client tries to access a variable like a function when it isn't a function. The second error talks about a property \textit{writable} that is access by an undefined object. There isn't any information about the function-related error, but, in manually analyze, it was observed that the provider change the name of a function. For this, in this code, the variable \textit{this.stream.writable} is undefined.
-
-Once the provider causing the \textit{breaking change} has been discovered, there are several ways to find out the real reason that caused the error. These ways are described in Section \ref{apr:rq1}. Then, all \textit{breaking changes} are classified based on his type.
+A mensagem do primeiro erro deixa claro que se trata de uma invocação a uma função inexistente, ou seja, o cliente tentou acessar uma variável como uma função quando esta não era. Mas, somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro, o \textit{stack trace} não indica que o erro se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma função renomeada. Assim, apesar de mensagens de erro diferentes, foram classificados pelo seu real motivo para que fosse possível quantificar os principais problemas no código do provedor.
 
 \subsection{Findings}
 \label{fin:rq2}
@@ -117,13 +113,13 @@ Once the provider causing the \textit{breaking change} has been discovered, ther
 \subsection{Motivation}
 \label{mot:rq3}
 
-Once a breaking change appears, the provider should fix it. It’s necessary because, in the \Gls{NPM} ecosystem, where hundreds of thousands of packages are connected, a single wrong release can break a lot of other packages. An example of this is the package called \textit{left-pad}, which was removed from \Gls{NPM} by your developer and break many thousands of projects on only 2.5 hours.
+Uma vez que uma \textit{breaking change} é introduzida o provedor deve se recuperar desta. Isso se faz necessário pois, no ecossistema \gls{NPM}, no qual centenas de milhares de pacotes estão conectados, uma simples \textit{release} com erro pode ocasionar na quebra de muitos clientes. Isto ocorreu com um pacote chamado \textit{left-pad}\footnote{https://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm}. Este foi removido do \textit{NPM} por seu desenvolvedor e impactou milhares de projetos em apenas 2.5 horas incluindo \textit{babel}\footnote{https://github.com/babel/babel} e \textit{atom}\footnote{https://github.com/atom/atom}.
 
-The responsibility to fix the release is from the provider, but, sometimes, the provider cannot fix the release/package for some reason. Then, the customer gets this responsibility because your wrong provider affects it and all of your customers are also affected. In the example of \textit{left-pad}, the provider never published a new release and, for all packages to continue working, the client's packages that have fixed this error publishing a new package with the same name and the same code.
+A responsabilidade para corrigir uma errônea \textit{release} é do provedor. Entretanto, as vezes, o provedor deixa dar a manutenção por algum motivo. Então, os clientes recebem esta responsabilidade, uma vez que o erro no seu provedor pode afetar os seus clientes. No caso do \textit{left-pad} o provedor nunca publicou uma nova \textit{release} e, para que todos os pacotes continuassem a executar normalmente, um dos clientes publicou um pacote com o mesmo nome e mesmo código, uma vez que a política para nomes de pacotes permitia este feito e o pacote original continha uma licença de código aberto.
 
-However, the client may not know how to solve the problem. If the client is a simple user that only knows a little bit about the internal works from the provider, he can hardly solve in its own code an error that is being caused by the provider. This is very bad for the clients because he should fix the error, change to a previous version or choose another provider.
+Entretanto, nem sempre o cliente consegue resolver um problema no provedor. Isso se deve ao fato do cliente não ter conhecimento prévio do funcionamento interno do provedor ou por outros motivos. Assim, o cliente dificilmente irá conseguir ter sucesso quanto a resolução do erro no provedor. Então, uma alternativa para o cliente é alterar o seu provedor buscando por um que atenda as necessidades que não fora atendidas pelo provedor prévio.
 
-To answer the final research question, we analyze three points: 1) What happened so the provider couldn't fix the code; 2) How the client fixed the error or just notified the provider; 3) How many times the client fixed the error. All information about this research question is recovered by the \textit{release-notes, issues}, and \textit{pull-requests}.
+Para responder a questão de pesquisa final, foi analisado três pontos: 1) o que aconteceu para que o provedor não pudesse consertar o erro; 2) como o cliente consertou o erro: no seu código ou notificando o provedor através de \textit{issues} e \textit{pull-requests}; 3) quantas vezes o cliente teve que realizar a correção dado que o provedor não a fez. Todas as informações sobre esta questão de pesquisa estão nos \textit{commits}, \textit{issues}, \textit{pull-requests}, \textit{changelogs} e \textit{releases-notes} dos repositórios do cliente e do provedor.
 
 \subsection{Approach}
 \label{apr:rq3}
