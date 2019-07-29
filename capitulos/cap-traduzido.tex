@@ -92,7 +92,7 @@ Para responder essa questão de pesquisa, foi analisado caso a caso dos erros e 
 \subsection{Approach}
 \label{apr:rq2}
 
-For each error in \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test}, it was manually analyzed. The objective is to do a grouping of similar errors and categorize then. For example, Figure \ref{fig:error_category} shows two errors in which one a function was renamed and the client tries to access the previous name.
+Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm test} foram analisados manualmente. O objetivo era descobrir o real motivo que origino o erro e agrupa-los por suas similaridades. A Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros, apesar da mensagem do \textit{stack trace}.
 
 \begin{figure}[!h]
     \centering
@@ -101,9 +101,7 @@ For each error in \textit{\Gls{NPM} install} or \textit{\Gls{NPM} test}, it was 
     \label{fig:error_category}
 \end{figure}
 
-The first error in the Figure \ref{fig:error_category} is obvious: the client tries to access a variable like a function when it isn't a function. The second error talks about a property \textit{writable} that is access by an undefined object. There isn't any information about the function-related error, but, in manually analyze, it was observed that the provider change the name of a function. For this, in this code, the variable \textit{this.stream.writable} is undefined.
-
-Once the provider causing the \textit{breaking change} has been discovered, there are several ways to find out the real reason that caused the error. These ways are described in Section \ref{apr:rq1}. Then, all \textit{breaking changes} are classified based on his type.
+A mensagem do primeiro erro deixa claro que se trata de uma invocação a uma função inexistente, ou seja, o cliente tentou acessar uma variável como uma função quando esta não era. Mas, somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro, o \textit{stack trace} não indica que o erro se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma função renomeada. Assim, apesar de mensagens de erro diferentes, foram classificados pelo seu real motivo para que fosse possível quantificar os principais problemas no código do provedor.
 
 \subsection{Findings}
 \label{fin:rq2}
