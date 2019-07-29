@@ -39,7 +39,7 @@ O melhor local para se confirmar esta evidência é o \textit{GitHub}. Neste, os
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.55]{figuras/bc_documentation.jpeg}
+    \includegraphics[scale=0.45]{figuras/bc_documentation.jpeg}
     \caption{Breaking Change documentation in README}
     \label{fig:bc_documentation}
 \end{figure}{}
@@ -126,9 +126,9 @@ Para responder a questão de pesquisa final, foi analisado três pontos: 1) o qu
 
 Uma vez que os clientes se recuperaram de um erro, há duas maneiras para se obter informações sobre esta recuperação. A primeira maneira é quando o provedor corrige seu código e o cliente apenas atualiza sua \textit{string} de versionamento no \textit{package.json}, se precisar. Para o provedor consertar o erro, deve haver uma \textit{issue} no seu repositório. A segunda maneira é quando o próprio cliente conserta o código. Neste caso, o cliente pode corrigir o código do provedor e realizar um \textit{pull-request}. Também, o cliente pode alterar apenas o seu código para que execute normalmente com a \textit{release} errônea do cliente. Há casos também no qual nem o cliente nem o provedor faz nada para consertar o erro.
 
-Where information about this RQ is retrieved is \textit{GitHub}. This information can be found at \textit{CHANGELOG, release-notes, issues,} and \textit{pull-requests}. If the \textit{changelog} contains information about fixed errors, in general, the related \textit{issues} are marked. From these \textit{issues}, a lot of more information can be recovered, like \textit{pull-requests} that are also marked in the \textit{issue}, other \textit{issues}, commentaries and more. All of this information can help us to discover which one -- client or provider -- fixed the \textit{breaking change} and how it was fixed.
+Todas as informações sobre esta questão de pesquisa foi recuperada do \textit{GitHub}. As informações foram encontradas em \textit{CHANGELOGs, release-notes, issues} e \textit{pull-requests}. Se os \textit{CHANGELOGs} contêm informações sobre os erros consertados, geralmente, as \textit{issues} são marcadas, como mostra a Figura \ref{fig:bc_documentation}. A partir das \textit{issues} uma grande quantidade de informações podem ser recuperadas. Nestas, há vários comentários discutindo o problemas e informações sobre quem e quando foi consertado. Também, várias outras \textit{issues} e \textit{pull-requests} que são relacionadas ao mesmo problemas são marcadas, abrangendo ainda mais a quantidade de informação que pode ser recuperadas. Todas estas informaçõs corroboram para descobrir quem -- cliente ou provedor -- consertou a \textit{breaking change} e como ela foi consertada.
 
-\textit{Commits} are the alternative to \textit{issues} when the search is in the client repository. The \textit{commits} contain all changes in files and the all updates providers in \textit{package.json}. Commits message like \textit{update dependencies, fix dependencies, fix errors} an so on, suggests that something about any dependencies was fixed. This information is very important, because, since the provider was fixed and the client just updates it, the commit messages can tell the reason for this update - or downgrade.
+Os \textit{commits} são alternativas para as \textit{issues} quando a busca se dá no repositório do cliente. Os \textit{commits} contém todas as alterações de cada arquivo, incluindo o arquivo principal \textit{package.json}, no qual se pode ver todos as atualizações dos provedores. Sobre os \textit{commits}, mensagens do tipo \textit{update dependencies, fix dependencies, fix errors} etc. sugerem que algum provedor foi atualizado para consertar algum erro ou um erro foi consertado diretamente no código do cliente. Esta informações é muito importante, uma vez que o provedor corrigiu a \textit{breaking change} e o cliente apenas o atualizou. Assim, as mensagens dos \textit{commits} auxiliaram para descobrir os reais motivos da atualização -- ou retrocesso da versão.
 
 \subsection{Findings}
 \label{fin:rq3}
