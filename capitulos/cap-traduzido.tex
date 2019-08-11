@@ -78,12 +78,18 @@ Porém, nem todas as informações puderam ser recuperados, uma vez que nem todo
 \subsection{Findings}
 \label{fin:rq1}
 
+\subsubsection{De todos os projetos, 11\% foram impactados por \textit{breaking change}}
+
+\subsubsection{De todos os projetos afetados, 13\% apresentaram mais de uma \textit{breaking change}}
+
 %---------------------------------------------------%
 \section{RQ2. Quais são os problemas no pacote provedor que causam breaking change?}
 \label{sec:rq2}
 
 \subsection{Motivation}
 \label{mot:rq2}
+
+Produzir códigos de teste é uma das maneiras mais importantes de garantir que o projeto esteja com o comportamento esperado. Entretanto, uma pesquisa realizada por \citeonline{uncovered} mostrou que os projetos \textit{Javascript} não contêm \textit{scripts} de teste em 22\% dos projetos estudados; 40\% dos projetos puramente clientes; e 3\% dos projetos servidores. Além disso, nem sempre os testes possuem cobertura total do projeto. Por esse fato, ha grande probabilidade de um erro ser descoberto apenas em tempo de execução pelos clientes. % continuar com o raciocínio da linguagem fracamente tipada e os atributos expostos ao cliente
 
 Os provedores podem conter variados tipos de erros. Uma simples linha escrita semanticamente errada, por exemplo, pode causar no encerramento da execução, uma vez que os códigos \textit{Javascript} não são compilados. Erros de conexão, arquivos inexistentes, provedores removidos, funções renomeadas etc. são outros tipos de defeitos que o provedor pode apresentar. Pelo fato dos pacotes dependerem uns dos outros, os tipos de erros se repetem com frequência em vários casos. Por isso, é interessante categorizar e quantificar os erros para descobrir quais são os casos mais frequentes de \textit{breaking changes}.
 
