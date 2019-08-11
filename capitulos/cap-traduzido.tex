@@ -101,7 +101,7 @@ Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm te
     \label{fig:error_category}
 \end{figure}
 
-A mensagem do primeiro erro deixa claro que se trata de uma invocação a uma função inexistente, ou seja, o cliente tentou acessar uma variável como uma função quando esta não era. Mas, somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro, o \textit{stack trace} não indica que o erro se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma função renomeada. Assim, apesar de mensagens de erro diferentes, foram classificados pelo seu real motivo para que fosse possível quantificar os principais problemas no código do provedor.
+A mensagem do primeiro erro (a) deixa claro que se trata de uma invocação a uma função inexistente, ou seja, o cliente tentou acessar uma variável como uma função quando essa não era. Mas somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro (b), o \textit{stack trace} não indica que se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma invocação a uma função que não existia, haja visto que fora renomeada. Assim, apesar de mensagens de erro diferentes, foram classificados pelo seu real motivo para que fosse possível quantificar os principais problemas no código do provedor.
 
 Por isso se fez necessário a análise manual para reconhecer os reais motivos de cada caso de erro.
 
