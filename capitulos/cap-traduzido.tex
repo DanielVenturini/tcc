@@ -92,7 +92,7 @@ Para responder essa questão de pesquisa, será analisado caso a caso dos erros 
 \subsection{Approach}
 \label{apr:rq2}
 
-Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm test} foram analisados manualmente. O objetivo era descobrir o real motivo que origino o erro e agrupa-los por suas similaridades. A Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros, apesar da mensagem do \textit{stack trace}.
+Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm test} foram analisados manualmente. O objetivo era descobrir o real motivo que origino o erro e agrupa-los por suas similaridades. Isso, porque o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha. Por exemplo, a Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros, apesar da mensagem do \textit{stack trace}.
 
 \begin{figure}[!h]
     \centering
