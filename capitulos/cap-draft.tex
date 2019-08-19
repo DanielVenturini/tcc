@@ -82,11 +82,9 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
 \subsection{Motivation}
 \label{mot:rq2}
 
-Uma pesquisa realizada por \citeonline{uncovered} mostrou que, dos 373 projetos \textit{Javascript} utilizados, os que não possuíam \textit{scripts} de testes eram: 22\% da base estudada; 40\% dos projetos clientes; e 3\% dos projetos servidores. Além disso, nem sempre os casos de testes cobriam 100\% do projeto. Por esse fato, há grandes probabilidades desse erro ser descoberto apenas em tempo de execução e pelos clientes.
+Uma pesquisa realizada por \citeonline{uncovered} mostrou que, dos 373 projetos \textit{Javascript} utilizados, os que não possuíam \textit{scripts} de testes eram: 22\% da base estudada; 40\% dos projetos clientes; e 3\% dos projetos servidores. Além disso, nem sempre os casos de testes cobriam 100\% do projeto. O fato de haver pouca quantidade de casos de teste, juntamente com a dinâmica do \textit{Node.js}, corroboram para que seus códigos possam apresentar comportamentos inesperados. Por exemplo, considere o seguinte caso no qual é tentado realizar um acesso a uma posição inexistente de um vetor no Código \ref{cod:wrong:access} em três linguagens diferentes.
 
-O fato da pouca quantidade de casos de teste, juntamente com a dinâmica do \textit{Node.js}, corroboram para que seus códigos possam apresentar comportamentos inesperados. Por exemplo, considere o seguinte caso no qual é tentado realizar um acesso a uma posição inexistente de um vetor no Código \ref{cod:wrong:access} em três linguagens diferentes.
-
-\begin{lstlisting}[label=cod:wrong:access, caption={Código com um Reference Error}]
+\begin{lstlisting}[style=javascript, label=cod:wrong:access, caption={Acesso inválido à posição de memória}, numbers=none]
 // Java
 int vet[] = new int[10];
 vet[14] = 0;
@@ -100,14 +98,14 @@ vet = []
 vet[14] = 10
 \end{lstlisting}
 
-Ambos os códigos é acessado uma posição inexistente. No código escrito em \textit{Java}, um erro será gerado em tempo de compilação. Já no código em \textit{Python}, uma exceção será gerada em tempo de execução. Entretanto, apenas no código \textit{Javascript} que nenhum erro/aviso é gerado e o usuário não será informado. Isso porque o interpretador \textit{Node.js} aloca 14 posições na memória nas quais 13 dessas possuem o valor \textit{undefined} e a décima quarta possui o valor \textit{10}. Assim, a dinâmica do \textit{Node.js} dificulta a busca por erro, uma vez que um caso errôneo é tratado pelo interpretador como um caso normal.
+No código escrito em \textit{Java}, um erro será gerado em tempo de compilação. Já no código em \textit{Python}, uma exceção será gerada em tempo de execução. Entretanto, apenas no código \textit{Javascript} nenhum erro/aviso é gerado e o usuário não será informado sobre esse comportamento, uma vez que esse é um comportamento esperado do \textit{Node.js}. Isso porque o interpretador \textit{Node.js} aloca 14 posições na memória nas quais 13 dessas possuem o valor \textit{undefined} e a décima quarta, o valor \textit{10}. Assim, a dinâmica do \textit{Node.js} dificulta a busca por erros, uma vez que um caso errôneo é tratado pelo interpretador como um caso normal.
 
 Para responder essa questão de pesquisa, será analisado caso a caso dos erros e as \textit{breaking changes} serão categorizadas pelo tipo da \textit{breaking change}. Também, os tipos serão quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}. Assim sendo, entender as principais categorias de erros que são introduzidas nas \textit{releases} pode ajudar os desenvolvedores a atentar-se mais para os casos errôneos.
 
 \subsection{Approach}
 \label{apr:rq2}
 
-Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm test} foram analisados manualmente. O objetivo era descobrir o real motivo que origino o erro e agrupa-los por suas similaridades. Isso, porque o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha. Por exemplo, a Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros, apesar da mensagem do \textit{stack trace}.
+O objetivo da análise manual era descobrir o real motivo que originou um erro e agrupa-los por suas similaridades. Isso, porque o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha. Por exemplo, a Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros.
 
 \begin{figure}[!h]
     \centering
@@ -116,9 +114,7 @@ Cada um dos casos de erro para os comandos \textit{npm install} e \textit{npm te
     \label{fig:error_category}
 \end{figure}
 
-A mensagem do primeiro erro (a) deixa claro que se trata de uma invocação a uma função inexistente, ou seja, o cliente tentou acessar uma variável como uma função quando essa não era. Mas somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro (b), o \textit{stack trace} não indica que se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma invocação a uma função que não existia, haja visto que fora renomeada. Assim, apesar de mensagens de erro diferentes, foram classificados pelo seu real motivo para que fosse possível quantificar os principais problemas no código do provedor.
-
-Por isso se fez necessário a análise manual para reconhecer os reais motivos de cada caso de erro.
+A mensagem do primeiro erro (a) deixa claro que se trata de uma invocação a uma função inexistente. Assim, somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro (b), o \textit{stack trace} não indica que se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro aconteceu por uma invocação a uma função que não existia, haja visto que fora renomeada. Por isso se fez necessário a análise manual para reconhecer os reais motivos de cada caso de erro.
 
 \subsection{Findings}
 \label{fin:rq2}

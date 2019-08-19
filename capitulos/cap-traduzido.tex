@@ -91,12 +91,25 @@ Porém, nem todas as informações puderam ser recuperados, uma vez que nem todo
 \subsection{Motivation}
 \label{mot:rq2}
 
-Produzir códigos de teste é uma das estratégias mais importantes para garantir que um projeto esteja executando da maneira esperada. Uma pesquisa realizada por \citeonline{uncovered} mostrou que, dos 373 projetos \textit{Javascript} utilizados, os que não possuíam \textit{scripts} de testes eram: 22\% da base estudada; 40\% dos projetos clientes; e 3\% dos projetos servidores. Além disso, nem sempre os casos de testes cobriam 100\% do projeto. Por esse fato, quando um erro é introduzido no provedor, ha grandes probabilidades desse ser descoberto apenas em tempo de execução e pelos clientes.
+Produzir códigos de teste é uma das estratégias mais importantes para garantir que um projeto esteja executando da maneira esperada. Uma pesquisa realizada por \citeonline{uncovered} mostrou que, dos 373 projetos \textit{Javascript} utilizados, os que não possuíam \textit{scripts} de testes eram: 22\% da base estudada; 40\% dos projetos clientes; e 3\% dos projetos servidores. Além disso, nem sempre os casos de testes cobriam 100\% do projeto. Por esse fato, quando um erro é introduzido no provedor, ha grandes probabilidades desse ser descoberto apenas em tempo de execução e pelos clientes. O fato de haver pouca quantidade de casos de teste, juntamente com a dinâmica do \textit{Node.js}, corroboram para que seus códigos possam apresentar comportamentos inesperados. Por exemplo, considere o seguinte caso no qual é tentado realizar um acesso a uma posição inexistente de um vetor no Código \ref{cod:wrong:access} em três linguagens diferentes.
 
-% consertar aqui
-Em linguagens fortemente tipadas, tais como \textit{Java} e \textit{C Sharp}, uma simples alteração errônea na estrutura pode ser facilmente identificada em tempo de compilação e pelo próprio desenvolvedor. Por exemplo, uma alteração na estrutura de uma classe em \textit{Java} já gera um erro de compilação dependendo de como essa é utilizada pelos clientes. Por isso, os provedores podem conter variados tipos de erros. Uma simples linha escrita semanticamente errada, por exemplo, pode causar no encerramento apenas em tempo de execução, uma vez que os códigos \textit{Javascript} não são compilados. Também, erros de conexão, arquivos inexistentes, provedores removidos, funções renomeadas etc. são outros tipos de defeitos que o provedor pode apresentar. Pelo fato dos pacotes dependerem uns dos outros, os tipos de erros se repetem com frequência em vários casos. Por isso, é interessante categorizar e quantificar os erros para descobrir quais são os casos mais frequentes nos casos de \textit{breaking changes}.
+\begin{lstlisting}[style=javascript, label=cod:wrong:access, caption={Acesso inválido à posição de memória}, numbers=none]
+// Java
+int vet[] = new int[10];
+vet[14] = 0;
 
-Para responder essa questão de pesquisa, será analisado caso a caso dos erros e as \textit{breaking changes} serão categorizadas pelo tipo da \textit{breaking change}. Também, os tipos serão quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}.
+// Python
+vet = []
+vet[14] = 0
+
+// Node.js
+vet = []
+vet[14] = 10
+\end{lstlisting}
+
+Em ambos os códigos é acessado uma posição inexistente do vetor \textit{vet}. No código escrito em \textit{Java}, um erro será gerado em tempo de compilação. Já no código em \textit{Python}, uma exceção será gerada em tempo de execução. Entretanto, apenas no código \textit{Javascript} nenhum erro/aviso é gerado e o usuário não será informado sobre esse comportamento, uma vez que esse é um comportamento esperado do \textit{Node.js}. Isso porque o interpretador \textit{Node.js} aloca 14 posições na memória nas quais 13 dessas possuem o valor \textit{undefined} e a décima quarta, o valor \textit{10}. Assim, a dinâmica do \textit{Node.js} dificulta a busca por erros, uma vez que um caso errôneo é tratado pelo interpretador como um caso normal.
+
+Para responder essa questão de pesquisa, será analisado caso a caso dos erros e as \textit{breaking changes} serão categorizadas pelo tipo da \textit{breaking change}. Também, os tipos serão quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}. Assim sendo, entender as principais categorias de erros que são introduzidas nas \textit{releases} pode ajudar os desenvolvedores a atentar-se mais para os casos errôneos.
 
 \subsection{Approach}
 \label{apr:rq2}
