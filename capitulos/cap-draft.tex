@@ -8,7 +8,7 @@
 
 O \Gls{NPM} contém mais de 12 bilhões de downloads semanais e ultrapassa os 48 bilhões por mês\footnote{https://api.npmjs.org/downloads/point/last-month}. Estes pacotes são usados por milhões de pessoas e projetos por todo o mundo. Entretanto, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes. Isso se deve ao fato dos pacotes dependerem uns dos outros, direta ou indiretamente. Para evitar as \textit{breaking changes}, o \Gls{NPM} utiliza \textit{strings} de versionamento baseadas no \Gls{SemVer} para especificar as versões dos provedores. O versionamento permite que um provedor publique uma \textit{release} que contenha \textit{breaking changes} sem afetar os clientes das versões prévias.
 
-Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, a \gls{API} foi renomeada por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela \gls{API} não a tivesse mais. Assim, o código \ref{cod:bc:optipng} executa normalmente com o \textit{optipng@0.1.1}, mas ao atualizar para o \textit{optipng@0.2.0}, este código sofre uma \textit{breaking change} -- o que não deveria acontecer com uma \textit{release minor}  -- conforme mostra a Figura \ref{fig:bc_optipng} (a).
+Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, a \gls{API} foi renomeada por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela \gls{API} não a tivesse mais. Assim, o código \ref{cod:bc:optipng} executa normalmente com o \textit{optipng@0.1.1}, mas ao atualizar para o \textit{optipng@0.2.0}, este código sofre uma \textit{breaking change} -- o que não deveria acontecer com uma \textit{release minor}  -- conforme mostra a Figura \ref{fig:bc_optipng} (a).
 
 \begin{lstlisting}[style=Javascript, label=cod:bc:optipng, caption={Código que sofre \textit{breaking change} do \textit{optipng}}]
 var OptiPng = require('optipng');
@@ -25,9 +25,6 @@ Apesar de ser um erro facilmente detectável, este foi consertado somente 34 dia
     \label{fig:bc_optipng}
 \end{figure}{}
 
-
-Assim sendo, é interessante entender com que frequência os provedores publicam \textit{releases} com \textit{breaking changes}.
-
 Para responder esta RQ, será utilizado uma base de dados com os nomes de todos os projetos do \Gls{NPM} até jun/2017. Há nesta base de dados \textit{366,629} nomes de projetos. A quantidade de amostras para o estudo será de \textit{385} projetos, com base em um cálculo amostral\footnote{https://pt.surveymonkey.com/mp/sample-size-calculator/} com 95\% de confiança e 5\% de margem de erro. Dos \textit{366K} de projetos, a amostra de \textit{385} será recuperada sorteando um número no intervalo \textit{0-366,629}. Do pacote sorteado será recuperado o seu \textit{package.json} e verificado se o pacote cumpre quatro requisitos: possuir mais de 1 dependente --  se não houver dependentes, não há possibilidades do pacote sofrer \textit{breaking changes}; possuir pelo menos a última \textit{release} com \textit{script} de teste não vazio e diferente do \textit{script} padrão de teste do \gls{NPM}: \textit{Error: no test specified}; possuir a \textit{url} do repositório do projeto; e o repositório do projeto precisa existir -- será esperado de uma requisição \Gls{HTTP} para o repositório o código \textit{200} indicando sua existência. A Figura \ref{fig:package_json} exemplifica as informações pertinentes no \textit{package.json} do pacote \textit{raven@0.1.0}\footnote{http://registry.npmjs.org/raven}.
 
 \begin{figure}
@@ -38,7 +35,7 @@ Para responder esta RQ, será utilizado uma base de dados com os nomes de todos 
 \end{figure}{}
 
 %pacotes sorteados serão
-Após selecionar todos os 385 pacotes, estes serão clonados do \textit{GitHub}, atualizado o \textit{index} e os arquivos na \textit{Working Tree} para o \textit{timestamp} da \textit{release}, atualizado a versão de cada um dos provedores no \textit{package.json} e executado os comandos \textit{npm install} e \textit{npm test}. Então, o resultado da execução será salvo juntamente com as  versões do \textit{Node.JS}. Dos resultados, serão analisados três pontos: 1) quantas vezes cada provedor publica uma \textit{release} que contém \textit{breaking changes}; 2) em qual nível da \textit{string} de versionamento as \textit{breaking changes} são tipicamente introduzidas, de acordo com o \Gls{SemVer}; 3) qual o percentual de clientes que atualizam para uma versão com \textit{breaking changes}.
+Dos testes realizados para esta RQ serão analisados três pontos: 1) quantas vezes cada provedor publica uma \textit{release} que contém \textit{breaking changes}; 2) em qual nível da \textit{string} de versionamento as \textit{breaking changes} são tipicamente introduzidas, de acordo com o \Gls{SemVer}; 3) qual o percentual de clientes que atualizam para uma versão com \textit{breaking changes}.
 
 \subsection{Approach}
 \label{apr:rq1}
@@ -131,7 +128,7 @@ No código escrito em \textit{Java}, um erro será gerado em tempo de compilaç�
 
 %Para responder essa questão de pesquisa, será analisado caso a caso dos erros e as \textit{breaking changes} serão categorizadas 
 
-Para responder essa questão de pesquisa, será analisado caso a caso dos erros e cada \textit{breaking changes} sera categorizada pelo tipo da \textit{breaking change}. Também, os tipos serão quantificados pela categoria, pelo número de \textit{releases} afetadas e pelo número de clientes que sofreram com uma determinada categoria de \textit{breaking change}. Assim sendo, entender as principais categorias de erros que são introduzidas nas \textit{releases} pode ajudar os desenvolvedores a atentar-se mais para os casos errôneos.
+Para responder essa RQ será analisado dois pontos: 1) quais são as categorias de erros que causam \textit{breaking changes}; e 2) quantificar essas categorias pela quantidade de \textit{releases} afetadas e pelo número de clientes que sofreram com esta determinada categoria. Como a análise manual irá descobrir o real motivo de uma \textit{breaking change}, elas poderão ser classificadas e quantificadas de uma forma mais clara. Assim sendo, dimensionar as categorias ajudará os desenvolvedores a atentar-se para estas categorias e tentar evitá-las.
 
 \subsection{Approach}
 \label{apr:rq2}
@@ -141,11 +138,13 @@ O objetivo da análise manual era descobrir o real motivo que originou um erro e
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.5]{figuras/error_category.jpeg}
-    \caption{Two error caused by a renamed function}
+    \caption{Dois erros causados pelo mesmo motivo mas com \textit{stack trace} diferentes}
     \label{fig:error_category}
 \end{figure}
 
 A mensagem do primeiro erro (a) deixa claro que se trata de uma invocação a uma função inexistente. Assim, somente pela mensagem do \textit{stack trace} é possível deduzir que uma função foi renomeada no provedor. Já no segundo erro (b), o \textit{stack trace} não indica que se trata de uma função renomeada. Somente após uma análise deste caso é que foi possível concluir que o erro se trata de uma função que não existia. Por isso se fez necessário a análise manual para reconhecer os reais motivos de cada caso de erro.
+
+Após descobrir que um erro diz respeito à alteração de \gls{API}, por exemplo, uma categoria chamada \textit{Função Renomeada} será criada e as demais \textit{breaking changes} que possuem características comuns a esta também serão categorizadas como \textit{Função Renomeada}. Assim será possível quantificar cada uma das categorias. E mesmo processo será realizado para as demais \textit{breaking changes}, sempre visando criar categorias da maneira mais genérica que agrupe os erros semelhantes.
 
 \subsection{Findings}
 \label{fin:rq2}
