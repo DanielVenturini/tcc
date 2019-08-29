@@ -8,13 +8,21 @@
 
 O \Gls{NPM} contém mais de 12 bilhões de downloads semanais e ultrapassa os 48 bilhões por mês\footnote{https://api.npmjs.org/downloads/point/last-month}. Estes pacotes são usados por milhões de pessoas e projetos por todo o mundo. Entretanto, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes. Isso se deve ao fato dos pacotes dependerem uns dos outros, direta ou indiretamente. Para evitar as \textit{breaking changes}, o \Gls{NPM} utiliza \textit{strings} de versionamento baseadas no \Gls{SemVer} para especificar as versões dos provedores. O versionamento permite que um provedor publique uma \textit{release} que contenha \textit{breaking changes} sem afetar os clientes das versões prévias.
 
-Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou muitas vezes \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0}\footnote{} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, as funções foram renomeadas por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela função não a tivesse mais.
+Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, a \gls{API} foi renomeada por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela \gls{API} não a tivesse mais. Assim, o código \ref{cod:bc:optipng} executa normalmente com o \textit{optipng@0.1.1}, mas ao atualizar para o \textit{optipng@0.2.0}, este código sofre uma \textit{breaking change} -- o que não deveria acontecer com uma \textit{release minor}  -- conforme mostra a Figura \ref{fig:bc_optipng} (a).
+
+\begin{lstlisting}[style=Javascript, label=cod:bc:optipng, caption={Código que sofre \textit{breaking change} do \textit{optipng}}]
+var OptiPng = require('optipng');
+var cb = {apply: () => {}};
+OptiPng.getBinaryPath(cb);
+\end{lstlisting}
+
+Apesar de ser um erro facilmente detectável, este foi consertado somente 34 dias após a \textit{release} errônea. E esta correção foi realizada em um \textit{commit}\footnote{https://github.com/papandreou/node-optipng/commit/a155f2b078224be18367847bbcbd3df3c379deea} no qual o desenvolvedor informou no comentário que a renomeação da \gls{API} ocorreu por engano, conforme a Figura \ref{fig:bc_optipng} (b), quando o desenvolvedor desfez a renomeação.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.5]{figuras/bc_optipng.png}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includegraphics[scale=0.65]{figuras/bc_optipng.png}
+    \caption{\textit{a}: \textit{stack trace} da \textit{breaking change}. \textit{b}: \textit{commit} que corrigiu a \textit{breaking change}}
+    \label{fig:bc_optipng}
 \end{figure}{}
 
 
