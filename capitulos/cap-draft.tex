@@ -10,7 +10,12 @@ O \Gls{NPM} contém mais de 12 bilhões de downloads semanais e ultrapassa os 48
 
 Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou muitas vezes \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0}\footnote{} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, as funções foram renomeadas por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela função não a tivesse mais.
 
-
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{figuras/bc_optipng.png}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}{}
 
 
 Assim sendo, é interessante entender com que frequência os provedores publicam \textit{releases} com \textit{breaking changes}.
