@@ -14,6 +14,13 @@ O \textit{Node.js} é um projeto \textit{open-source} implementado em \textit{C+
 
 \section{\gls{SemVer}}
 \label{ref-teo:semver}
+\gls{SemVer}\footnote{https://semver.org} é uma padronização para especificação de versões de um projeto a partir de um critério de suas alterações. Com o \gls{SemVer} é possível evoluir um projeto sempre mantendo a compatibilidade com versões anteriores através do \textit{range} na qual está especificada uma determinada versão. 
+O padrão \gls{SemVer} é largamente utilizada no desenvolvimento de \textit{projetos}. As regras do \gls{SemVer} foram idealizadas por Tom Preston-Werner -- criador do \textit{GitHub} -- que incentiva todos os desenvolvedores à utilizarem este padrão, uma vez que as regras são baseadas em práticas comuns já utilizadas \cite{teorical_reference:semver}.
+
+O esquema de versionamento, basicamente, possui três dígitos: \textit{major, minor} e \textit{path}. Os dígitos do \gls{SemVer} devem ser incrementados de acordo com o tipo de alteração que a nova versão do projeto está introduzindo. O número \textit{major} deve ser incrementado quando uma versão introduz \textit{breaking changes}; o \textit{minor}, quando é adicionada melhorias/novas funcionalidades que mantenham a compatibilidade; e o \textit{path}, quando a versão contém correção de \textit{bugs}. Com a padronização do \gls{SemVer}, é possível que os desenvolvedores introduzem \textit{breaking changes} sem que essas quebrem os clientes, uma vez que, por meio da \textit{string} de versionamento, eles não receberam a nova versão com \textit{breaking change}.
+
+O \gls{NPM} utiliza esse padrão no arquivo \textit{package.json} -- arquivo de configuração do projeto que contém todas as suas dependências e suas respectivas versões. Ao executar o comando \textit{npm install express --save}, por exemplo para instalar o \textit{express}\footnote{https://www.npmjs.com/package/express}, o \gls{NPM} irá salvar no \textit{package.json} o nome desse pacote com sua versão atual em modo \textit{range}.
+
 
 
 \section{Working Tree}
