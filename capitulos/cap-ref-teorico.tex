@@ -34,10 +34,9 @@ Com a informação da versão da dependência no \textit{package.json}, o client
 
 \section{Breaking Change}
 \label{ref-teo:breaking_change}
-Uma \textit{break change} é uma alteração no pacote provedor que resulta em erros inesperados nos pacotes clientes, uma vez que versões prévias deste pacote provedor executava normalmente \cite{teorical_reference:semver}.
+Uma \textit{break change} é uma alteração no pacote provedor que resulta em erros inesperados nos pacotes clientes, uma vez que versões prévias do pacote provedor executava normalmente \cite{teorical_reference:semver}. O conceito de \textit{breaking changes} não se refere exclusivamente à \textit{erros} causados pelos provedores, mas sim à mudanças nos pacotes. Durante o desenvolvimento de \textit{software}, esses precisam introduzir \textit{breaking changes}, pois quando só há \textit{releases} compatíveis com versões anteriores o pacote perde muitas oportunidades de evolução \cite{teorical_reference:bc_2}. Entretanto, a \textit{breaking change} pode ser introduzida em uma \textit{release} intencionalmente -- quando é atualizada a versão \textit{major} da \textit{release} --, mas também pode ser introduzida impremeditadamente -- quando é atualizada sua versão no \textit{minor} ou \textit{path} da \textit{release}. Sempre que \textit{breaking changes} são introduzidas inesperadamente, há grandes chances de ocorrer falhas no código cliente.
 
 As \textit{breaking changes} são mais expressivas em linguagem fortemente tipadas, tais como \textit{.NET} e \textit{Java}, tanto que há ferramentas para detectar \textit{breaking changes} nestas linguagens. Já nas linguagens mais dinâmicas, como a \textit{Javascript}, as \textit{breaking changes} surgem com menos frequências, e nem possuem ferramentas para detectar as \textit{breaking changes} \cite{teorical_reference:bc_1}. Como exemplo da dinâmica do \textit{Javascript}, considere o Código \ref{cod:non_bc_js}.
-% As breaking changes levam a melhoria do projeto mas podem ser adicionadas em releases path ou minor
 
 \begin{lstlisting}[style=javascript, label=cod:non_bc_js, caption={Acesso inválido à posição de memória}, numbers=none]
 // funcao foo na versão 1.0.0 de uma biblioteca
