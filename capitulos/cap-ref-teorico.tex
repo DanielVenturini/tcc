@@ -29,8 +29,11 @@ O \gls{NPM} utiliza o padrão \gls{SemVer} no arquivo \textit{package.json} -- a
 
 Com a informação da versão da dependência no \textit{package.json}, o cliente não precisa se preocupar com as novas atualizações de sua dependência, uma vez que o \gls{NPM}, ao instalar novamente as dependências, sempre irá descarregar a \textit{release} mais recente da dependência que não contenha uma \textit{breaking change}, ou seja, a última \textit{release} disponível para a mesma versão \textit{major} -- desde que a \textit{string} de versionamento seja salva em modo \textit{range} (\textasciicircum).
 
-\section{Working Tree}
-\label{ref-teo:working_tree}
+\section{Checkout}
+\label{ref-teo:checkout}
+\textit{Checkout} é uma palavra que pode ter vários sentidos, tanto em um contexto geral como na área científica da computação. Neste artigo, \textit{checkout} se refere ao efeito da execução do comando \textit{git checkout} em um repositório clonado do \textit{GitHub}. Este comando realiza diversas alterações na \textit{working tree} do repositório -- lista de arquivos atuais. Dentre as alterações, podem ser citadas a criação e a alteração das \textit{branchs} do repositório, atualização do estado de um determinado arquivo para o seu estado no \textit{HEAD} do repositório, alteração da \textit{working tree} para o estado de um determinado \textit{commit} entre outras ações\footnote{https://git-scm.com/docs/git-checkout}. Entretanto, o que se refere ao \textit{checkout} neste artigo é a alteração da \textit{working tree} para um determinado estado de um repositório em um intervalo de tempo definido por dois \textit{timestamp} -- os \textit{timestamp} do intervalo entre duas versões.
+
+Um repositório clonado do \textit{GitHub} contém os arquivos no seu estado mais atual. Entretanto, faz-se necessário restaurar os arquivos ao estado de uma \textit{release} específica, e isso é realizado através do comando \textit{git checkout}. Os parâmetros passados à este comando são os \textit{timestamp} das \textit{releases}, que são recuperadas da \textit{API} do \gls{NPM}\footnotemark[4] para cada \textit{release} de um determinado pacote. Assim, é possível restaurar a \textit{working tree} para o estado do qual a determinada \textit{release} se encontrava. Com isto, todos os arquivos serão os mesmos.
 
 \section{Breaking Change}
 \label{ref-teo:breaking_change}
