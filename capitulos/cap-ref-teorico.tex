@@ -54,11 +54,22 @@ Entretanto, em linguagens dinâmicas como a linguagem \textit{Javascript}, a alt
 
 \section{Pacote, \textit{Release} e Versão}
 \label{ref-teo:release}
-Neste artigo, a palavra \textit{pacote} refere-se a um \textit{software} hospedado no \gls{NPM}. Este \textit{software} contém seu nome, sua marca, seus arquivos, suas versões etc. e tudo mais que a ele pertence. Por exemplo, quando nos referimos ao pacote \textit{mocha}, nos referimos à ideia genérica deste pacote, sem levar em consideração uma versão específica ou seu estado em algum instante, mas sim, apenas ao pacote como um todo.
+Neste artigo, a palavra \textit{pacote} refere-se a um \textit{software} hospedado no \gls{NPM}. Este \textit{software} contém seu nome, sua marca, seus arquivos, suas versões etc. e tudo mais que a ele pertence. Por exemplo, quando nos referimos ao pacote \textit{mocha}, nos referimos à ideia genérica deste pacote, sem levar em consideração uma versão específica ou seu estado em algum instante, mas sim, apenas ao pacote como um todo. Um pacote também é comumente chamado de \textit{biblioteca}.
 
-Já a palavra \textit{release} designa o estado de um pacote em um determinado instante. Ou seja, uma \textit{release} significa uma versão específica deste pacote, isto é, um conjunto de arquivos distintos das demais \textit{releases}. Por exemplo, o primeiro publicação de um pacote será sua primeira \textit{release}; a segunda, sua segunda \textit{release}; a terceira, sua terceira \textit{release} e assim por diante\footnote{https://www.computerhope.com/jargon/r/release.htm}.
+Já a palavra \textit{release} designa o estado de um pacote em um determinado instante. Ou seja, uma \textit{release} significa uma versão específica deste pacote, isto é, um conjunto de arquivos distintos das demais \textit{releases}. Por exemplo, a primeira publicação de um pacote será sua primeira \textit{release}; a segunda, sua segunda \textit{release}; a terceira, sua terceira \textit{release} e assim por diante\footnote{https://www.computerhope.com/jargon/r/release.htm}.
 
 Por fim, o termo \textit{versão} é utilizado para especificar e distinguir um determinado estado de uma \textit{release}. Uma \textit{versão} é uma \textit{string} no padrão \gls{SemVer} que identifica unicamente uma determinada \textit{release} e é utilizada pelo \gls{NPM} no arquivo \textit{package.json} para evitar conflitos entre duas \textit{releases}.
 
-\section{Dependência Direta e Indireta}
-\label{ref-teo:dep_di_ind}
+\section{Provedor e Cliente}
+\label{ref-teo:prov_clie}
+O pacote provedor é aquele que provê recursos ao pacote cliente, ou seja, esse contém interfaces públicas para acesso do cliente. O termo \textit{pacote provedor} pode ser, de igual modo, interpretado como \textit{bibliotecas} ou \textit{dependências}. É do provedor que emana a responsabilidade de indicar o nível de compatibilidade que sua nova \textit{release} está introduzindo \cite{teorical_reference:semver}. Por exemplo, quando é executado o seguinte comando
+
+\begin{lstlisting}[style=bash, label=cod:install:provider]
+npm install any_package
+\end{lstlisting}
+
+o \textit{any\_package} se torna um pacote provedor, uma vez que ele disponibiliza interfaces para que os pacotes clientes possam acessá-lo. Assim, há dois tipos de provedores: 1) \textit{provedor direto} é aquele que foi instalado diretamente pelo cliente e está referenciado no \textit{package.json}; 2) \textit{provedor indireto} é aquele que se torna o provedor de um outro provedor. Ou seja, o provedor indireto também é um provedor do cliente, mas de maneira indireta e, de mesmo modo que o provedor direto, pode fazer com que se manifestem \textit{breaking changes} no cliente.
+
+Já o pacote cliente é aquele que está acessando as interfaces públicas do provedor. Quando um erro é introduzido pelo provedor, é sempre no pacote cliente que este erro se manifesta, causando o encerramento da execução. O pacote cliente é aquele que possui a responsabilidade de atualizar a versão dos provedores no \textit{package.json} quando esses criam uma \textit{release} com correções críticas.
+
+Perceba que uma categorização não restringe a outra. Isto quer dizer que um pacote cliente pode ser provedor de algum outro. De maneira análoga, um pacote provedor pode ser cliente de outros pacotes.
