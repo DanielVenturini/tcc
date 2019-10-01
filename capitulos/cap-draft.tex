@@ -8,22 +8,7 @@
 
 O \Gls{NPM} contém mais de 12 bilhões de downloads semanais e ultrapassa os 48 bilhões por mês\footnote{https://api.npmjs.org/downloads/point/last-month}. Estes pacotes são usados por milhões de pessoas e projetos por todo o mundo. Entretanto, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes. Isso se deve ao fato dos pacotes dependerem uns dos outros, direta ou indiretamente. Para evitar as \textit{breaking changes}, o \Gls{NPM} utiliza \textit{strings} de versionamento baseadas no \Gls{SemVer} para especificar as versões dos provedores. O versionamento permite que um provedor publique uma \textit{release} que contenha \textit{breaking changes} sem afetar os clientes das versões prévias.
 
-Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a \textit{release optipng@0.2.0} introduziu uma \textit{breaking change}: a \gls{API} \textit{OptiPng.getBinaryPath} foi renomada para \textit{OptiPng.getBinPath}. Porém, a \gls{API} foi renomeada por engano e a \textit{release} errônea foi publicada em uma versão \textit{minor}, fazendo com que todos os clientes que tinham acesso àquela \gls{API} não a tivesse mais. Assim, o código \ref{cod:bc:optipng} executa normalmente com o \textit{optipng@0.1.1}, mas ao atualizar para o \textit{optipng@0.2.0}, este código sofre uma \textit{breaking change} -- o que não deveria acontecer com uma \textit{release minor}  -- conforme mostra a Figura \ref{fig:bc_optipng} (a).
-
-\begin{lstlisting}[style=Javascript, label=cod:bc:optipng, caption={Código que sofre \textit{breaking change} do \textit{optipng}}]
-var OptiPng = require('optipng');
-var cb = {apply: () => {}};
-OptiPng.getBinaryPath(cb);
-\end{lstlisting}
-
-Apesar de ser um erro facilmente detectável, este foi consertado somente 34 dias após a \textit{release} errônea. E esta correção foi realizada em um \textit{commit}\footnote{https://github.com/papandreou/node-optipng/commit/a155f2b078224be18367847bbcbd3df3c379deea} no qual o desenvolvedor informou no comentário que a renomeação da \gls{API} ocorreu por engano, conforme a Figura \ref{fig:bc_optipng} (b), quando o desenvolvedor desfez a renomeação.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.65]{figuras/bc_optipng.png}
-    \caption{\textit{a}: \textit{stack trace} da \textit{breaking change}. \textit{b}: \textit{commit} que corrigiu a \textit{breaking change}}
-    \label{fig:bc_optipng}
-\end{figure}{}
+Entretanto, nem sempre o desenvolvedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o programador perceba. Por exemplo, a 
 
 Para responder esta RQ, será utilizado uma base de dados com os nomes de todos os pacotes do \Gls{NPM} até jun/2017. Há nesta base de dados \textit{366,629} nomes de pacotes. A quantidade de amostras para o estudo será de \textit{385} pacotes, com base em um cálculo amostral\footnote{https://pt.surveymonkey.com/mp/sample-size-calculator/} com 95\% de confiança e 5\% de margem de erro. Dos \textit{366K} de pacotes, a amostra de \textit{385} será recuperada sorteando um número no intervalo \textit{0-366,629}. Do pacote sorteado será recuperado o seu \textit{package.json} e verificado se o pacote cumpre quatro requisitos: possuir mais de 1 dependente --  se não houver dependentes, não há possibilidades do pacote sofrer \textit{breaking changes}; possuir pelo menos a última \textit{release} com \textit{script} de teste não vazio e diferente do \textit{script} padrão de teste do \gls{NPM}: \textit{Error: no test specified}; possuir a \textit{url} do repositório do pacote; e o repositório do pacote precisa existir -- será esperado de uma requisição \Gls{HTTP} para o repositório o código \textit{200} indicando sua existência. A Figura \ref{fig:package_json} exemplifica as informações pertinentes no \textit{package.json} do pacote \textit{raven@0.1.0}\footnote{http://registry.npmjs.org/raven}.
 
