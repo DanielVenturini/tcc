@@ -1,6 +1,6 @@
 \chapter{Referencial Teórico}
 \label{cap:ref-teorico}
-Neste capítulo serão apresentados os fundamentos pertinentes a este trabalho. A Seção \ref{ref-teo:npm} apresenta o conceito e o funcionamento do \gls{NPM} bem como a questão das dependências. A Seção \ref{ref-teo:prov_clie} distingue os termos \textit{provedor} e \textit{cliente}. Também para diferenciar termos, a Seção \ref{ref-teo:pac_rel_ver} conceitua as palavras \textit{pacote}, \textit{release} e \textit{versão}. Já na Seção \ref{ref-teo:node}, é explicado o conceito do \textit{Node.js}. A Seção \ref{ref-teo:semver} explica o que é o \textit{Semantic Versioning} e o \gls{SemVer} e como eles são utilizados no ecossistema do \gls{NPM}. Porfim, a Seção \ref{ref-teo:breaking_change} conceitua e exemplifica as \textit{breaking changes}.
+Neste capítulo serão apresentados os fundamentos pertinentes a este trabalho. A Seção \ref{ref-teo:npm} apresenta o conceito e o funcionamento do \gls{NPM} bem como a questão das dependências. A Seção \ref{ref-teo:prov_clie} distingue os termos \textit{provedor} e \textit{cliente}. Também para diferenciar termos, a Seção \ref{ref-teo:pac_rel_ver} conceitua as palavras \textit{pacote}, \textit{release} e \textit{versão}. Já na Seção \ref{ref-teo:node}, é explicado o conceito do \textit{Node.js}. A Seção \ref{ref-teo:semver} explica o que é o \textit{Semantic Versioning} e o \textit{SemVer} e como eles são utilizados no ecossistema do \gls{NPM}. Porfim, a Seção \ref{ref-teo:breaking_change} conceitua e exemplifica as \textit{breaking changes}.
 
 \section{\gls{NPM}}
 \label{ref-teo:npm}
@@ -34,7 +34,7 @@ O \textit{Node.js} é um projeto \textit{open-source} implementado em \textit{C+
 
 \section{\textit{Semantic Versioning} e \gls{SemVer}}
 \label{ref-teo:semver}
-O \textit{Semantic Versioning}\footnote{https://semver.org} é um padrão para versionamento de \textit{releases} de um projeto que considera o tipo de alteração introduzida na \textit{release}. As regras do \textit{Semantic Versioning} foram idealizadas por Tom Preston-Werner -- criador do \textit{GitHub} -- que incentiva todos os desenvolvedores à utilizarem este padrão, uma vez que as regras são baseadas em práticas comuns já utilizadas em projetos \cite{teorical_reference:semver}. Uma \textit{string} de versionamento no padrão \textit{Semantic Versioning} possui os níveis \textit{major.minor.patch}\footnote{a \textit{string} pode ser estendida para versões \textit{beta, alpha} etc, tal como \textit{x.y.z-beta.0}}, que devem ser incrementados, quando o desenvolvedor publicar uma \textit{release}, de acordo com o seguinte critério:
+O \textit{Semantic Versioning}\footnote{https://semver.org} é um padrão para versionamento de \textit{releases} de um projeto que considera o tipo de alteração introduzida na \textit{release}. As regras do \textit{Semantic Versioning} foram idealizadas por Tom Preston-Werner -- criador do \textit{GitHub} -- que incentiva todos os desenvolvedores à utilizarem este padrão, uma vez que as regras são baseadas em práticas comuns já utilizadas em projetos \cite{teorical_reference:semver}. Uma \textit{string} de versionamento no padrão \textit{Semantic Versioning} possui os níveis \textit{<MAJOR>.<MINOR>.<PATCH>}\footnote{a \textit{string} pode ser estendida para versões \textit{beta, alpha, pre} entre outros, tal como \textit{x.y.z-beta.0}}, que devem ser incrementados, quando o desenvolvedor publicar uma \textit{release}, de acordo com o seguinte critério:
 
 \begin{itemize}
     \item \textit{major}: deve ser incrementado quando a \textit{release} introduz \textit{breaking changes};
@@ -42,7 +42,7 @@ O \textit{Semantic Versioning}\footnote{https://semver.org} é um padrão para v
     \item \textit{patch}: deve ser incrementado quando a \textit{release} contém correção de \textit{bugs}.
 \end{itemize}{}
 
-Desta maneira, se um projeto contém a sua última \textit{release} versionada como \textit{2.1.0}, por exemplo, e sua nova \textit{release} contém uma \textit{breaking change},  então deverá ser publicada com a versão \textit{3.0.0}; se foi introduzida uma nova funcionalidade, \textit{2.2.0}; se houver uma correção de \textit{bugs}, \textit{2.1.1}.
+Desta maneira, se um projeto contém a sua última \textit{release} versionada como \textit{2.1.0}, por exemplo, o seu nível \textit{major} é o 2; o \textit{minor}, 1; e o \textit{patch}, 0. Ao publicar uma nova \textit{release}, se essa conter uma \textit{breaking change}, então deverá ser publicada com a versão \textit{3.0.0}; se for introduzida uma nova funcionalidade, \textit{2.2.0}; se houver uma correção de \textit{bugs}, \textit{2.1.1}.
 
 O \textit{SemVer} é uma \textit{string} de versionamento que especifica um intervalo de versões, ou \textit{range}. Com o \textit{SemVer} é possível especificar quais são as \textit{releases} que o cliente aceita do seu provedor. Há vários padrões de \textit{range}\footnote{https://github.com/npm/node-semver\#ranges} especificados pelo \textit{SemVer}, mas os mais comuns, utilizados pelo \gls{NPM}, são:
 
