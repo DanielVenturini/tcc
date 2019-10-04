@@ -14,9 +14,16 @@ O ecossistema \gls{NPM} estimula o compartilhamento de código entre aos pacotes
 O pacote provedor é aquele que provê recursos ao pacote cliente, ou seja, contém interfaces públicas para acesso às suas funcionalidades. O termo \textit{pacote provedor} pode ser interpretado como \textit{bibliotecas} ou \textit{dependências}. É do provedor que emana a responsabilidade de indicar o nível de compatibilidade que sua nova \textit{release} está introduzindo \cite{teorical_reference:semver}. Por exemplo, quando é executado o seguinte comando
 
 \begin{lstlisting}[style=bash, label=cod:install:provider]
-npm install any_package
+npm install mocha
 \end{lstlisting}
-o \gls{NPM} salva o \textit{any\_package} no \textit{package.json} como uma dependência. Nesse momento, o \textit{any\_package} se torna um pacote provedor. Assim, o pacote \textit{any\_package} é um provedor direto, pois foi instalado diretamente pelo usuário. Entretanto, as dependências do \textit{any\_package} também são instaladas, mas de forma indireta pelo \gls{NPM}. Estes outros pacotes são chamados de \textit{provedores indiretos}, pois não dependem que o usuário instale-os diretamente com o comando \textit{npm install}.
+o \gls{NPM} salva o \textit{mocha} no \textit{package.json} como um provedor. Assim, o pacote \textit{mocha} é um provedor direto, pois foi instalado diretamente pelo usuário. Entretanto, as dependências do \textit{mocha} também são instaladas, mas de forma indireta pelo \gls{NPM}. Estes outros pacotes são chamados de \textit{provedores indiretos}, pois não dependem que o usuário instale-os diretamente com o comando \textit{npm install}. A Figura \ref{fig:provider} mostra que, através do comando \textit{npm ls}, o pacote \textit{mocha} é um provedor direto do \textit{client}, pois o \textit{client} requer o \textit{mocha} para executar. Já o pacote \textit{glob} é um provedor direto do \textit{mocha}, e um provedor indireto do pacote \textit{client}.
+
+\begin{figure}
+    \centering
+    \includegraphics{figuras/provider_directly_undirectly.png}
+    \caption{\textit{mocha} como provedor direto e \textit{glob} como indireto do \textit{client}}
+    \label{fig:provider}
+\end{figure}{}
 
 Já o pacote cliente é aquele que está acessando as interfaces públicas do provedor. Quando uma \textit{break change} é introduzida pelo provedor -- direto ou indireto --, é sempre no pacote cliente que esta \textit{break change} se manifesta, causando o encerramento da execução. O pacote cliente é aquele que possui a responsabilidade de atualizar a versão de seus provedores no \textit{package.json} quando esses publicam uma \textit{release} com correções.
 
