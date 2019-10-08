@@ -8,7 +8,7 @@
 
 No ecossistema do \gls{NPM}, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes, uma vez que este repositório contém a maior rede de dependências entre pacotes \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos pacotes clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os cliente podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores, o que é o padrão do \gls{NPM}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, queremos quantificar as manifestações das \textit{breaking changes} nos pacotes clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a fazer decisões melhores sobre como e quando atualizar a versão do seu provedor.
 
-\subsection{Approach}
+\subsection{Método}
 \label{apr:rq1}
 
 %\Gls{NPM}.
@@ -72,7 +72,7 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
     \item Por quantas \textit{releases} o erro persistiu.
 \end{enumerate}{}
 
-\subsection{Findings}
+\subsection{Resultados}
 \label{fin:rq1}
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
@@ -80,35 +80,14 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
 \subsubsection{De todos os pacotes afetados, 13\% apresentaram mais de uma \textit{breaking change}}
 
 %---------------------------------------------------%
-\section{RQ2. Quais são os problemas no pacote provedor que causam \textit{breaking change}?}
+\section{RQ2. Como os pacotes provedores introduzem \textit{breaking change} em uma \textit{release}?}
 \label{sec:rq2}
 
-\subsection{Motivation}
+\subsection{Motivação}
 \label{mot:rq2}
+Os tipos de \textit{breaking changes} são variados e podem se manifestar desde uma remoção/renomeação de uma \gls{API} até uma alteração do tipo de objeto retorno ao cliente. Em linguagens tipadas, a alteração da lista de parâmetros de uma função, por exemplo, é facilmente detectável e logo impossibilita a execução do código. Já em linguagens dinâmicas como o \textit{Javascript}, esta \textit{break change} nem se manifesta -- o \textit{Node.js} executa o código \textit{Javascript} sem se preocupar com lista de parâmetros. Desta maneira, algumas \textit{breaking changes} em \textit{Javascript} são diferentes das \textit{breaking changes} nas demais linguagens de programação. Assim, grande parte das \textit{breaking changes} em \textit{Javascript} são detectadas apenas em tempo de execução \cite{noregrets2018}, mas para o cliente, ter seu código encerrado em tempo de execução pode ser muito custoso. Por isso, dimensionar e categorizar as \textit{breaking changes} ajudará os desenvolvedores a atentar-se para as \textit{breaking changes} mais comuns e tentar evitá-las, assim produzindo códigos menos favoráveis às \textit{breaking changes}.
 
-Uma pesquisa realizada por \citeonline{uncovered} mostrou que, dos 373 pacotes \textit{Javascript} utilizados, os que não possuíam \textit{scripts} de testes eram: 22\% da base estudada; 40\% dos pacotes clientes; e 3\% dos pacotes servidores. Além disso, nem sempre os casos de testes cobriam 100\% do pacote. O fato de haver pouca quantidade de casos de teste, juntamente com a dinâmica do \textit{Node.js}, corroboram para que seus códigos possam apresentar comportamentos inesperados. Por exemplo, considere o seguinte caso no qual é tentado realizar um acesso a uma posição inexistente de um vetor no Código \ref{cod:wrong:access} em três linguagens diferentes.
-
-\begin{lstlisting}[style=javascript, label=cod:wrong:access, caption={Acesso inválido à posição de memória}, numbers=none]
-// Java
-int vet[] = new int[10];
-vet[14] = 0;
-
-// Python
-vet = []
-vet[14] = 0
-
-// Node.js
-vet = []
-vet[14] = 10
-\end{lstlisting}
-
-No código escrito em \textit{Java}, um erro será gerado em tempo de compilação. Já no código em \textit{Python}, uma exceção será gerada em tempo de execução. Entretanto, apenas no código \textit{Javascript} nenhum erro/aviso é gerado e o usuário não será informado sobre esse comportamento, uma vez que esse é um comportamento esperado do \textit{Node.js}. Isso porque o interpretador \textit{Node.js} aloca 14 posições na memória nas quais 13 dessas possuem o valor \textit{undefined} e a décima quarta, o valor \textit{10}. Assim, a dinâmica do \textit{Node.js} dificulta a busca por erros, uma vez que um caso errôneo é tratado pelo interpretador como um caso normal.
-
-%Para responder essa questão de pesquisa, será analisado caso a caso dos erros e as \textit{breaking changes} serão categorizadas 
-
-Para responder essa RQ será analisado dois pontos: 1) quais são as categorias de erros que causam \textit{breaking changes}; e 2) quantificar essas categorias pela quantidade de \textit{releases} afetadas e pelo número de clientes que sofreram com esta determinada categoria. Como a análise manual irá descobrir o real motivo de uma \textit{breaking change}, elas poderão ser classificadas e quantificadas de uma forma mais clara. Assim sendo, dimensionar as categorias ajudará os desenvolvedores a atentar-se para estas categorias e tentar evitá-las.
-
-\subsection{Approach}
+\subsection{Método}
 \label{apr:rq2}
 
 O objetivo da análise manual era descobrir o real motivo que originou um erro e agrupa-los por suas similaridades. Isso, porque o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha. Por exemplo, a Figura \ref{fig:error_category} mostra dois casos no qual uma função foi renomeada pelo provedor. Entretanto, previamente não está claro o real motivo dos erros.
