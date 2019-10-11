@@ -17,60 +17,27 @@ Um \textit{stack trace} é utilizado pelo \gls{NPM} para apresentar informaçõe
 \begin{figure}
     \centering
     \includegraphics[scale=0.7]{figuras/stack_trace.jpeg}
-    \caption{Generic stack-trace}
+    \caption{\textit{stack-trace} genérico}
     \label{fig:trace}
 \end{figure}{}
 
-O \textit{stack trace} foi a base da analise de um erro. A primeira etapa da análise de um erro foi diferenciar entre um erro que foi causado pelo próprio pacote cliente, no qual não houve influência de nenhum provedor, e um erro que foi causado por algum dos provedores, sendo assim uma \textit{breaking change}.
-
-Quando não houve registros de execução dos provedores no \textit{stack trace}, provavelmente o erro não foi causado por uma \textit{breaking change}. Assim, o erro podia estar apenas no código do cliente. Para confirmar isto, foi procurado no \textit{GitHub} do cliente pelos próximos \textit{commits} após a data da \textit{release} no qual o cliente tentou consertar algum erro. Se foi encontrado algum \textit{commit} com correções, foi feita estas alterações no código do cliente para verificar se as modificações encontradas no \textit{GitHub} realmente refletiam a correção do erro. Assim, se as alterações apenas no código do cliente refletiam na correção do erro, sem que haja influência dos provedores, então o erro não se tratava de uma \textit{breaking change}.
-
-%evidência
-Quando houve registros de execução dos provedores no \textit{stack trace}, o erro provavelmente se tratava de uma \textit{breaking change}. Entretanto, as chamadas para \textit{frameworks} de teste, como o \textit{Mocha\footnote{https://www.npmjs.com/package/mocha}, Jasmine\footnote{https://www.npmjs.com/package/jasmine}} entre outros, ou automatizadores de tarefas, como o \textit{Grunt\footnote{https://www.npmjs.com/package/grunt}} por exemplo, não evidenciavam, inicialmente, a presença de \textit{breaking changes} uma vez que eles apenas iniciam a execução do pacote. Porém, não foi descartada a hipótese deles apresentarem \textit{breaking changes}.
-
-O melhor local para se confirmar a existência da \textit{breaking change} é no \textit{GitHub}, no qual várias técnicas foram utilizadas para recuperar as informações necessárias. A seguir, encontra-se os métodos utilizados para detectar as \textit{breaking changes}:
+Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre um erro que foi causado pelo próprio pacote cliente, no qual não houve influência de nenhum provedor, e um erro que foi causado por algum dos provedores, sendo assim uma \textit{breaking change}. Esta diferenciação é necessária pois um determinado erro pode ter ocorrido no código do cliente e não em um provedor, assim não sendo um caso de \textit{breaking change}. Para realizar esta diferenciação, foi utilizado as seguintes heurísticas:
 
 \begin{itemize}
-    \item Arquivos de alterações: os arquivos de registros de alterações, comumente nomeados por \textit{CHANGELOG.md} ou \textit{HISTORY.md}, contêm as descrições das principais alterações em cada \textit{releases} do projeto. Através da versão do provedor que foi descarregada do \gls{NPM}, foi verificado nos arquivos de alterações quais foram as modificações introduzidas pelos provedores e se alguma destas alterações diz respeito ao erro encontrado no cliente. Uma das informações mais relevantes nestes arquivos são as descrições de \textit{breaking changes}. Por exemplo, a versão \textit{5.0.0} do pacote \textit{Mocha} contém uma \textit{breaking change} que foi documentada no \textit{CHANGELOG.md}\footnote{https://github.com/mochajs/mocha/blob/master/CHANGELOG.md\#500--2018-01-17} de acordo com a Figura \ref{fig:bc_documentation} (a). Outro tipo de documentação equivalente são as \textit{releases-notes}, como pode ser visualizado na Figura \ref{fig:bc_documentation} (b) como o pacote \textit{wpxml2md} documentou \textit{breaking changes} nas \textit{releases-notes}\footnote{https://github.com/akabekobeko/npm-wpxml2md/releases/tag/v2.0.0}. Entretanto, apenas 46\% dos repositórios utilizados nesta pesquisa contêm algum dos dois registros.
+    \item Verificar no \textit{stack trace}:
+    \begin{itemize}
+        \item quando não houve registros de execução dos provedores no \textit{stack trace}, provavelmente o erro não foi causado por uma \textit{breaking change}. Assim, o erro podia estar apenas no código do cliente; e
 
-    \item \textit{Issues/Pull-requests}: uma vez que uma \textit{breaking change} se manifesta em algum cliente, ele pode -- e deve -- registrar este erro através de uma \textit{issue} no repositório do provedor. O proveito de buscar informações nas \textit{issues} é que essas contêm comentários dos provedores e da comunidade, assim, há muitas informações sobre um determinado erro, além de várias outras \textit{issues} lincadas, ampliando a busca por informações. Da mesma maneira os \textit{pull-requests} foram utilizados para buscar informações sobre as \textit{breaking changes}.
+        \item quando houve registros de execução dos provedores no \textit{stack trace}, o erro provavelmente se tratava de uma \textit{breaking change}. Entretanto, as chamadas para \textit{frameworks} de teste, como o \textit{Mocha\footnote{https://www.npmjs.com/package/mocha}, Jasmine\footnote{https://www.npmjs.com/package/jasmine}} entre outros, ou automatizadores de tarefas, como o \textit{Grunt\footnote{https://www.npmjs.com/package/grunt}} por exemplo, não evidenciavam, inicialmente, a presença de \textit{breaking changes} uma vez que eles apenas iniciam a execução do pacote. Porém, não foi descartada a hipótese deles apresentarem \textit{breaking changes}.
+    \end{itemize}{}
 
-    \item Versões prévias dos provedores: um ponto muito importante foi a instalação de versões prévias dos provedores. Uma vez que foi identificado qual provedor está causando a \textit{breaking change}, a instalação de outras versões ajudaram a descobrir a partir de qual \textit{release} do provedor a \textit{breaking change} foi introduzida, ou a partir de qual \textit{release} ela foi consertada. Com isso, as \textit{breaking change} ficaram mais fáceis de serem identificadas pois, uma vez que foi localizada a \textit{release} que introduziu o erro, pode ser utilizado ferramentas de \textit{diff} para analisar o código introduzido e removido daquela \textit{release}.
-
-    \item Ferramentas de \textit{diff}: o uso da ferramenta que realizam o  \textit{diff} entre duas \textit{releases} de um pacote foi muito importante. Foi utilizado a ferramenta \textit{npm-diff}\footnote{https://github.com/danielventurini/npm-diff} e a ferramenta \textit{compare}\footnote{https://github.com/danielventurini/cnlg/compare/1.1.0..1.1.1} do \textit{GitHub}. Com isso, foi possível verificar o que foi adicionado e removido do código do provedor -- até mesmo do cliente -- em um determinado intervalo de versões.
+    \item  Próximos \textit{commits} do cliente: foi verificado no \textit{GitHub} se o cliente tentou consertar algum erro após a \textit{release} que apresentou o erro. Se foi encontrado algum \textit{commit} com correções, foram feitas estas alterações no código do cliente para verificar se as modificações encontradas no \textit{GitHub} realmente refletiam a correção do erro. Assim, se as alterações apenas no código do cliente refletiam na correção do erro, sem que haja influência dos provedores, então o erro não se tratava de uma \textit{breaking change};
 
     \item Sistemas integrados ao \textit{GitHub}: alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis\footnote{https://travis-ci.org}, Codeship\footnote{https://codeship.com}} entre outros, que armazenam os resultados da execução do pacote para cada \textit{commit}. Eles foram utilizados da seguinte maneira: se nesses sistemas integrados, a execução no \textit{commit} da \textit{release} do cliente foi realizado com sucesso e, ao executá-lo nesta pesquisa, resultou em erro, significa que houve uma \textit{breaking change}, uma vez que o código do cliente estava na mesma \textit{working tree} do \textit{commit}. Mas, se a execução do cliente no momento do \textit{commit} resultou em erro, provavelmente os próximos \textit{commits} contêm alguma informação sobre o erro e sua correção, uma vez que estes sistemas integrados avisaram os desenvolvedores sobre o erro na execução.
-\end{itemize}
+\end{itemize}{}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.45]{figuras/bc_documentation.jpeg}
-    \caption{Documentação de uma \textit{breaking change} no \textit{CHANGELOG} e nas \textit{release-notes}}
-    \label{fig:bc_documentation}
-\end{figure}{}
+Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
 
-%Vale ressaltar que alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis, Jenkins, Codeship, CicleCI} etc. Eles colaboraram ...
-
-Um detalhe importante se refere aos pactes que utilizavam algum tipo de sistemas terceiros de banco de dados como o \textit{MySql\footnote{https://www.mysql.com}, Redis\footnote{https://redis.io}} entre outros sistemas. Então, quando um erro foi ocasionado pela falta de um destes sistemas, fez-se a habilitação e o pacote foi re-executado.
-
-A Figura \ref{fig:step_analyze} exemplifica as técnicas utilizadas para responder esta questão de pesquisa.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.73]{figuras/step_analyze_pt.jpeg}
-    \caption{Passos para analisar um erro}
-    \label{fig:step_analyze}
-\end{figure}
-
-Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seguintes informações para que fosse possível quantificar as \textit{breaking changes} e responder as demais questões de pesquisas:
-
-\begin{enumerate}
-    \item Em que local o erro foi documentado: \textit{issue, changelog, pull-request} etc;
-    \item Quem consertou o erro: cliente ou providor;
-    \item Em qual nível do \textit{SEMVER} o erro foi reparado;
-    \item Quanto tempo o erro levou até ser corrigido; e
-    \item Por quantas \textit{releases} o erro persistiu.
-\end{enumerate}{}
 
 \subsection{Resultados}
 \label{fin:rq1}
@@ -84,17 +51,17 @@ Então, para todas as \textit{releases} analisadas manualmente, foi salvo as seg
 \subsubsection{Os maiores provedores causaram mais \textit{breaking changes}}
 
 %---------------------------------------------------%
-\section{RQ2. Como os pacotes provedores introduzem \textit{breaking change} em uma \textit{release}?}
+\section{RQ2. Como os pacotes provedores introduzem \textit{breaking changes} em uma \textit{release}?}
 \label{sec:rq2}
 
 \subsection{Motivação}
 \label{mot:rq2}
-Pesquisas anteriores apresentam estudos sobre \textit{breaking changes} no ecossitema do \gls{NPM}. Entretanto, pelo fato do \textit{Javascript} ser dinâmico, estes estudos focaram apenas nas alterações de \gls{API}, tais como as remoções/renomeações, alterações na lista de parâmetros e alterações no tipo de retorno. Estes estudos foram realizados por  \citeonline{teorical_reference:bc_1} e \citeonline{noregrets2018} e não verificaram \textit{breaking changes} além das relacionadas às \gls{API}. Desta maneira, além das alterações em \gls{API}, não se tem informações sobre como os provedores introduzem \textit{breaking changes}, ou seja, quais os principais casos que fazem com que o cliente sofra uma \textit{breaking change}. Por causa da falta de informação, muitas \textit{breaking changes} são introduzidas, mas poderiam ser facilmente evitadas. Assim, grande parte das \textit{breaking changes} em \textit{Javascript} são detectadas apenas em tempo de execução \cite{noregrets2018}, mas para o cliente, ter seu código encerrado em tempo de execução pode ser muito custoso. Por isso, dimensionar e categorizar as \textit{breaking changes} ajudará os desenvolvedores a atentar-se para as \textit{breaking changes} mais comuns e tentar evitá-las, assim produzindo códigos menos favoráveis às \textit{breaking changes}.
+Pesquisas anteriores apresentam estudos sobre \textit{breaking changes} no ecossistema do \gls{NPM}. Entretanto, pelo fato do \textit{Javascript} ser dinâmico, estes estudos focaram apenas nas alterações de \gls{API}, tais como as remoções/renomeações, alterações na lista de parâmetros e alterações no tipo de retorno. Estes estudos foram realizados por  \citeonline{teorical_reference:bc_1} e \citeonline{noregrets2018} e não verificaram \textit{breaking changes} além das relacionadas às \gls{API}. Desta maneira, além das alterações em \gls{API}, não se tem informações sobre como os provedores introduzem \textit{breaking changes}, ou seja, quais os principais casos que fazem com que o cliente sofra uma \textit{breaking changes}. Por causa da falta de informação, muitas \textit{breaking changes} são introduzidas, mas poderiam ser facilmente evitadas. Assim, grande parte das \textit{breaking changes} em \textit{JavaScript} são detectadas apenas em tempo de execução \cite{noregrets2018}, mas para o cliente, ter seu código encerrado em tempo de execução pode ser muito custoso. Por isso, dimensionar e categorizar as \textit{breaking changes} ajudará os desenvolvedores a atentar-se para as \textit{breaking changes} mais comuns e tentar evitá-las, assim produzindo códigos menos favoráveis às \textit{breaking changes}.
 
 \subsection{Método}
 \label{apr:rq2}
 
-O objetivo da análise manual é descobrir o motivo que originou uma \textit{breaking change}, ou seja, qual foi a alteração que o provedor realizou que causou a \textit{breaking change} para que seja possível agrupa-las por suas similaridades. A análise manual é essencial, pois o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha.
+O objetivo da análise manual é descobrir o motivo que originou uma \textit{breaking changes}, ou seja, qual foi a alteração que o provedor realizou que causou a \textit{breaking change} para que seja possível agrupa-las por suas similaridades. A análise manual é essencial, pois o \textit{stack trace} sempre apresenta o erro de uma maneira genérica. Então, as vezes, a mensagem de erro pode induzir a interpretação errônea do real motivo que originou a falha.
 
 Cada caso de \textit{breaking change} será analisado e motivo que levou a sua manifestação será anotado para ser comparado com os demais. Após descobrir que um erro diz respeito à alteração de \gls{API}, por exemplo, uma categoria chamada \textit{Função Renomeada} será criada e as demais \textit{breaking changes} que possuem características comuns a esta também serão categorizadas como \textit{Função Renomeada}. Assim será possível quantificar cada uma das categorias. E mesmo processo será realizado para as demais \textit{breaking changes}, sempre visando criar categorias da maneira mais genérica que agrupe os erros semelhantes.
 
