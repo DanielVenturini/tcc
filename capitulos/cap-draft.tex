@@ -36,13 +36,20 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
     \item Sistemas integrados ao \textit{GitHub}: alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis\footnote{https://travis-ci.org}, Codeship\footnote{https://codeship.com}} entre outros, que armazenam os resultados da execução do pacote para cada \textit{commit}. Eles foram utilizados da seguinte maneira: se nesses sistemas integrados, a execução no \textit{commit} da \textit{release} do cliente foi realizado com sucesso e, ao executá-lo nesta pesquisa, resultou em erro, significa que houve uma \textit{breaking change}, uma vez que o código do cliente estava na mesma \textit{working tree} do \textit{commit}. Mas, se a execução do cliente no momento do \textit{commit} resultou em erro, provavelmente os próximos \textit{commits} contêm alguma informação sobre o erro e sua correção, uma vez que estes sistemas integrados avisaram os desenvolvedores sobre o erro na execução.
 \end{itemize}{}
 
-Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
+Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com issPortanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com isso, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
+
+o, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
 
 
 \subsection{Resultados}
 \label{fin:rq1}
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
+De todas as 4570 \textit{releases} foram executadas um total de 
+
+Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 11\% de pacotes que foram impactados por \textit{breaking changes}.
+
+
 
 \subsubsection{Dos pacotes afetados, 13\% apresentaram mais de uma \textit{breaking change}}
 
