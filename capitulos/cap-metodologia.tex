@@ -3,15 +3,15 @@
 
 \section{Coleta de Dados}
 \label{sec:col_dados}
-Para esta pesquisa, será utilizada uma amostra de uma base de dados extraídas do \gls{NPM}. Esta base contém informações sobre todos os pacotes hospedados no \gls{NPM} até jun/2017, totalizando \textit{366,629} pacotes. Para cada pacote, há informações sobre cada uma de suas \textit{releases}. A Tabela \ref{tab:database} contém as informações para o pacote \textit{streamme}\footnote{https://npmjs.org/package/streamme}:
+Para esta pesquisa, será utilizada uma amostra de uma base de dados extraídas do \gls{NPM}. Esta base contém informações sobre todos os pacotes hospedados no \gls{NPM} até jun/2017, totalizando \textit{366,629} pacotes. Para cada pacote, há informações sobre cada uma de suas \textit{releases}. A Tabela \ref{tab:database} contém as informações para o pacote \textit{buffer-includes}\footnote{https://npmjs.org/package/buffer-includes}:
 
 \begin{itemize}
     \item \textit{name}: o nome do pacote;
     \item \textit{version}: as versões de cada \textit{release} do pacote;
     \item \textit{timestamp}/\textit{prev\_timestamp}: contêm os \textit{timestamp} relacionados àquela determinada \textit{release};
     \item \textit{prov\_name}: os nomes dos provedores daquela \textit{release};
-    \item \textit{prov\_vers}: contém, no momento da \textit{release} do cliente, a última versão que o cliente aceitava dos provedores; e
-    \item \textit{prov\_vers\_chng}: informa o tipo de atualização que os provedores realizaram desde a última \textit{release} do cliente:
+    \item \textit{prov\_vers}: contém, no momento da \textit{release} do cliente, a última versão dos provedores que o cliente aceitava; e
+    \item \textit{prov\_chng}: informa o tipo de atualização que os provedores realizaram desde a última \textit{release} do cliente:
     \begin{itemize}
         \item se vazio: o provedor foi adicionado nesta \textit{release};
         \item \textit{steady}: a versão aceita do provedor não foi alterada desde a última \textit{release} do cliente, ou seja, o provedor não publicou nenhuma \textit{release} aceita pelo cliente; e
@@ -23,19 +23,20 @@ Para esta pesquisa, será utilizada uma amostra de uma base de dados extraídas 
     \scalebox{0.72}{
         \begin{tabular}{|c|c|c|c|c|c|c|c|}
             \hline
-            name & version & timestamp & prev\_timestamp & prov\_name & prov\_vers & prov\_vers\_chng \\ \hline
-            streamme & 0.0.0 & 2016-03-30T02:52:15.107Z &  &  &  &  \\ \hline
-            streamme & 0.0.1 & 2016-04-22T01:13:50.263Z & 2016-03-30T02:52:15.107Z & util & 0.10.3 &  \\ \hline
-            streamme & 0.0.1 & 2016-04-22T01:13:50.263Z & 2016-03-30T02:52:15.107Z & sync-request & 3.0.0 &  \\ \hline
-            streamme & 0.1.0 & 2016-04-25T20:15:47.753Z & 2016-04-22T01:13:50.263Z & util & 0.10.3 & steady \\ \hline
-            streamme & 0.1.0 & 2016-04-25T20:15:47.753Z & 2016-04-22T01:13:50.263Z & sync-request & 3.0.1 & upgrade \\ \hline
+            name & version & timestamp & prev\_timestamp & prov\_name & prov\_vers & prov\_chng \\ \hline
+            buffer-includes & 0.1.0 & 2015-10-28T09:14:25.805Z &  & buf-indexof & 1.0.0 &  \\ \hline
+            buffer-includes & 0.1.0 & 2015-10-28T09:14:25.805Z &  & ava & 0.3.0 &  \\ \hline
+            buffer-includes & 0.1.0 & 2015-10-28T09:14:25.805Z &  & xo & 0.10.0 &  \\ \hline
+            buffer-includes & 1.0.0 & 2016-09-30T08:23:30.480Z & 2015-10-28T09:14:25.805Z & buf-indexof & 1.0.0 & steady \\ \hline
+            buffer-includes & 1.0.0 & 2016-09-30T08:23:30.480Z & 2015-10-28T09:14:25.805Z & ava & 1.0.0 & upgrade \\ \hline
+            buffer-includes & 1.0.0 & 2016-09-30T08:23:30.480Z & 2015-10-28T09:14:25.805Z & xo & 0.16.0 & upgrade \\ \hline
         \end{tabular}
     }
     \caption{Formato da base de dados para cada pacote do NPM}
     \label{tab:database}
 \end{table}
 
-A base contém um total de \textit{366K} de projetos e por isso, realizar uma análise manual para um número gigantesco de projetos não é viável. Por isso, será utilizado uma amostra para o estudo de 384 pacotes, com base em um cálculo amostral\footnote{https://pt.surveymonkey.com/mp/sample-size-calculator/} com 95\% de confiança e 5\% de margem de erro. Dos \textit{366K} de pacotes, a amostra de 384 pacotes foi recuperada sorteando um número no intervalo \textit{0-366,629}. Do pacote sorteado, foi recuperado o seu \textit{package.json} e verificado se o pacote cumpre quatro requisitos: possui mais de 1 provedor --  se não houver provedores, não há possibilidades do pacote sofrer \textit{breaking changes}; possui um \textit{script} de teste não vazio e diferente do \textit{script} padrão de teste do \gls{NPM}: \textit{Error: no test specified}; possui a \textit{url} do repositório do pacote; e o repositório do pacote precisa existir -- será esperado de uma requisição \Gls{HTTP} para o repositório o código \textit{200} indicando sua existência. Todos esses requisitos foram analisados recuperando a \textit{release latest} do pacote, ou seja, a última \textit{release} disponível. A Figura \ref{fig:package_json} exemplifica as informações pertinentes no \textit{package.json} do pacote \textit{raven@0.1.0}\footnote{http://registry.npmjs.org/raven}.
+A base contém um total de \textit{366K} de projetos e por isso, realizar uma análise manual para um número gigantesco de projetos não é viável. Por isso, será utilizado uma amostra para o estudo de 384 pacotes, com base em um cálculo amostral\footnote{https://pt.surveymonkey.com/mp/sample-size-calculator/} com 95\% de confiança e 5\% de margem de erro. Dos \textit{366K} de pacotes, a amostra de 384 pacotes foi recuperada sorteando um número no intervalo \textit{0-366,629}. Do pacote sorteado, foi recuperado o seu \textit{package.json} e verificado se o pacote cumpre quatro requisitos: possui mais de 1 provedor --  se não houver provedores, não há possibilidades do pacote sofrer \textit{breaking changes}; possui um \textit{script} de teste não vazio e diferente do \textit{script} padrão de teste do \gls{NPM}: \textit{Error: no test specified}; possui a \textit{url} do repositório do pacote; e o repositório do pacote precisa existir -- será esperado de uma requisição \Gls{HTTP} para o repositório o código \textit{200} indicando sua existência. Todos esses requisitos foram analisados recuperando a \textit{release latest} do pacote, ou seja, a última \textit{release} disponível. A Figura \ref{fig:package_json} exemplifica as informações pertinentes no \textit{package.json} do pacote \textit{buffer-includes@1.0.0}\footnote{http://registry.npmjs.org/buffer-includes}.
 
 \begin{figure}
     \centering
