@@ -60,11 +60,11 @@ Um detalhe importante se refere aos pactes que utilizavam algum tipo de sistemas
 
 \section{Ferramenta \textit{BCDetect} para executar os pacotes}
 \label{sec:bcdetect}
-Para executar os pacotes, foi desenvolvida uma ferramenta chamada \textit{BCDetect} disponível no \textit{GitHub}\footnote{https://github.com/danielventurini/bcdetect} sob a licença \textit{MIT}\footnote{https://choosealicense.com/licenses/mit}. Esta ferramenta recebe um arquivo de entrada no padrão da Tabela \ref{tab:database} e clona o repositório do respectivo pacote -- coincidentemente, todos os repositórios dos pacotes sorteados estavam hospedados no \textit{GitHub}. Após, é criado uma estrutura de dados para armazenar as informações extraidas do arquivo de entrada, na qual cada \textit{release} contém todas os provedores com suas versões e o tipo de atualização que os provedores realizaram desde a última \textit{release} do cliente. Esta estrutura está representada na Figura \ref{fig:bc_work}, que seria construída a partir da Tabela \ref{tab:database}.
+Para executar os pacotes, foi desenvolvida uma ferramenta chamada \textit{BCDetect} disponível no \textit{GitHub}\footnote{https://github.com/danielventurini/bcdetect} sob a licença \textit{MIT}\footnote{https://choosealicense.com/licenses/mit}. Esta ferramenta recebe um arquivo de entrada no padrão da Tabela \ref{tab:database} e clona o repositório do respectivo pacote -- coincidentemente, todos os repositórios dos pacotes sorteados estavam hospedados no \textit{GitHub}. Após, é criado uma estrutura de dados para armazenar as informações extraídas do arquivo de entrada, na qual cada \textit{release} contém todas os provedores com suas versões e o tipo de atualização que os provedores realizaram desde a última \textit{release} do cliente. Esta estrutura está representada na Figura \ref{fig:bc_work}, que seria construída a partir da Tabela \ref{tab:database}.
 
 \begin{figure}
     \centering
-    \includegraphics{figuras/bcdetect_work.png}
+    \includegraphics[scale=2]{figuras/bcdetect_work.png}
     \caption{Estrutura de dados para representar o arquivo de entrada da Tabela \ref{tab:database}}
     \label{fig:bc_work}
 \end{figure}{}
