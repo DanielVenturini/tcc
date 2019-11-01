@@ -40,16 +40,22 @@ Portanto, cada erro foi analisado manualmente, com alterações no código do cl
 
 \subsection{Resultados}
 \label{fin:rq1}
-Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Após a execução, 1460 
-
-
-\textit{releases} resultaram em erro no \textit{script install} ou \textit{test}, e foram analisadas manualmente. Por fim, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de uma \textit{breaking changes}. A Figura \ref{fig:result_rq1_g} apresenta esses resultados, no qual o gráfico externo apresenta a proporção de sucesso e de erro por pacotes e por \textit{releases} no gráfico interno.
+Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Após a execução, 1460 \textit{releases} resultaram em erro no \textit{script install} ou \textit{test}, e foram analisadas manualmente. Por fim, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de uma \textit{breaking changes}. A Figura \ref{fig:result_rq1_g} apresenta esses resultados por pacotes e por \textit{releases}.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.8]{figuras/result_rq1_g.png}
-    \caption{Proporção de sucesso e erro da execução: por pacote -- gráfico externo -- e por \textit{releases} -- gráfico interno}
+    \includegraphics[scale=0.5]{figuras/result_rq1_g.png}
+    \caption{Sucessos e erros das execuções por pacote e \textit{releases}}
     \label{fig:result_rq1_g}
+\end{figure}{}
+
+Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos -- resultaram em erro, mas não eram --, erros internos e \textit{breaking changes}. Um exemplo de falso-positivo ocorreu no pacote \textit{node-qrious}\footnote{https://www.npmjs.com/package/node-qrious}, que resultou em erro na execução, mas na análise manual, através do arquivo \textit{.travis.yml}\footnote{https://github.com/neocotic/node-qrious/blob/176ea348b9e51a8c1f0c5e2caa6cd4b0320ea5e2/.travis.yml} -- arquivo de configuração do sistema integrado \textit{Travis}\footnote{https://travis-ci.org} -- foi descoberto que o pacote requeria bibliotecas terceiras que, ao serem instaladas, resultou em sucesso na execução do pacote. A Figura \ref{fig:false-positive} mostra as bibliotecas listadas. Apenas na análise manual foi possível identificar os casos que realmente eram erros falso-positivos, erros internos e \textit{breaking changes}.
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{\textit{Script} requerido para executar com sucesso o pacote \textit{node-qrious}}
+    \label{fig:false-positive}
 \end{figure}{}
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
