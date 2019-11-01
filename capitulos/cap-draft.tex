@@ -36,20 +36,20 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
     \item Sistemas integrados ao \textit{GitHub}: alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis\footnote{https://travis-ci.org}, Codeship\footnote{https://codeship.com}} entre outros, que armazenam os resultados da execução do pacote para cada \textit{commit}. Eles foram utilizados da seguinte maneira: se nesses sistemas integrados, a execução no \textit{commit} da \textit{release} do cliente foi realizado com sucesso e, ao executá-lo nesta pesquisa, resultou em erro, significa que houve uma \textit{breaking change}, uma vez que o código do cliente estava na mesma \textit{working tree} do \textit{commit}. Mas, se a execução do cliente no momento do \textit{commit} resultou em erro, provavelmente os próximos \textit{commits} contêm alguma informação sobre o erro e sua correção, uma vez que estes sistemas integrados avisaram os desenvolvedores sobre o erro na execução.
 \end{itemize}{}
 
-Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com issPortanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Esta separação foi importante para esta e para as próximas questões de pesquisa. Com isso, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
-
-o, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
-
+Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
 
 \subsection{Resultados}
 \label{fin:rq1}
-Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Dessas 2662, 1460  \textit{releases} resultaram em erro no \textit{script install} ou \textit{test}, e foram analisadas manualmente. Por fim, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de uma \textit{breaking change}.
+Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Após a execução, 1460 
+
+
+\textit{releases} resultaram em erro no \textit{script install} ou \textit{test}, e foram analisadas manualmente. Por fim, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de uma \textit{breaking changes}. A Figura \ref{fig:result_rq1_g} apresenta esses resultados, no qual o gráfico externo apresenta a proporção de sucesso e de erro por pacotes e por \textit{releases} no gráfico interno.
 
 \begin{figure}
     \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includegraphics[scale=0.8]{figuras/result_rq1_g.png}
+    \caption{Proporção de sucesso e erro da execução: por pacote -- gráfico externo -- e por \textit{releases} -- gráfico interno}
+    \label{fig:result_rq1_g}
 \end{figure}{}
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
@@ -126,3 +126,6 @@ Os \textit{commits} são alternativas para as \textit{issues} quando a busca se 
 
 \subsection{Resultados}
 \label{d_fin:rq3}
+
+
+
