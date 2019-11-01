@@ -34,6 +34,15 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
     \item  Próximos \textit{commits} do cliente: foi verificado no \textit{GitHub} se o cliente tentou consertar algum erro após a \textit{release} que apresentou o erro. Se foi encontrado algum \textit{commit} com correções, foram feitas estas alterações no código do cliente para verificar se as modificações encontradas no \textit{GitHub} realmente refletiam a correção do erro. Assim, se as alterações apenas no código do cliente refletiam na correção do erro, sem que haja influência dos provedores, então o erro não se tratava de uma \textit{breaking change};
 
     \item Sistemas integrados ao \textit{GitHub}: alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis\footnote{https://travis-ci.org}, Codeship\footnote{https://codeship.com}} entre outros, que armazenam os resultados da execução do pacote para cada \textit{commit}. Eles foram utilizados da seguinte maneira: se nesses sistemas integrados, a execução no \textit{commit} da \textit{release} do cliente foi realizado com sucesso e, ao executá-lo nesta pesquisa, resultou em erro, significa que houve uma \textit{breaking change}, uma vez que o código do cliente estava na mesma \textit{working tree} do \textit{commit}. Mas, se a execução do cliente no momento do \textit{commit} resultou em erro, provavelmente os próximos \textit{commits} contêm alguma informação sobre o erro e sua correção, uma vez que estes sistemas integrados avisaram os desenvolvedores sobre o erro na execução.
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.6]{figuras/false_positive.png}
+        \caption{\textit{Script} requerido para executar com sucesso o pacote \textit{node-qrious}}
+        \label{fig:false-positive}
+    \end{figure}{}
+
+    Em particular, o \textit{Travis} desempenhou um papel fundamental para identificar os erros, em especial, os falso-positivos -- casos que resultaram em erro, mas não eram. Um exemplo de falso-positivo ocorreu no pacote \textit{node-qrious}\footnote{https://www.npmjs.com/package/node-qrious}, que resultou em erro na execução, mas na análise manual, através do arquivo \textit{.travis.yml}\footnote{https://github.com/neocotic/node-qrious/blob/176ea348b9e51a8c1f0c5e2caa6cd4b0320ea5e2/.travis.yml} -- arquivo de configuração para o sistema integrado -- foi descoberto que o pacote requeria bibliotecas terceiras que, ao serem instaladas, resultou em sucesso na execução do pacote.
 \end{itemize}{}
 
 Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
@@ -49,14 +58,7 @@ Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo men
     \label{fig:result_rq1_g}
 \end{figure}{}
 
-Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos -- resultaram em erro, mas não eram --, erros internos e \textit{breaking changes}. Um exemplo de falso-positivo ocorreu no pacote \textit{node-qrious}\footnote{https://www.npmjs.com/package/node-qrious}, que resultou em erro na execução, mas na análise manual, através do arquivo \textit{.travis.yml}\footnote{https://github.com/neocotic/node-qrious/blob/176ea348b9e51a8c1f0c5e2caa6cd4b0320ea5e2/.travis.yml} -- arquivo de configuração do sistema integrado \textit{Travis}\footnote{https://travis-ci.org} -- foi descoberto que o pacote requeria bibliotecas terceiras que, ao serem instaladas, resultou em sucesso na execução do pacote. A Figura \ref{fig:false-positive} mostra as bibliotecas listadas. Apenas na análise manual foi possível identificar os casos que realmente eram erros falso-positivos, erros internos e \textit{breaking changes}.
-
-\begin{figure}
-    \centering
-    \includegraphics{}
-    \caption{\textit{Script} requerido para executar com sucesso o pacote \textit{node-qrious}}
-    \label{fig:false-positive}
-\end{figure}{}
+Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos, erros internos e \textit{breaking changes}.
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
 Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 11\% de pacotes que foram impactados por \textit{breaking changes}.
