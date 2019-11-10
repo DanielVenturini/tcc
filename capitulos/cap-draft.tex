@@ -49,6 +49,9 @@ Portanto, cada erro foi analisado manualmente, com alterações no código do cl
 
 \subsection{Resultados}
 \label{fin:rq1}
+Nesta Seção, encontram-se os resultados da análise manual voltados para responder a primeira questão de pesquisa. Nessa Seção estão os dados relacionados à quantificação das \textit{break changes}.
+
+\subsubsection{Resultados gerais da execução e da análise manual}
 % o parser do filipe tinha um erro que não resolvia dependências com versões alpha, beta, rc, ..., por exemplo x.y.z-aplha.1 não era resolvido, somente versões x.y.z. Então, houve alguns erros justamente por não haverem as dependências. Quando o erro foi por causa disso, eu desconsiderei que houve erro, ou seja, eu simplesmente resolvi a dependência, refiz o install/test e não considerei o erro por causa de versões não resolvidas.
 
 % tabela considerando os erros por pacotes não resolvidos:
@@ -86,7 +89,7 @@ Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo men
 \label{tab:res_rq1_1}
 \end{table}
 
-Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos dos erros reais. Conforme explicado na Seção \ref{apr:rq1}, os erros do tipo falso-positivos são erros que foram gerados por uma falta de configuração, ou seja, não são erros reais mas, devido uma configuração não realizada, a execução resultou em erro. Os erros falso-positivos mais comuns que ocorreram estavam relacionados a serviços que necessitavam de configurações prévias, tais como o \textit{mysql} e o \textit{mongodb}, que por vezes necessitavam de tabelas, senhas, \textit{scripts}, entre outras configurações para que os pacotes executassem com sucesso. Após a análise manual, foi constatado um total de 37 pacotes com falso-positivos em todas as suas \textit{releases}, totalizando 172 \textit{releases} e mais 238 \textit{releases} que impactaram parcialmente outros pacotes, ou seja, não foram o único tipo de erro no pacote. Assim, todos os 37 pacotes e as 410 \textit{releases} foram consideradas como se estivessem executadas com sucesso. Assim, após a análise prévia, os dados atualizados são mostrados na Tabela \ref{tab:res_rq1_2}.
+Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos dos erros reais. Conforme explicado na Seção \ref{apr:rq1}, os erros do tipo falso-positivos são erros que foram gerados pela falta de alguma configuração, ou seja, não são erros reais mas, devido uma configuração não realizada, a execução resultou em erro. Os erros falso-positivos mais comuns que ocorreram estavam relacionados a serviços que necessitavam de configurações prévias, tais como o \textit{mysql} e o \textit{mongodb}, que por vezes necessitavam de tabelas, senhas, \textit{scripts}, entre outras configurações para que os pacotes executassem com sucesso. Após a análise manual, foi constatado um total de 37 pacotes com falso-positivos em todas as suas \textit{releases}, totalizando 172 \textit{releases} e mais 238 \textit{releases} que impactaram parcialmente outros pacotes, ou seja, não foram o único tipo de erro no pacote. Assim, todos os 37 pacotes e as 410 \textit{releases} foram consideradas como se estivessem executadas com sucesso. Assim, após a análise prévia, os dados atualizados são mostrados na Tabela \ref{tab:res_rq1_2}.
 
 \begin{table}[]
 \centering
@@ -100,9 +103,14 @@ Após executarem, todas as \textit{releases} que resultaram em erro foram analis
 \label{tab:res_rq1_2}
 \end{table}
 
-Então, foi realizado a última etapa da análise dos pacotes nesta questão de pesquisa, que se deu na identificação dos casos de erros internos, \textit{non-break change} e \textit{break change}. Esses casos são realmente erros e foram contabilizados como erros. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram casos de \textit{non-break change}. Por fim, 39 pacotes sofreram \textit{break changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrada o erro. Porém, um pacote que sofreu uma \textit{break change}, por exemplo, pode ter sofrido também com erros internos ou \textit{non-break change}, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, sem que houvesse influência dos provedores, 213 \textit{releases} com erros do tipo \textit{non-break changes}, 190 erros do caso de \textit{break changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro e, por isso, foram marcados como não descobertos. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados.
+Então, foi realizado a última etapa da análise dos pacotes nesta questão de pesquisa, que se deu na identificação dos casos de erros internos, \textit{non-break change} e \textit{break change}. Esses casos são realmente erros e foram contabilizados como erros. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram casos de \textit{non-break change}. Por fim, 39 pacotes sofreram \textit{break changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um pacote que sofreu uma \textit{break change}, por exemplo, pode ter sofrido também com erros internos ou \textit{non-break change}, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, sem que houvesse influência dos provedores, 213 \textit{releases} com erros do tipo \textit{non-break changes}, 190 erros do caso de \textit{break changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro e, por isso, foram marcados como não descobertos. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados.
 
-
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figuras/result_rq1_g.png}
+    \caption{Resultado da execução e da análise manual, por pacotes e por \textit{releases}}
+    \label{fig:res_rq1_g}
+\end{figure}{}
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
 Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 11\% de pacotes que foram impactados por \textit{breaking changes}.
@@ -176,8 +184,3 @@ Os \textit{commits} são alternativas para as \textit{issues} quando a busca se 
 
 \subsection{Resultados}
 \label{d_fin:rq3}
-
-
-
-    Total           & 384     & 4570     \\
-
