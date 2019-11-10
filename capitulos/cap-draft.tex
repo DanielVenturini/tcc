@@ -6,7 +6,7 @@
 \subsection{Motivação}
 \label{mot:rq1}
 
-No ecossistema do \gls{NPM}, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes, uma vez que este repositório contém a maior rede de dependências entre pacotes \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos pacotes clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os cliente podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores -- o que é o padrão do \gls{NPM}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são \textit{breaking} ou \textit{non-breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, será quantificado as manifestações das \textit{breaking changes} nos pacotes clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a fazer decisões melhores sobre como e quando atualizar a versão do seu provedor.
+No ecossistema do \gls{NPM}, uma simples \textit{release} que contenha um erro pode afetar uma quantidade imensa de pacotes, uma vez que este repositório contém a maior rede de dependências entre pacotes \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos pacotes clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os cliente podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores -- o que é o padrão do \gls{NPM}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são ou não \textit{breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, será quantificado as manifestações das \textit{breaking changes} nos pacotes clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a fazer decisões melhores sobre como e quando atualizar a versão do seu provedor.
 
 \subsection{Método}
 \label{apr:rq1}
@@ -34,29 +34,39 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
     \item  Próximos \textit{commits} do cliente: foi verificado no \textit{GitHub} se o cliente tentou consertar algum erro após a \textit{release} que apresentou o erro. Se foi encontrado algum \textit{commit} com correções, foram feitas estas alterações no código do cliente para verificar se as modificações encontradas no \textit{GitHub} realmente refletiam a correção do erro. Assim, se as alterações apenas no código do cliente refletiam na correção do erro, sem que haja influência dos provedores, então o erro não se tratava de uma \textit{breaking change};
 
     \item Sistemas integrados ao \textit{GitHub}: alguns sistemas integrados ao \textit{GitHub} auxiliaram na investigação. Esses sistemas são o \textit{Travis\footnote{https://travis-ci.org}, Codeship\footnote{https://codeship.com}} entre outros, que armazenam os resultados da execução do pacote para cada \textit{commit}. Eles foram utilizados da seguinte maneira: se nesses sistemas integrados, a execução no \textit{commit} da \textit{release} do cliente foi realizado com sucesso e, ao executá-lo nesta pesquisa, resultou em erro, significa que houve uma \textit{breaking change}, uma vez que o código do cliente estava na mesma \textit{working tree} do \textit{commit}. Mas, se a execução do cliente no momento do \textit{commit} resultou em erro, provavelmente os próximos \textit{commits} contêm alguma informação sobre o erro e sua correção, uma vez que estes sistemas integrados avisaram os desenvolvedores sobre o erro na execução.
+    
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.6]{figuras/false_positive.png}
+        \caption{\textit{Script} requerido para executar com sucesso o pacote \textit{node-qrious}}
+        \label{fig:false-positive}
+    \end{figure}{}
+
+    Em particular, o \textit{Travis} desempenhou um papel fundamental para identificar os erros, em especial, os falso-positivos -- casos que resultaram em erro, mas não eram. Um exemplo de falso-positivo ocorreu no pacote \textit{node-qrious}\footnote{https://www.npmjs.com/package/node-qrious}, que resultou em erro na execução, mas na análise manual, através do arquivo \textit{.travis.yml}\footnote{https://github.com/neocotic/node-qrious/blob/176ea348b9e51a8c1f0c5e2caa6cd4b0320ea5e2/.travis.yml} -- arquivo de configuração para o sistema integrado -- foi descoberto que o pacote requeria bibliotecas terceiras que, ao serem instaladas, resultou em sucesso na execução do pacote.
 \end{itemize}{}
 
-Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era uma \textit{non-break change} ou uma \textit{break change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
+Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era um falso-positivo, um erro interno, uma \textit{non-break change} ou uma \textit{break change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isto, foi quantificado os casos \textit{breaking changes} por \textit{releases}.
 
 \subsection{Resultados}
 \label{fin:rq1}
-Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Após a execução, 1460 \textit{releases} resultaram em erro no \textit{script install} ou \textit{test}, e foram analisadas manualmente. Por fim, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de uma \textit{breaking changes}. A Figura \ref{fig:result_rq1_g} apresenta esses resultados por pacotes e por \textit{releases}.
+Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 244 resultaram em falhas para alguma de suas \textit{releases}. Já analisando as \textit{releases}, de todas as 4570, foram executadas um total de 2662 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}. Em contra partida, 1908 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não tem possibilidade da manifestação de \textit{breaking changes}. Após a execução, 1460 \textit{releases} resultaram em erro no \textit{script install/test}, e foram analisadas manualmente. A Tabela \ref{tab:res_rq1} contém os resultados prévios sem a análise manual.
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figuras/result_rq1_g.png}
-    \caption{Sucessos e erros das execuções por pacote e \textit{releases}}
-    \label{fig:result_rq1_g}
-\end{figure}{}
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+                    & Pacotes & \textit{Releases} \\ \hline
+    Total           & 384     & 4570     \\
+    Executado       & 384     & 2662     \\
+    Não executado   & 0       & 1908     \\
+    Sucesso         & 140     & 1202     \\
+    Erro            & 244     & 1460     \\ \hline
+\end{tabular}
+\caption{Resultado da execução, por pacotes e \textit{releases}}
+\label{tab:res_rq1}
+\end{table}
 
-Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos -- resultaram em erro, mas não eram --, erros internos e \textit{breaking changes}. Um exemplo de falso-positivo ocorreu no pacote \textit{node-qrious}\footnote{https://www.npmjs.com/package/node-qrious}, que resultou em erro na execução, mas na análise manual, através do arquivo \textit{.travis.yml}\footnote{https://github.com/neocotic/node-qrious/blob/176ea348b9e51a8c1f0c5e2caa6cd4b0320ea5e2/.travis.yml} -- arquivo de configuração do sistema integrado \textit{Travis}\footnote{https://travis-ci.org} -- foi descoberto que o pacote requeria bibliotecas terceiras que, ao serem instaladas, resultou em sucesso na execução do pacote. A Figura \ref{fig:false-positive} mostra as bibliotecas listadas. Apenas na análise manual foi possível identificar os casos que realmente eram erros falso-positivos, erros internos e \textit{breaking changes}.
-
-\begin{figure}
-    \centering
-    \includegraphics{}
-    \caption{\textit{Script} requerido para executar com sucesso o pacote \textit{node-qrious}}
-    \label{fig:false-positive}
-\end{figure}{}
+Após executarem, todas as \textit{releases} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos, erros internos e \textit{breaking changes}.
 
 \subsubsection{De todos os pacotes, 11\% foram impactados por \textit{breaking changes}}
 Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 11\% de pacotes que foram impactados por \textit{breaking changes}.
@@ -134,4 +144,6 @@ Os \textit{commits} são alternativas para as \textit{issues} quando a busca se 
 \label{d_fin:rq3}
 
 
+
+    Total           & 384     & 4570     \\
 
