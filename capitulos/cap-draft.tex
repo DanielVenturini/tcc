@@ -113,9 +113,17 @@ Então, foi realizado a última etapa da análise dos pacotes nesta questão de 
 \end{figure}{}
 
 \subsubsection{Dos pacotes, 10.15\% foram impactados por \textit{break changes} e de todas as \textit{releases} executadas, 8.15\%}
-Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 10.15\% de pacotes que foram impactados por \textit{breaking changes}. Esses pacotes sofreram com \textit{breaking changes} em pelo menos uma de suas \textit{releases}. Já analisando as \textit{releases}, 8.15\% de todas as que foram executadas sofreram alguma \textit{break change}.Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 10.15\% de pacotes que foram impactados por \textit{breaking changes}. Esses pacotes sofreram com \textit{breaking changes} em pelo menos uma de suas \textit{releases}. Já analisando as \textit{releases}, 8.15\% de todas as que foram executadas sofreram alguma \textit{break change}.
 
+Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 10.15\% de pacotes que foram impactados por \textit{breaking changes}. Esses pacotes sofreram com \textit{breaking changes} em pelo menos uma de suas \textit{releases}. Já analisando as \textit{releases}, 8.15\% de todas as que foram executadas sofreram alguma \textit{break change}.
 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{figuras/result_rq1_releases_affecteds.png}
+    \caption{Dispersão das \textit{break changes} em função do tamanho do pacote e a quantidade de suas \textit{releases} afetadas}
+    \label{fig:result_rq1_releases_affecteds}
+\end{figure}{}
+
+Realizar uma análise quantitativa considerando apenas a quantidade de pacotes não é justo, pois a ocorrência de uma \textit{break changes} não está relacionada apenas com o tamanho da amostra. Ou seja, os 10\% de pacotes atingidos por \textit{break changes} está mais relacionado com a quantidade de \textit{releases} que os pacotes contêm. Por exemplo, o pacote \textit{assetgraph-builder}\footnote{https://www.npmjs.com/package/assetgraph-builder} possui 140 \textit{releases} que foram executadas, resultando em 23 \textit{releases} que foram impactadas por \textit{breaking changes} -- 16.4\%. Já o pacote \textit{ember-cli-chartjs}\footnote{https://www.npmjs.com/package/ember-cli-chartjs}, que contém 7 \textit{releases} que foram executadas, resultou em 6 \textit{releases} com \textit{breaking changes} -- 85.7\%. Essa discrepância no percentual ocorre pois a quantidade de \textit{break changes} não está relacionada com a quantidade de pacotes que há na amostra, mas também com a quantidade de \textit{releases} que esses pacotes contêm.
 
 \subsubsection{Dos pacotes impactados por \textit{break changes}, 13\% apresentaram mais de um caso}
 
