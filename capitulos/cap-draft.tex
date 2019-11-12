@@ -126,9 +126,25 @@ Uma análise mais justa se encontra no gráfico de dispersão da Figura \ref{fig
     \label{fig:result_rq1_releases_affecteds}
 \end{figure}{}
 
-Na Figura \ref{fig:result_rq1_releases_affecteds} pode-se perceber inicialmente que a quantidade de \textit{releases} executadas do cliente (eixo \textit{y}) não é um fator determinante para o surgimento de \textit{break changes}. Isso é um fato pois há uma concentração maior dos pacotes afetados que possuem menos de 15 \textit{releases} do que os pacotes afetados com mais que 15. Já os pacotes grandes, ou os com mais de 15 \textit{releases}, são mais impactados a medida que o número de provedores aumenta, pois a concentração de pacotes grandes com mais de 15 provedores é maior do que os com menos. Um ponto interessante sobre os pacotes afetados é que, mesmo que possuam mais \textit{releases} e mais provedores que a média, a proporção afetada do pacote é baixa, ou seja, são poucas as \textit{releases} que foram afetadas. Isso pode ser explicado pelo fato de serem pacotes grandes, possuem um grande número de \textit{releases} e, consequentemente, estarem sempre lançando \textit{releases} se recuperando das \textit{break changes} que os tenham atingidos, assim minimizando o impacto da mesma sobre o pacote.
+Na Figura \ref{fig:result_rq1_releases_affecteds} pode-se perceber inicialmente que a quantidade de \textit{releases} executadas do cliente (eixo \textit{y}) não é um fator determinante para o surgimento de \textit{break changes}. Isso é um fato pois há uma concentração maior dos pacotes afetados que possuem menos de 15 \textit{releases} do que os pacotes afetados com mais que 15. Já os pacotes grandes, ou os com mais de 15 \textit{releases}, são mais impactados a medida que o número de provedores aumenta, pois a concentração de pacotes grandes com mais de 15 provedores é maior do que os com menos. Isso acontece pois quanto mais provedores um pacote tiver, maior é a chance do pacote ser impactado.
 
-\subsubsection{Dos pacotes impactados por \textit{break changes}, 13\% apresentaram mais de um caso}
+Um ponto interessante sobre os pacotes afetados é que, mesmo que possuam mais \textit{releases} e mais provedores que a média, a proporção afetada do pacote é baixa, ou seja, são poucas as \textit{releases} que foram afetadas. Isso pode ser explicado pelo fato de serem pacotes grandes, possuem um grande número de \textit{releases} e, consequentemente, estarem sempre lançando \textit{releases} se recuperando das \textit{break changes} que os tenham atingidos, assim minimizando o impacto da mesma sobre o pacote.
+
+% a baixa quantidade de amostras para os dois e três casos de break changes deixou esta conclusão um pouco estranha e meio "não-genérica"
+\subsubsection{Variedade de \textit{break changes} nos pacotes}
+As \textit{break changes} são imprevisíveis. Elas ocorrem independentemente uma das outras, ou seja, um pacote pode ser impactado com apenas um caso de \textit{break change}, mas também pode ser impactado com mais de um caso. E foi isso o que aconteceu: dos 39 pacotes afetados, 34 (87\%) foram impactados por apenas um caso de \textit{break change} e 5 (12.8\%) foram impactados por mais de um caso, sendo que 4 (10.2\%) foram impactados por dois casos e 1 (2.5\%) pacote sofreu a manifestação de 3 casos de \textit{break change}. A Figura \ref{fig:result_rq1_once_twice_three_1} contém estes dados.
+
+\begin {figure} [h!]
+   \centering
+   \mbox {
+        \subfigure[]{\label{fig:result_rq1_once_twice_three_1} \includegraphics[scale=0.4]{figuras/result_rq1_once_twice_three_1.pdf}}\quad
+        \subfigure[]{\label{fig:result_rq1_once_twice_three_2} \includegraphics[scale=0.45]{figuras/result_rq1_once_twice_three_2.pdf}}
+    }
+    \caption{Quantidade de pacotes/\textit{releases} afetados pelo número de casos de \textit{break change}}
+    \label{fig:result_rq1_once_twice_three}
+\end{figure}
+
+A Figura \ref{fig:result_rq1_once_twice_three_2} apresenta um \textit{BoxPlot} da quantidade de provedores que cada pacote possui em relação à quantidade de casos de \textit{break changes} sofridos. O único pacote que foi atingido por três casos de \textit{break change} é o que contém o maior número de \textit{releases} e, mesmo apresentando a menor proporção de casos afetados de acordo com a Figura \ref{fig:result_rq1_once_twice_three_1}, ele possui a maior mediana de provedores que os demais. Nesse caso, três provedores diferentes causaram os três casos de \textit{break changes} e por isso a quantidade de provedores favoreceu a ocorrência dos três casos, uma vez que a quantidade de \textit{releases} não fator determinante, visto a proporção na Figura \ref{fig:result_rq1_once_twice_three_1}. Um fato é que a ocorrência de mais de um caso de \textit{break changes} não é tão comum, pois os pacotes que foram atingidos por dois casos possuem uma mediana de provedores menor do que os pacotes que foram atingidos por apenas um caso.
 
 \subsubsection{22\% das \textit{breaking changes} foram causadas por provedores indiretos}
 
