@@ -1,15 +1,6 @@
-\chapter{Questões de pesquisa}
+\chapter{Draft}
 
 \section{RQ1. Com que frequência \textit{breaking changes} surgem \filipe{afetam? impactam?} nos pacotes clientes?}
-\label{sec:rq1}
-
-\filipe{breaking change (defeito no provedor) vs. manifestação da breaking change (manifestação do defeito do provedor no cliente)}
-
-\subsection{Motivação}
-\label{mot:rq1}
-
-No ecossistema do \gls{NPM} \filipe{npm em minúsculo}, uma \textit{release} que contenha um erro pode afetar uma grande quantidade de pacotes, uma vez que a rede de dependências do npm é relativamente densa \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos pacotes clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os cliente \filipe{clientes} podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores -- o que é o padrão do \gls{NPM} \filipe{minúsculo}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são ou não \textit{breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, será quantificado as manifestações das \textit{breaking changes} nos pacotes clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a fazer \filipe{tomar} decisões melhores sobre como e quando atualizar a versão do seu provedor.
-
 \subsection{Método}
 \label{apr:rq1}
 
@@ -49,115 +40,9 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
 
 Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era um falso-positivo, um erro interno, uma \textit{non-break change} ou uma \textit{break change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isso, foi possível quantificar os casos \textit{breaking changes} por pacotes e por \textit{releases}.
 
-\subsection{Resultados}
-\label{fin:rq1}
-Nesta Seção, encontram-se os resultados da análise manual voltados para responder a primeira questão de pesquisa. Nessa Seção estão os dados relacionados à quantificação das \textit{break changes}.
-
-\subsubsection{Resultados gerais da execução e da análise manual}
-% o parser do filipe tinha um erro que não resolvia dependências com versões alpha, beta, rc, ..., por exemplo x.y.z-aplha.1 não era resolvido, somente versões x.y.z. Então, houve alguns erros justamente por não haverem as dependências. Quando o erro foi por causa disso, eu desconsiderei que houve erro, ou seja, eu simplesmente resolvi a dependência, refiz o install/test e não considerei o erro por causa de versões não resolvidas.
-
-% tabela considerando os erros por pacotes não resolvidos:
-% não é uma tabela válida, mas apenas para manter o controle.
-% \begin{table}[]
-% \centering
-% \begin{tabular}{|l|l|l|}
-% \hline
-%                     & Pacotes & \textit{Releases} \\ \hline
-%     Total           & 384     & 4544     \\
-%     Executado       & 384     & 2374     \\
-%     Não executado   & 0       & 2242     \\
-%     Sucesso         & 142     & 901     \\
-%     Erro            & 242     & 1473     \\ \hline
-% \end{tabular}
-% \caption{Resultado da execução, por pacotes e \textit{releases}}
-% \label{tab:res_rq1}
-% \end{table}
-
-% 20 pacotes sofreram com esse problema, resultando em 101 erros que ocorreram por causa do parser. Além, mais 58 release resultaram em erro apenas porque o parser não recuperou alguma dependência. Assim, os dados abaixo estão considerando que esses erros não ocorreram
-Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. \filipe{Precisa explicar que 384 é uma amostra representativa com 95\% de nível de confiança e $\pm$5\% de intervalo de confiança} Desses 384 pacotes, 220 resultaram em falhas para alguma de suas \textit{releases} \filipe{também precisa dizer que esses 384 pacotes são todos clientes ... certo? quantos provedores foram analisados?}. Já analisando as \textit{releases}, de todas as 4544, foram executadas um total de 2332 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}, além de conterem algum \textit{script} de teste válido. \filipe{Tô perdido aqui ...} Em contra partida, 2242 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não gera possibilidade de manifestação de \textit{breaking changes} \filipe{Por que não? E se o cliente, na nova versão, passa a chamar uma função do provedor que antes não era chamada e justamente essa função do provedor tem uma breaking change?}, ou não continham algum \textit{script} de teste válido. Após a execução de toda a amostra \filipe{execução de toda a amostra?}, 1018 \textit{releases} executaram com sucesso, enquanto que 1314 \textit{releases} resultaram em erros no \textit{script install/test}, e foram analisadas manualmente. A Tabela \ref{tab:res_rq1_1} contém os resultados prévios sem a análise manual, ou seja, são dados apenas da execução dos pacotes. \filipe{Isso aqui parece muito mais ``método'' do que resultado.}
-
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-                    & Pacotes & \textit{Releases} \\ \hline
-    Total           & 384     & 4544     \\
-    Executado       & 384     & 2332     \\
-    Não executado   & 0       & 2242     \\
-    Sucesso         & 164     & 1018     \\
-    Erro            & 220     & 1314     \\ \hline
-\end{tabular}
-\caption{Resultado da execução, por pacotes e \textit{releases}}
-\label{tab:res_rq1_1}
-\end{table}
-
-Após executarem, todas as \textit{releases} \filipe{Não entendo o que é ``executar uma release''} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos dos erros reais \filipe{foram analisadas para se confirmar a origem do erro: uma chamada à uma função do provedor que contém uma breaking change ou alguma alteração realizada pelo cliente.}. Conforme explicado na Seção \ref{apr:rq1}, os erros do tipo falso-positivos são erros que foram gerados pela falta de alguma configuração, ou seja, não são erros reais mas, devido uma configuração não realizada, a execução resultou em erro \filipe{acho que um exemplo ia bem aqui. Além disso não está claro que você você quer dizer com ``configuração não realizada''. O cliente deveria configurar algo e não fez?}. Os erros falso-positivos mais comuns estavam relacionados a serviços que necessitavam de configurações prévias, tais como o \textit{mysql} e o \textit{mongodb}, que por vezes necessitavam de tabelas, senhas, \textit{scripts}, entre outras configurações para que os pacotes executassem com sucesso \filipe{OK, ficou mais claro.}. Após a análise manual, foi constatado um total de 37 pacotes com falso-positivos em todas as suas \textit{releases}, totalizando 172 \textit{releases} e mais 238 \textit{releases} que impactaram parcialmente outros pacotes, ou seja, não foram o único tipo de erro no pacote. Assim, todos os 37 pacotes e as 410 \textit{releases} foram consideradas como se estivessem executadas com sucesso. Dessa maneira, após a análise prévia, os dados atualizados são mostrados na Tabela \ref{tab:res_rq1_2}.
-
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-                    & Pacotes & \textit{Releases} \\ \hline
-    Sucesso         & 201     & 1428     \\
-    Erro            & 183     & 904     \\ \hline
-\end{tabular}
-\caption{Resultado da execução, contabilizando os falso-positivos, por pacotes e \textit{releases}}
-\label{tab:res_rq1_2}
-\end{table}
-
-Então, foi realizado a última etapa da análise dos pacotes nesta questão de pesquisa, que se deu na identificação dos casos de erros internos, \textit{non-break change} e \textit{break change}. \filipe{Resultados e Método está bem embaralhado ... acho que ajuda a leitura se pudéssemos separá-los} Esses casos são realmente erros e foram contabilizados como erros. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram casos de \textit{non-break change}. Por fim, 39 pacotes sofreram \textit{break changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um pacote que sofreu uma \textit{break change}, por exemplo, pode ter sofrido também com erros internos ou \textit{non-break change}, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, sem que houvesse influência dos provedores, 213 \textit{releases} com erros do tipo \textit{non-break changes}, 190 erros do caso de \textit{break changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro e, por isso, foram marcados como \textit{não descobertos}. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados. Finalmente, a porcentagem de pacotes atingidos por uma ou mais \textit{breaking changes} representa 10.15\% da amostra, enquanto que a porcentagem de \textit{releases} que foram afetadas por \textit{breaking changes} representa 8.15\% de todos as \textit{releases} executadas. \filipe{A primeira frase do primeiro parágrafo dos ``Resultados'' que eu esperava ler é algo do tipo: ``X\% das releases de pacotes clientes apresentam um defeito devido a uma breaking change.''. A primeira frase do segundo parágrafo eu esperava que fosse algo do tipo ``Y\% das releases dos pacotes do provedor causam uma breaking change em pelo menos um pacote cliente.'' Nesse momento está difícil orquestrar os resultados ...}
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.4]{figuras/result_rq1_g.png}
-    \caption{Resultado da execução e da análise manual, por pacotes e por \textit{releases}}
-    \label{fig:res_rq1_g}
-\end{figure}{}
-
-\subsubsection{Relação das \textit{releases} do cliente com os provedores e as \textit{breaking changes}}
-
-Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 39 (10.15\%) pacotes que foram impactados por \textit{breaking changes}. \filipe{Agora sim ... fácil entender e responde à RQ!} Esses pacotes sofreram com \textit{breaking changes} em pelo menos uma de suas \textit{releases}. Desde pacotes com uma \textit{release} executada, até os pacotes com mais de 100 \textit{releases} executadas foram impactados e, de maneira análoga, pacotes com 1 provedor até pacotes com mais de 100 provedores também foram afetados por \textit{break changes}. \filipe{Certo ... mas aqui você poderia me dizer qual a correlação entre o número de releases afetadas por uma breaking change e o número de releases e provedores. Acredito que exista alguma correlação.} Assim sendo, o fator determinante para a manifestação de uma \textit{break change} não é apenas o tamanho do pacote cliente, nem tão pouco a quantidade de provedores que esse pacote possui. \filipe{Não sei se você pode dizer isso sem ao menos descrever essa correlação!}
-
-A proporção com o qual o pacote foi atingido \filipe{impactado? use sempre a mesma palavra (corrija no resto do texto), eu prefiro impactado} também é um ponto importante a se considerar. Realizar a análise dos pacotes sem considerar o impacto que as \textit{break changes} causaram, não é justo. Por exemplo, o pacote \textit{assetgraph-builder}\footnote{https://www.npmjs.com/package/assetgraph-builder} possui 140 \textit{releases} que foram executadas, resultando em 23 (16.4\%) \textit{releases} que foram impactadas por \textit{breaking changes}. Já o pacote \textit{ember-cli-chartjs}\footnote{https://www.npmjs.com/package/ember-cli-chartjs}, que contém 7 \textit{releases} que foram executadas, resultou em 6 (85.7\%) \textit{releases} com \textit{breaking changes}. Essa discrepância no percentual ocorre pois a quantidade de \textit{break changes} não está somente relacionada com a quantidade de  \textit{releases} que esses pacotes contêm, mas também está relacionada com os provedores, uma vez que eles também influenciam na manifestação de uma \textit{break change}, pois são eles os causadores. \filipe{Mostre uma scatterplot com o número total de releases vs. a proporção de releases impactada por uma breaking change}
-
-Uma análise mais justa se encontra no gráfico de dispersão da Figura \ref{fig:result_rq1_releases_affecteds}, que compara a quantidade de \textit{releases} com a quantidade de provedores. Nessa Figura estão dispersos todos pacotes da amostra e, em destaque, os que sofreram com \textit{break changes}. O eixo \textit{y} contém a variável do tamanho dos pacotes \filipe{O eixo y denota a quantidade de releases do pacote}, ou seja, a quantidade de \textit{releases} dos pacotes que foram executadas e que estavam sujeitas ao surgimento das \textit{break changes} \filipe{Tamanho não é uma boa palavra para quantidade de releases. Tamém não precisa dizer ``que foram executadas'' (executar uma release é estranho ...), pois você executou os testes de todas as releases, certo?}. Já no eixo \textit{x}, há a quantidade de provedores que esses pacotes possuem. Por fim, os  círculos, que simbolizam os pacotes, representam a proporção do pacote que foi afetado, ou seja, a quantidade de \textit{releases} afetadas pela quantidade de \textit{releases} executadas, assim, quanto maior os círculos vermelhos, maior o impacto da \textit{break change} nos pacotes por eles representados. \filipe{Não tem legenda para o tamanho dos círculos, difícil saber a proporção. Por que não colocar a proporção no eixo x e a quantidade de releases no eixo y? Outra coisa: essa análise deveria ser feita para o número de clientes também, ou não?} Os círculos cinzas representam os pacotes que não sofreram com \textit{break changes} e por isso possuem os mesmos tamanhos. Por fim, as linhas verdes interceptam os eixos na posição 15.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figuras/result_rq1_releases_affecteds.pdf}
-    \caption{Dispersão das \textit{break changes} em função do tamanho do pacote e a quantidade de provedores}
-    \label{fig:result_rq1_releases_affecteds}
-\end{figure}{}
-
-Na Figura \ref{fig:result_rq1_releases_affecteds} pode-se perceber inicialmente que a quantidade de \textit{releases} executadas do cliente (eixo \textit{y}) não é um fator determinante para o surgimento de \textit{break changes}. Isso é um fato pois há uma concentração maior dos pacotes afetados que possuem menos de 15 \textit{releases} do que os pacotes afetados com mais que 15. Já os pacotes grandes, ou os com mais de 15 \textit{releases}, são mais impactados a medida que o número de provedores aumenta, pois a concentração de pacotes grandes com mais de 15 provedores é maior do que os com menos. Isso acontece pois quanto mais provedores um pacote tiver, maior é a chance do pacote ser impactado. \filipe{Ótimo!}
-
-Um ponto interessante sobre os pacotes afetados é que, mesmo que possuam mais \textit{releases} e mais provedores que a média, a proporção afetada do pacote é baixa, ou seja, são poucas as \textit{releases} que foram afetadas. Isso pode ser explicado pelo fato de serem pacotes grandes \filipe{mude ``grandes'' por ``com muitas releases''. Tamanho geralmente é associado a número de linhas de código}, possuem um grande número de \textit{releases} e, consequentemente, estarem sempre lançando \textit{releases} se recuperando das \textit{break changes} que os tenham atingidos, assim minimizando o impacto da mesma sobre o pacote.
-
-% a baixa quantidade de amostras para os dois e três casos de break changes deixou esta conclusão um pouco estranha e meio "não-genérica"
-\subsubsection{Variedade de \textit{break changes} nos pacotes}
-As \textit{break changes} são imprevisíveis. Elas ocorrem independentemente uma das outras, ou seja, um pacote pode ser impactado com apenas um caso de \textit{break change}, mas também pode ser impactado com mais de um caso. E foi isso o que aconteceu: dos 39 pacotes afetados, 34 (87\%) foram impactados por apenas um caso de \textit{break change} e 5 (12.8\%) foram impactados por mais de um caso, sendo que 4 (10.2\%) foram impactados por dois casos e 1 (2.5\%) pacote sofreu a manifestação de 3 casos de \textit{break change}. A Figura \ref{fig:result_rq1_once_twice_three_1} contém estes dados.
-
-\begin {figure} [h!]
-   \centering
-   \mbox {
-        \subfigure[]{\label{fig:result_rq1_once_twice_three_1} \includegraphics[scale=0.4]{figuras/result_rq1_once_twice_three_1.pdf}}\quad
-        \subfigure[]{\label{fig:result_rq1_once_twice_three_2} \includegraphics[scale=0.45]{figuras/result_rq1_once_twice_three_2.pdf}}
-    }
-    \caption{Quantidade de pacotes/\textit{releases} afetados pelo número de casos de \textit{break change}}
-    \label{fig:result_rq1_once_twice_three}
-\end{figure}
-
-A Figura \ref{fig:result_rq1_once_twice_three_2} apresenta um \filipe{Vi três boxplots lá} \textit{BoxPlot} da quantidade de provedores que cada pacote possui em relação à quantidade de casos de \textit{break changes} sofridos. O único pacote que foi atingido por três casos de \textit{break change} é o que contém o maior número de \textit{releases} e, mesmo apresentando a menor proporção de casos afetados de acordo com a Figura \ref{fig:result_rq1_once_twice_three_1}, ele possui a maior mediana de provedores que os demais. Nesse caso, três provedores diferentes causaram os três casos de \textit{break changes} e por isso a quantidade de provedores favoreceu a ocorrência dos três casos, uma vez que a quantidade de \textit{releases} não fator determinante, visto a proporção na Figura \ref{fig:result_rq1_once_twice_three_1}. \filipe{Precisa fazer um teste de hipótese e calcular effect size para confirmar o que você está dizendo. Outra coisa é mostrar esse gráfico como um beanplot cortado ao meio. Não acho que o terceiro boxplot seja necessário, só tem um data point nele, não é isso? Dá pra descrever no texto. } Um fato é que a ocorrência de mais de um caso de \textit{break changes} não é tão comum, pois os pacotes que foram atingidos por dois casos possuem uma mediana de provedores menor do que os pacotes que foram atingidos por apenas um caso.
-
-%\subsubsection{Impacto dos provedores indiretos}
-%O \gls{NPM} contém a maior rede de dependências entre os pacotes dentre os principais repositórios, conforme explicado na Seção \ref{ref-teo:npm}. Nesse emaranhado de projetos dependendo mutuamente uns dos outros, não é difícil pressupor que não somente os provedores diretos podem introduzir as \textit{break changes}. Assim como o cliente usa o provedor direto, o provedor indireto é usado da mesma maneira pelo provedor direto, fazendo do provedor indireto um indivíduo muito influente para a execução do cliente.
 %---------------------------------------------------%
 \section{RQ2. Como os pacotes provedores introduzem \textit{breaking changes} em uma \textit{release}?}
 \label{sec:rq2}
-
-\subsection{Motivação}
-\label{mot:rq2}
-Pesquisas anteriores apresentam estudos sobre \textit{breaking changes} no ecossistema do \gls{NPM}. Entretanto, pelo fato do \textit{Javascript} ser dinâmico, estes estudos focaram apenas nas alterações de \gls{API}, tais como as remoções/renomeações, alterações na lista de parâmetros e alterações no tipo de retorno. Estes estudos foram realizados por  \citeonline{teorical_reference:bc_1} e \citeonline{noregrets2018} e não verificaram \textit{breaking changes} além das relacionadas às \gls{API}. Dessa maneira, além das alterações em \gls{API}, não se tem informações sobre como os provedores introduzem \textit{breaking changes}, ou seja, quais os principais casos que fazem com que o cliente sofra uma \textit{breaking changes}. Por causa da falta de informação, muitas \textit{breaking changes} são introduzidas, mas poderiam ser facilmente evitadas. Assim, grande parte das \textit{breaking changes} em \textit{JavaScript} são detectadas apenas em tempo de execução \cite{noregrets2018}, mas para o cliente, ter seu código encerrado em tempo de execução pode ser muito custoso. Por isso, dimensionar e categorizar as \textit{breaking changes} ajudará os desenvolvedores a atentar-se para as \textit{breaking changes} mais comuns e tentar evitá-las, assim produzindo códigos menos favoráveis às \textit{breaking changes}.
 
 \subsection{Método}
 \label{apr:rq2}
@@ -192,115 +77,9 @@ Então, para todas as \textit{releases} analisadas manualmente, foram salvas as 
     \item Por quantas \textit{releases} o erro persistiu.
 \end{enumerate}{}
 
-
-\subsection{Resultados}
-\label{fin:rq2}
-
-\subsubsection{Categorias de \textit{Break changes}}
-A linguagem \textit{Javascript} é uma linguagem fracamente tipada e dinâmica. Por esse motivo, os códigos escritos nessa linguagem pode apresentar comportamentos diferentes quando comparada com outras linguagens. Por isso há a necessidade de se conhecer as  categorias de \textit{break changes} que são encontradas no ecossistema do \gls{NPM}. Assim, cada caso de \textit{break change} foi analisada e observado o motivo de seu surgimento e categorizada com as demais. \filipe{Isso é motivação e você já descreveu}
-
-Ao todo, foram 43 casos de \textit{break changes} distribuídas em 39 pacotes \filipe{Uma coisa que você precisa ajeitar ao longo de todo o texto é dizer ``pacote cliente'' e ``pacote provedor''. Aqui está se falando de provedor, mas na seção passada era sobre cliente.}. Todos esses casos foram agrupados em 8 diferentes categorias das quais se encaixavam. A Tabela \ref{tab:bc_category} apresenta cada uma dessas categorias, bem como a quantidade de pacotes e a quantidade de \textit{releases} que cada categoria atingiu.
-
-\begin{table}[]
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\centering
-\textbf{Categoria}           & \textbf{Pacotes afetados} & \textbf{\%}   & \textbf{\textit{Release} afetadas} & \textbf{\%}    \\ \hline
-Alteração de regras          & 12              & 27,9 & 64                          & 33,68 \\
-Provedores incompatíveis     & 8               & 18,6 & 30                          & 15,78 \\
-Alteração de tipo de objeto  & 8               & 18,6 & 24                          & 12,63 \\
-Objeto indefinido            & 4               & 9,3  & 25                          & 13,15 \\
-Código errado                & 4               & 9,3  & 13                          & 6,84  \\
-Código não-atualizado        & 3               & 6,97 & 25                          & 13,15  \\
-Renomeação de função         & 3               & 6,97 & 5                           & 2,63  \\
-Arquivo não encontrado       & 1               & 2,32 & 4                           & 2,1  \\ \hline
-\textbf{Total}               & 43              &      & 190                         &       \\ \hline
-\end{tabular}
-\caption{Categorias dos casos de \textit{break change}}
-\label{tab:bc_category}
-\end{table}
-\filipe{Muito bom}
-A seguir, encontra-se uma descrição sobre cada categoria e um exemplo de como os pacotes dessa determinada categoria foram afetadas.
-
-\begin{itemize}
-    \item \textbf{Alteração de regras}: este caso foi o principal que impactou os pacotes. Essa categoria contém os casos de \textit{break change} no qual os provedores possuíam um determinado comportamento, mas alteraram algumas de suas regras/funcionalidades e impactaram os seus clientes. Não foi uma simples alteração no código, tal como uma alteração de tipo de variáveis, ou um código escrito de maneira errada, mas sim uma regra no qual o cliente tinha como sólida, foi alterada. Por exemplo, o pacote \textit{request@2.18.0} introduziu uma alteração em seu código\footnote{https://github.com/request/request/commit/d05b6ba72702c2411b4627d4d89190a5f2aba562\#diff-168726dbe96b3ce427e7fedce31bb0bcR857}, como pode ser visto na Figura \ref{fig:bc_category_change_rule_1}.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.6]{figuras/bc_category_change_rule_1.png}
-        \caption{Alteração de regra de funcionamento do \textit{request}}
-        \label{fig:bc_category_change_rule_1}
-    \end{figure}{}
-
-    Nesse caso, o \textit{request} adiciona uma \textit{string} vazia ao invés de manter \textit{undefined} o corpo de uma requisição. Esse caso do \textit{request} ocorreu exatamente como foi explicado por \citeonline{Foo:2018:ESC:3236024.3275535} dizendo que os pacotes evoluem independentemente dos clientes. Essa alteração na regra do \textit{request} reflete em uma evolução do pacote, mas o cliente não esperava essa alteração e confiava que o corpo da resposta fosse retornado como \textit{undefined} em caso de erro, por isso o cliente quebrou.
-
-    \item \textbf{Provedores incompatíveis}: nessa categoria, há um provedor direto A e um provedor indireto B envolvido, o qual alterou o seu código, o que não gerou um erro, mas provocou no provedor A um comportamento inesperado, ou seja, o provedor B passou a ser incompatível com o provedor A. Nessa categoria, nenhum dos provedores contém um erro, mas sim uma incompatibilidade. Um exemplo disso ocorreu com os pacotes \textit{babel-eslint}\footnote{https://www.npmjs.com/package/babel-eslint} e \textit{escope}\footnote{https://www.npmjs.com/package/escope}, entretanto, o pacote \textit{escope} é um provedor indireto do \textit{babel-eslint}.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.5]{figuras/bc_category_incompatibles_providers.png}
-        \caption{Alteração de código do \textit{escope}}
-        \label{fig:bc_category_incompatibles_providers}
-    \end{figure}{}
-
-    A \textit{releases escope@3.4} realizou uma alteração no seu código, de acordo com a Figura \ref{fig:bc_category_incompatibles_providers}, mas que não reflete em um erro. Essa alteração impactou diretamente o pacote \textit{babel-eslint}, mesmo o pacote \textit{escope} não sendo um provedor direto do \textit{babel-eslint} e não ter introduzido um erro\footnote{https://github.com/estools/escope/issues/99\#issuecomment-178151491}. Com isso, há uma incompatibilidade entre os provedores e essa incompatibilidade precisou ser corrigida pelo \textit{babel-eslint} e não pelo \textit{escope}. Essa foi a \textit{break change} que mais surgiu na análise manual pois, dos 43 casos, 5 (11.6\%) refletiam essa incompatibilidade, uma vez que o \textit{babel-eslint} é provedor de 5.8\% de toda a base de dados.
-
-    \item \textbf{Alteração de tipo de objeto}: essa é uma categoria de \textit{break changes} facilmente detectável em linguagens fortemente tipadas, mas no \textit{Javascript} representam um tipo de \textit{break change} que, por muitas vezes, pode nem afetar o código do cliente. Mas, neste trabalho, foram detectados 8 (18.6\%) de casos nos quais os provedores alteraram o tipo de alguma variável.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.5]{figuras/bc_category_change_type.png}
-        \caption{Alteração de um tipo \textit{array} para \textit{object}}
-        \label{fig:bc_category_change_type}
-    \end{figure}{}
-
-    Na Figura \ref{fig:bc_category_change_type} o provedor \textit{socket.io}\footnote{https://www.npmjs.com/package/socket.io} alterou alguns \textit{arrays} para \textit{object}\footnote{https://github.com/socketio/socket.io/commit/b73d9bea4efb48277eee685763026ff2df5a79ab}. Anteriormente, os clientes iteravam nesses \textit{arrays}, mas após essa alteração, os clientes foram afetados.
-
-    \item \textbf{Objeto indefinido}: por vezes, os códigos podem estar todos corretos, mas então o provedor tenta acessar uma variável que não existe. Esta categoria de \textit{break change} representa os casos no qual os provedores tentaram obter acesso à alguma variável/objeto, mas que não existiam. Esses erros são os que facilmente podem ser consertados/evitados apenas adicionando o código da Listagem \ref{cod:undefined_object}:
-
-    \begin{lstlisting}[style=bash, label=cod:undefined_object]
-    this.var = this.var || {};
-    \end{lstlisting}
-
-    Esse tipo de erro surgiu no pacote \textit{ember-cli-htmlbars-inline-precompile}\footnote{https://www.npmjs.com/package/ember-cli-htmlbars-inline-precompile}, no qual o desenvolvedor tenta acessar uma variável que não estava disponível. Mas, assim como o desenvolvedor já havia feito com as demais variáveis da Figura \ref{fig:bc_category_undefined_object}, uma simples alteração no código foi o suficiente.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.7]{figuras/bc_category_undefined_object.png}
-        \caption{Correção do erro de objeto indefinido}
-        \label{fig:bc_category_undefined_object}
-    \end{figure}{}
-
-    \item \textbf{Código errado}: este caso de \textit{break change} ocorreu quando o provedor escreveu um código semanticamente incorreto, gerando um erro na sua execução e afetando o cliente. Em linguagens compilada, esse tipo de erro seria facilmente identificado pelo compilador em tempo de compilação. Foi exatamente isso que a dependência fez. Ao alterar o seu código, o desenvolvedor escreveu duas vezes a mesma variável, como pode ser visto na Figura \ref{fig:bc_category_wrong_code}. Assim como os erros do tipo \textit{undefined object}, os erros dessa categoria  são facilmente corrigidos.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.8]{figuras/bc_category_wrong_code.png}
-        \caption{Código semanticamente incorreto}
-        \label{fig:bc_category_wrong_code}
-    \end{figure}{}
-
-    \item \textbf{Renomeação de função}: as \textit{break changes} relacionadas à esta categoria foram facilmente detectáveis. Quando a mensagem de erro do \textit{node.js} era exibida como \textit{TypeError: var is not a function}, com pouca investigação já era possível saber que uma determinada função não estava mais disponível, ou seja, havia sido removida ou alterado o seu nome.
-
-    \begin{figure}
-        \centering
-        \includegraphics[scale=0.6]{figuras/bc_category_renamed_function.png}
-        \caption{Alteração do nome de função}
-        \label{fig:bc_category_renamed_function}
-    \end{figure}{}
-
-    \item \textbf{Arquivo não encontrado}: os casos de \textit{break change} relacionados à esta categoria são aqueles no qual o desenvolvedor realiza um acesso a um arquivo, mas esse não existe. O arquivo requerido pode não existir ou não estar disponível, uma vez que, referenciado no arquivo \textit{.npmignore} -- arquivo utilizado pelo \textit{npm} para ignorar arquivos durante o processo de publicação --, o arquivo existe mas não está disponível, mas também o arquivo pode não existir. Entretanto, o único caso de arquivo não encontrado ocorreu pois o arquivo \textit{index.js} estava indisponível. O provedor \textit{esprima-extract-comments}\footnote{https://www.npmjs.com/package/esprima-extract-comments} utilizava como provedor um \textit{fork} do pacote \textit{esprima}\footnote{https://github.com/ariya/esprima/} e o referencia em seu  \textit{package.json} para ser descarregado diretamente do \textit{Github}\footnote{https://github.com/jonschlinkert/esprima-extract-comments/blob/6b65a0f52f85bc6fa830d44e352ec3da9e9ef620/package.json\#L47}. Entretanto, o \textit{index.js} desse \textit{fork}, foi referenciado no \textit{.gitignore} e não estava disponível quando o \textit{npm} descarregou o pacote diretamente do \textit{Github}, mas o arquivo estava disponível se o pacote \textit{exprima} fosse descarregado diretamente do \textit{npm}.
-
-\end{itemize}{}
-
-\filipe{Muito bom}
 %---------------------------------------------------%
 \section{RQ3. Como os pacotes clientes se recuperam das \textit{breaking changes}?}
 \label{sec:rq3}
-
-\subsection{Motivação}
-\label{mot:rq3}
-Uma vez que uma \textit{breaking changes} é introduzida, o cliente deve se recuperar dessa, ajustando o seu próprio código. Isso se faz necessário pois, no ecossistema do  \gls{NPM}, no qual centenas de milhares de pacotes estão conectados, uma simples \textit{release} com erro pode ocasionar na quebra de muitos clientes. No entanto, como os provedores evoluem independentemente dos clientes, erros e vulnerabilidades são difíceis de rastrear e corrigir nos clientes. Mesmo quando as vulnerabilidades podem ser corrigidas com a atualização para uma versão mais recente do provedor, pode haver incompatibilidades de \textit{API} -- entre outras incompatibilidades -- com os clientes que deve ser resolvido manualmente \cite{Foo:2018:ESC:3236024.3275535}. Dessa maneira, entender como os clientes reagem às \textit{breaking changes} ajudará os próprios clientes a conhecerem as alternativas frente às \textit{breaking changes} para que eles possam se recuperar da maneira mais eficiente.
 
 \subsection{Método}
 \label{apr:rq3}
@@ -309,8 +88,3 @@ Uma vez que os clientes se recuperaram de um erro, há duas maneiras para se obt
 Todas as informações sobre esta questão de pesquisa foram recuperadas do \textit{GitHub}. As informações foram encontradas em \textit{CHANGELOGs, release-notes, issues} e \textit{pull-requests}. Os \textit{CHANGELOGs} contêm informações sobre os erros consertados. A partir das \textit{issues} é possível entender com os comentários dos clientes quais foram as ações que eles realizaram para se recuperar de uma determinada \textit{breaking change}. Pois, assim como o código de um pacote fica emaranhado com o código no restante do ecossistema ao qual ele pertence, o mesmo acontece com as \textit{issues}. Uma manifestação disso é que muitas \textit{issues} abertas em um projeto são vinculadas a \textit{issues} relacionadas, em projetos iguais ou diferentes, pois os desenvolvedores estão rastreando as causas de um problema \cite{Zhang:2018:WIL:3242887.3242891}. De maneira análoga, os \textit{pull-requests} que são relacionados ao mesmo problema também são marcados. Todas estas informações corroboram para descobrir como a \textit{breaking change} foi tratada/consertada e quem -- cliente ou provedor -- a consertou, caso tenha sido consertada.
 
 Os \textit{commits} são alternativas para as \textit{issues} quando a busca se dá no repositório do cliente. Sobre os \textit{commits}, mensagens do tipo \textit{update dependencies, fix dependencies, fix errors} etc. sugerem que algum provedor foi atualizado para consertar algum erro ou um erro foi consertado diretamente no código do cliente. Estas informações são muito importantes, uma vez que o provedor corrigiu a \textit{breaking change} e o cliente apenas o atualizou. Assim, as mensagens dos \textit{commits} auxiliaram para descobrir os reais motivos da atualização -- ou retrocesso da versão.
-
-\subsection{Resultados}
-\label{d_fin:rq3}
-
-\filipe{Aguardando ansiosamente :-)}
