@@ -5,69 +5,8 @@
 
 Nesta Seção, encontram-se os resultados da análise manual voltados para responder a primeira questão de pesquisa. Nessa Seção estão os dados relacionados à quantificação das \textit{break changes}.
 
-\subsubsection{Resultados gerais da execução e da análise manual}
-% o parser do filipe tinha um erro que não resolvia dependências com versões alpha, beta, rc, ..., por exemplo x.y.z-aplha.1 não era resolvido, somente versões x.y.z. Então, houve alguns erros justamente por não haverem as dependências. Quando o erro foi por causa disso, eu desconsiderei que houve erro, ou seja, eu simplesmente resolvi a dependência, refiz o install/test.
-
-% tabela considerando os erros por pacotes não resolvidos:
-% não é uma tabela válida, mas apenas para manter o controle.
-% \begin{table}[]
-% \centering
-% \begin{tabular}{|l|l|l|}
-% \hline
-%                     & Pacotes & \textit{Releases} \\ \hline
-%     Total           & 384     & 4544     \\
-%     Executado       & 384     & 2374     \\
-%     Não executado   & 0       & 2242     \\
-%     Sucesso         & 142     & 901     \\
-%     Erro            & 242     & 1473     \\ \hline
-% \end{tabular}
-% \caption{Resultado da execução, por pacotes e \textit{releases}}
-% \label{tab:res_rq1}
-% \end{table}
-
-% 20 pacotes sofreram com esse problema, resultando em 101 erros que ocorreram por causa do parser. Além, mais 58 release resultaram em erro apenas porque o parser não recuperou alguma dependência. Assim, os dados abaixo estão considerando que esses erros não ocorreram
-Ao todo, 384 pacotes foram utilizados nesta pesquisa e foram executadas pelo menos uma de suas \textit{releases}. \filipe{Precisa explicar que 384 é uma amostra representativa com 95\% de nível de confiança e $\pm$5\% de intervalo de confiança} Desses 384 pacotes, 220 resultaram em falhas para alguma de suas \textit{releases} \filipe{também precisa dizer que esses 384 pacotes são todos clientes ... certo? quantos provedores foram analisados?}. Já analisando as \textit{releases}, de todas as 4544, foram executadas um total de 2332 \textit{releases}, pois possuíam adições ou alterações em suas dependências e estavam passíveis de sofrerem com \textit{breaking change}, além de conterem algum \textit{script} de teste válido. \filipe{Tô perdido aqui ...} Em contra partida, 2242 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, mas apenas alterações no código do cliente, o que não gera possibilidade de manifestação de \textit{breaking changes} \filipe{Por que não? E se o cliente, na nova versão, passa a chamar uma função do provedor que antes não era chamada e justamente essa função do provedor tem uma breaking change?}, ou não continham algum \textit{script} de teste válido. Após a execução de toda a amostra \filipe{execução de toda a amostra?}, 1018 \textit{releases} executaram com sucesso, enquanto que 1314 \textit{releases} resultaram em erros no \textit{script install/test}, e foram analisadas manualmente. A Tabela \ref{tab:res_rq1_1} contém os resultados prévios sem a análise manual, ou seja, são dados apenas da execução dos pacotes. \filipe{Isso aqui parece muito mais ``método'' do que resultado.}
-
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-                    & Pacotes & \textit{Releases} \\ \hline
-    Total           & 384     & 4544     \\
-    Executado       & 384     & 2332     \\
-    Não executado   & 0       & 2242     \\
-    Sucesso         & 164     & 1018     \\
-    Erro            & 220     & 1314     \\ \hline
-\end{tabular}
-\caption{Resultado da execução, por pacotes e \textit{releases}}
-\label{tab:res_rq1_1}
-\end{table}
-
-Após executarem, todas as \textit{releases} \filipe{Não entendo o que é ``executar uma release''} que resultaram em erro foram analisadas manualmente para separar os erros falso-positivos dos erros reais \filipe{foram analisadas para se confirmar a origem do erro: uma chamada à uma função do provedor que contém uma breaking change ou alguma alteração realizada pelo cliente.}. Conforme explicado na Seção \ref{apr:rq1}, os erros do tipo falso-positivos são erros que foram gerados pela falta de alguma configuração, ou seja, não são erros reais mas, devido uma configuração não realizada, a execução resultou em erro \filipe{acho que um exemplo ia bem aqui. Além disso não está claro que você você quer dizer com ``configuração não realizada''. O cliente deveria configurar algo e não fez?}. Os erros falso-positivos mais comuns estavam relacionados a serviços que necessitavam de configurações prévias, tais como o \textit{mysql} e o \textit{mongodb}, que por vezes necessitavam de tabelas, senhas, \textit{scripts}, entre outras configurações para que os pacotes executassem com sucesso \filipe{OK, ficou mais claro.}. Após a análise manual, foi constatado um total de 37 pacotes com falso-positivos em todas as suas \textit{releases}, totalizando 172 \textit{releases} e mais 238 \textit{releases} que impactaram parcialmente outros pacotes, ou seja, não foram o único tipo de erro no pacote. Assim, todos os 37 pacotes e as 410 \textit{releases} foram consideradas como se estivessem executadas com sucesso. Dessa maneira, após a análise prévia, os dados atualizados são mostrados na Tabela \ref{tab:res_rq1_2}.
-
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-                    & Pacotes & \textit{Releases} \\ \hline
-    Sucesso         & 201     & 1428     \\
-    Erro            & 183     & 904     \\ \hline
-\end{tabular}
-\caption{Resultado da execução, contabilizando os falso-positivos, por pacotes e \textit{releases}}
-\label{tab:res_rq1_2}
-\end{table}
-
-Então, foi realizado a última etapa da análise dos pacotes nesta questão de pesquisa, que se deu na identificação dos casos de erros internos, \textit{non-break change} e \textit{break change}. \filipe{Resultados e Método está bem embaralhado ... acho que ajuda a leitura se pudéssemos separá-los} Esses casos são realmente erros e foram contabilizados como erros. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram casos de \textit{non-break change}. Por fim, 39 pacotes sofreram \textit{break changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um pacote que sofreu uma \textit{break change}, por exemplo, pode ter sofrido também com erros internos ou \textit{non-break change}, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, sem que houvesse influência dos provedores, 213 \textit{releases} com erros do tipo \textit{non-break changes}, 190 erros do caso de \textit{break changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro e, por isso, foram marcados como \textit{não descobertos}. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados. Finalmente, a porcentagem de pacotes atingidos por uma ou mais \textit{breaking changes} representa 10.15\% da amostra, enquanto que a porcentagem de \textit{releases} que foram afetadas por \textit{breaking changes} representa 8.15\% de todos as \textit{releases} executadas. \filipe{A primeira frase do primeiro parágrafo dos ``Resultados'' que eu esperava ler é algo do tipo: ``X\% das releases de pacotes clientes apresentam um defeito devido a uma breaking change.''. A primeira frase do segundo parágrafo eu esperava que fosse algo do tipo ``Y\% das releases dos pacotes do provedor causam uma breaking change em pelo menos um pacote cliente.'' Nesse momento está difícil orquestrar os resultados ...}
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.4]{figuras/result_rq1_g.png}
-    \caption{Resultado da execução e da análise manual, por pacotes e por \textit{releases}}
-    \label{fig:res_rq1_g}
-\end{figure}{}
-
 \subsubsection{Relação das \textit{releases} do cliente com os provedores e as \textit{breaking changes}}
-
+\filipe{A primeira frase do primeiro parágrafo dos ``Resultados'' que eu esperava ler é algo do tipo: ``X\% das releases de pacotes clientes apresentam um defeito devido a uma breaking change.''. A primeira frase do segundo parágrafo eu esperava que fosse algo do tipo ``Y\% das releases dos pacotes do provedor causam uma breaking change em pelo menos um pacote cliente.'' Nesse momento está difícil orquestrar os resultados ...}
 Após a análise manual em cada uma das \textit{releases} que resultaram em erro, foi constatado um total de 39 (10.15\%) pacotes que foram impactados por \textit{breaking changes}. \filipe{Agora sim ... fácil entender e responde à RQ!} Esses pacotes sofreram com \textit{breaking changes} em pelo menos uma de suas \textit{releases}. Desde pacotes com uma \textit{release} executada, até os pacotes com mais de 100 \textit{releases} executadas foram impactados e, de maneira análoga, pacotes com 1 provedor até pacotes com mais de 100 provedores também foram afetados por \textit{break changes}. \filipe{Certo ... mas aqui você poderia me dizer qual a correlação entre o número de releases afetadas por uma breaking change e o número de releases e provedores. Acredito que exista alguma correlação.} Assim sendo, o fator determinante para a manifestação de uma \textit{break change} não é apenas o tamanho do pacote cliente, nem tão pouco a quantidade de provedores que esse pacote possui. \filipe{Não sei se você pode dizer isso sem ao menos descrever essa correlação!}
 
 A proporção com o qual o pacote foi atingido \filipe{impactado? use sempre a mesma palavra (corrija no resto do texto), eu prefiro impactado} também é um ponto importante a se considerar. Realizar a análise dos pacotes sem considerar o impacto que as \textit{break changes} causaram, não é justo. Por exemplo, o pacote \textit{assetgraph-builder}\footnote{https://www.npmjs.com/package/assetgraph-builder} possui 140 \textit{releases} que foram executadas, resultando em 23 (16.4\%) \textit{releases} que foram impactadas por \textit{breaking changes}. Já o pacote \textit{ember-cli-chartjs}\footnote{https://www.npmjs.com/package/ember-cli-chartjs}, que contém 7 \textit{releases} que foram executadas, resultou em 6 (85.7\%) \textit{releases} com \textit{breaking changes}. Essa discrepância no percentual ocorre pois a quantidade de \textit{break changes} não está somente relacionada com a quantidade de  \textit{releases} que esses pacotes contêm, mas também está relacionada com os provedores, uma vez que eles também influenciam na manifestação de uma \textit{break change}, pois são eles os causadores. \filipe{Mostre uma scatterplot com o número total de releases vs. a proporção de releases impactada por uma breaking change}
