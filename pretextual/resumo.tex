@@ -1,13 +1,10 @@
 \begin{resumo}
 %Elemento obrigatório, constituído de uma sequência de frases concisas e objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados, resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do trabalho (palavras-chave).
 
-
-TEXTO
-
 % TODO: se possível, escreva um resumo estruturado. Para TCC 1, o resumo estruturado teria os seguintes elementos:
-% \textbf{Contexto:} \\
-% \textbf{Objetivo:} \\
-% \textbf{Método:} \\
+\textbf{Contexto:} o \textit{npm} é largamente utilizado e é o maior repositório para uma dada linguagem. Os pacotes hospedados no \textit{npm} dependem um dos outros, criando uma rede de interconectividade entre eles. Entretanto, os provedores evoluem independentemente dos seus clientes e, por vezes, introduzem alterações que podem causar um comportamento inesperado nos clientes. Essas alterações são as \textit{breaking changes} e se tornam um problema quando os clientes as recebem, mas não deveriam receber.\\
+\textbf{Objetivo:} este trabalho propõe mensurar e categorizar as \textit{breaking changes} e analisar como os clientes se recuperam delas.\\
+\textbf{Método:} de uma amostra dos pacotes do \textit{npm}, copiá-los localmente, resolver a versão dos seus provedores para a última versão disponível no momento da \textit{release} do cliente. Posteriormente, executar o pacote através dos \textit{scripts npm install/npm test}. Então, para cada \textit{release} do cliente que resultou em erro, verificar no código da \textit{release} e no repositório do provedor para confirmar se o erro foi causado pelo provedor, sendo então uma \textit{breaking change}.\\
 % \textbf{Resultados esperados:} 
 % ou, para TCC 2:
 % \textbf{Contexto:} \\
@@ -17,5 +14,5 @@ TEXTO
 % \textbf{Conclusões:}
 
 % Palavras-chaves, separadas por ponto (tente não definir mais do que cinco)
-\palavraschaves{}
+\palavraschaves{\textit{npm}. \textit{Breaking change}. Versionamento Semântico. Dependências}
 \end{resumo}
