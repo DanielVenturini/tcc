@@ -6,15 +6,15 @@ Neste capítulo encontram-se os resultados preliminares da primeira e da segunda
 \section{QP1. Com que frequência \textit{breaking changes} impactam os clientes}
 \label{res:qp1}
 
-\subsubsection{\textbf{10.1\% dos pacotes e 8.1\% das \textit{releases} sofreram \textit{breaking changes}}}
+\subsubsection{\textbf{10.1\% dos clientes e 8.1\% das \textit{releases} sofreram \textit{breaking changes}}}
 
-Após os pacotes/\textit{releases} executarem, os que geraram erros foram analisados para se confirmar a origem do erro: uma chamada à uma função do provedor que contém uma \textit{breaking change} ou alguma alteração realizada pelo cliente. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram algum dos casos particulares de \textit{breaking change}. Por fim, 39 pacotes sofreram \textit{breaking changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um pacote que sofreu uma \textit{breaking change}, por exemplo, pode ter sofrido também com erros internos, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, 213 \textit{releases} com erros dos casos particulares de \textit{breaking changes}, 190 erros do caso de \textit{breaking changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados. Assim, os dados sobre os pacotes e \textit{releases} que sofreram com \textit{breaking changes} serão utilizados para responder as demais questões de pesquisa.
+Após os clientes/\textit{releases} executarem, os que geraram erros foram analisados para se confirmar a origem do erro: uma chamada à uma função do provedor que contém uma \textit{breaking change} ou alguma alteração realizada pelo cliente. Do total de 184 clientes com erro, 96 sofreram casos de erros internos, enquanto que 45 sofreram algum dos casos particulares de \textit{breaking change}. Por fim, 39 clientes sofreram \textit{breaking changes} em uma de suas \textit{releases}. Também, em 31 clientes houve alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um cliente que sofreu uma \textit{breaking change}, por exemplo, pode ter sofrido também com erros internos, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 907 \textit{releases} que sofreram algum erro, foram identificadas 431 \textit{releases} com erros internos, 213 \textit{releases} com erros dos casos particulares de \textit{breaking changes}, 190 erros do caso de \textit{breaking changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro. A Figura \ref{fig:pre_res_rq1} contém os resultados em função das \textit{releases}. Assim, os dados sobre os clientes e \textit{releases} que sofreram com \textit{breaking changes} serão utilizados para responder as demais questões de pesquisa.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.5]{figuras/general_results.pdf}
-    \caption{Resultado da execução e da análise manual, por pacotes e por \textit{releases}}
-    \label{fig:res_rq1_g}
+    \includegraphics[scale=0.7]{figuras/pre_res_rq1.pdf}
+    \caption{Resultado dos casos de erros em função das \textit{releases}}
+    \label{fig:pre_res_rq1}
 \end{figure}{}
 
 \section{QP2. Como os provedores introduzem \textit{breaking changes} em uma \textit{release}}
@@ -22,7 +22,7 @@ Após os pacotes/\textit{releases} executarem, os que geraram erros foram analis
 
 \subsubsection{\textbf{Classificação das \textit{Breaking changes}}}
 
-Ao todo, foram 43 casos de \textit{breaking changes} distribuídas em 39 clientes. Todos esses casos foram agrupados em 8 diferentes categorias das quais se encaixavam. A Tabela \ref{tab:bc_category} apresenta cada uma dessas categorias, bem como a quantidade de pacotes e a quantidade de \textit{releases} que cada categoria atingiu.
+Ao todo, foram 43 casos de \textit{breaking changes} distribuídas em 39 clientes. Todos esses casos foram agrupados em 8 diferentes categorias das quais se encaixavam. A Tabela \ref{tab:bc_category} apresenta cada uma dessas categorias, bem como a quantidade de clientes e a quantidade de \textit{releases} que cada categoria atingiu.
 
 \begin{table}[]
 \begin{tabular}{|l|c|c|c|c|}
@@ -44,10 +44,9 @@ Arquivo não encontrado       & 1               & 2,32 & 4                      
 \end{table}
 
 A seguir, encontra-se uma descrição sobre cada categoria.
-\daniel{Removi as figuras, acho que fica melhor no TCC2?}
 
 \begin{itemize}
-    \item \textbf{Alteração de regras}: este caso foi o principal que impactou os pacotes. Essa categoria contém os casos de \textit{breaking change} no qual os provedores possuíam um determinado comportamento, mas alteraram algumas de suas regras/funcionalidades e impactaram os seus clientes. Não foi uma simples alteração no código, tal como uma alteração de tipo de variáveis, ou um código escrito de maneira errada, mas sim uma regra no qual o cliente tinha como sólida, foi alterada; %Por exemplo, o pacote \textit{request@2.18.0} introduziu uma alteração em seu código\footnote{https://github.com/request/request/commit/d05b6ba72702c2411b4627d4d89190a5f2aba562\#diff-168726dbe96b3ce427e7fedce31bb0bcR857}, como pode ser visto na Figura \ref{fig:bc_category_change_rule_1}.
+    \item \textbf{Alteração de regras}: este caso foi o principal que impactou os clientes. Essa categoria contém os casos de \textit{breaking change} no qual os provedores possuíam um determinado comportamento, mas alteraram algumas de suas regras/funcionalidades e impactaram os seus clientes. Não foi uma simples alteração no código, tal como uma alteração de tipo de variáveis, ou um código escrito de maneira errada, mas sim uma regra no qual o cliente tinha como sólida, foi alterada; %Por exemplo, o pacote \textit{request@2.18.0} introduziu uma alteração em seu código\footnote{https://github.com/request/request/commit/d05b6ba72702c2411b4627d4d89190a5f2aba562\#diff-168726dbe96b3ce427e7fedce31bb0bcR857}, como pode ser visto na Figura \ref{fig:bc_category_change_rule_1}.
 
     %\begin{figure} \centering \includegraphics[scale=0.6]{figuras/bc_category_change_rule_1.png} \caption{Alteração de regra de funcionamento do \textit{request}} \label{fig:bc_category_change_rule_1} \end{figure}{}
 
