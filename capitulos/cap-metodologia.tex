@@ -16,7 +16,7 @@ O conjunto de dados utilizado neste trabalho foi extraído do registro do \gls{n
 
 A partir do \textit{timestamp} de uma \textit{release} qualquer, foram resolvidas as versões de cada um dos provedores que o cliente aceitava no momento de sua \textit{release}. Através dessa \textit{timestamp}, foi possível identificar qual a última versão de cada provedor que o cliente aceitava quando publicou sua \textit{release}. Por fim, foram excluídos desta base de dados todos os pacotes que não continham nenhum provedor, pois quando um pacote não contém provedores, não há como sofrer com \textit{breaking changes}. Dessa maneira, a base final contém um total de 366,629 pacotes do \gls{npm}.
 
-\section{Coleta da Amostra}
+\section{Amostragem}
 \label{sec:col_amostra}
 % para remover a lista de siglas, foi utilizado um \textit no http
 Para este trabalho, foi utilizada uma amostra do conjunto de dados que foi especificado na Seção \ref{sec:col_base}, que contém um total de \textit{366K} pacotes e por isso, realizar uma análise manual para essa quantidade de pacotes não é viável. Por isso, será utilizada uma amostra representativa contendo 384 pacotes, com base em um cálculo amostral\footnote{https://pt.surveymonkey.com/mp/sample-size-calculator/} com 95\% de confiança e $\pm$5\% de margem de erro. De cada pacote sorteado aleatoriamente, foi recuperado o seu arquivo metadado \textit{package.json} e verificado se o pacote cumpre três requisitos: possuir um \textit{script} de teste não vazio e diferente do \textit{script} padrão de teste do \gls{npm}: \textit{Error: no test specified}; possuir a \textit{url} do repositório do pacote; e o repositório do pacote precisa existir -- será esperado de uma requisição \textit{HyperText Transferer Protocol} (HTTP) para o repositório o código \textit{200} indicando sua existência. Todos esses requisitos foram analisados recuperando a última \textit{release} disponível.
@@ -29,7 +29,7 @@ Para este trabalho, foi desenvolvida uma ferramenta chamada \textit{BCDetect} di
 
 \begin{figure}
     \centering
-    \includegraphics[scale=2]{figuras/bcdetect_work.png}
+    \includegraphics[scale=0.9]{figuras/bcdetect_work.pdf}
     \caption{Estrutura de dados para representar o pacote \textit{buffer-includes}}
     \label{fig:bc_work}
 \end{figure}{}
@@ -69,7 +69,7 @@ O chaveamento de versões do \textit{Node.js} é necessário pois as versões \t
 
 % 20 pacotes sofreram com esse problema, resultando em 101 erros que ocorreram por causa do parser. Além, mais 58 release resultaram em erro apenas porque o parser não recuperou alguma dependência. Assim, os dados abaixo estão considerando que esses erros não ocorreram
 
-Ao todo, 384 pacotes clientes foram utilizados nesta pesquisa e foram executadas o \textit{script install/test} em pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 220 resultaram em erros para alguma de suas \textit{releases}. Já analisando os resultados por \textit{releases}, de todas as 4544, foram executadas um total de 2332 \textit{releases}, enquanto que 2242 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, ou não continham algum \textit{script} de teste válido. Após o término da execução, 1018 \textit{releases} executaram com sucesso, enquanto que 1314 \textit{releases} resultaram em erros no \textit{script install/test}. A Tabela \ref{tab:res_rq1_1} contém os resultados prévios sem que os pacotes que resultaram em erro fossem analisados, ou seja, são dados apenas da execução dos pacotes.
+Ao todo, 384 clientes foram utilizados nesta pesquisa e foram executadas o \textit{script install/test} em pelo menos uma de suas \textit{releases}. Desses 384 pacotes, 220 resultaram em erros para alguma de suas \textit{releases}. Já analisando os resultados por \textit{releases}, de todas as 4544, foram executadas um total de 2332 \textit{releases}, enquanto que 2242 \textit{releases} não foram executadas pois não haviam alterações nas \textit{releases} dos provedores, ou não continham algum \textit{script} de teste válido. Após o término da execução, 1018 \textit{releases} executaram com sucesso, enquanto que 1314 \textit{releases} resultaram em erros no \textit{script install/test}. A Tabela \ref{tab:res_rq1_1} contém os resultados prévios sem que os pacotes que resultaram em erro fossem analisados, ou seja, são dados apenas da execução dos pacotes.
 
 \begin{table}[]
 \centering
@@ -99,12 +99,3 @@ Após executarem, todas as 1314 \textit{releases} que resultaram em erros foram 
 \caption{Resultado da execução, contabilizando os falso-positivos, por pacotes e \textit{releases}}
 \label{tab:res_rq1_2}
 \end{table}
-
-Então, foi realizada a última etapa da análise dos pacotes para se confirmar a origem do erro: uma chamada à uma função do provedor que contém uma \textit{breaking change} ou alguma alteração realizada pelo cliente. Do total de 183 pacotes com erro, 96 sofreram casos de erros internos, enquanto que 45 pacotes sofreram algum dos casos particulares de \textit{breaking change}. Por fim, 39 pacotes sofreram \textit{breaking changes} em uma de suas \textit{releases}. Também, em 31 pacotes houveram alguma \textit{release} da qual não foi encontrado o motivo do erro. Porém, um pacote que sofreu uma \textit{breaking change}, por exemplo, pode ter sofrido também com erros internos, e vice-versa, pois um caso não influência na ocorrência dos demais. Por isso, os resultados são melhores apresentados em função das \textit{releases}, uma vez que as \textit{releases} só podem sofrer com apenas um tipo de erro. Dessa maneira, do total de 904 \textit{releases} que sofreram algum erro, foram identificadas 428 \textit{releases} com erros internos, 213 \textit{releases} com erros dos casos particulares de \textit{breaking changes}, 190 erros do caso de \textit{breaking changes} e em 73 \textit{releases} não foi possível descobrir o motivo que gerou o erro. A Figura \ref{fig:res_rq1_g} contém todos os dados dos resultados. Assim, os dados sobre os pacotes e \textit{releases} que sofreram com \textit{breaking changes} serão utilizados para responder as questões de pesquisa.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figuras/general_results.pdf}
-    \caption{Resultado da execução e da análise manual, por pacotes e por \textit{releases}}
-    \label{fig:res_rq1_g}
-\end{figure}{}

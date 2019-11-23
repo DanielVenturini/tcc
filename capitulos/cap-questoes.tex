@@ -3,12 +3,12 @@
 
 Este trabalho propõe um estudo sobre as \textit{breaking changes} e seus impactos no ecossistema do \gls{npm}. Para isso, três questões de pesquisa foram desenvolvidas para que seja possível executar o estudo. A seguir, há a motivação para cada questão de pesquisa. Nesta Seção estão descritos os métodos utilizados para responder cada uma das questões de pesquisa.
 
-\section{QP1. Com que frequência \textit{breaking changes} impactam nos pacotes clientes?}
+\section{QP1. Com que frequência \textit{breaking changes} impactam os clientes?}
 \label{sec:qp1}
 
 \subsubsection{Motivação}
 \label{sec:qp1:motivation}
-No ecossistema do \gls{npm}, uma \textit{release} que contenha um erro pode afetar uma grande quantidade de pacotes, uma vez que a rede de dependências do npm é relativamente densa \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos pacotes clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os clientes podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores -- o que é o padrão do \gls{npm}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são ou não \textit{breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, será quantificado as manifestações das \textit{breaking changes} nos pacotes clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a tomar melhores decisões sobre como e quando atualizar a versão do seu provedor.
+No ecossistema do \gls{npm}, uma \textit{release} que contenha um erro pode afetar uma grande quantidade de pacotes, uma vez que a rede de dependências do npm é relativamente densa \cite{teorical_reference:npm_2}. Para evitar que \textit{breaking changes} se manifestem nos clientes, os provedores introduzem as \textit{breaking changes} em \textit{releases major}, seguindo o padrão do Versionamento Semântico, e os clientes podem utilizar \textit{strings semver} para aceitar apenas as versões \textit{minor} e \textit{patch} dos provedores -- o que é o padrão do \gls{npm}. Entretanto, nem sempre o provedor é capaz de distinguir se suas alterações são ou não \textit{breaking changes} \cite{noregrets2018}, ou, muitas vezes, as \textit{breaking changes} são introduzidas sem que o provedores percebam. Portanto, quando as \textit{breaking changes} são introduzidas em \textit{releases minor} ou \textit{patch}, elas podem causar comportamentos inesperados no cliente. Nesta RQ, será quantificado as manifestações das \textit{breaking changes} nos clientes. Assim, entender a frequência que os provedores publicam \textit{breaking changes} que afetam os clientes pode ajudar os clientes a tomar melhores decisões sobre como e quando atualizar a versão do seu provedor.
 
 \subsubsection{Método}
 \label{sec:qp1:approach}
@@ -44,8 +44,7 @@ Para quantificar as \textit{breaking changes}, foi necessário diferenciar entre
 
 Portanto, cada erro foi analisado manualmente, com alterações no código do cliente, para certificar se o erro era um falso-positivo, um erro interno, uma \textit{non-breaking change} ou uma \textit{breaking change}. Essa separação foi importante para esta e para as próximas questões de pesquisa. Com isso, foi possível quantificar os casos \textit{breaking changes} por pacotes e por \textit{releases}.
 
-
-\section{QP2. Como os pacotes provedores introduzem \textit{breaking changes} em uma \textit{release}?}
+\section{QP2. Como os provedores introduzem \textit{breaking changes} em uma \textit{release}?}
 \label{sec:qp2}
 
 \subsubsection{Motivação}
@@ -66,12 +65,15 @@ O objetivo da análise manual é descobrir o motivo que originou uma \textit{bre
     \item Ferramentas de \textit{diff}: o uso da ferramenta que realizam o  \textit{diff} entre duas \textit{releases} de um pacote foi muito importante. Foi utilizado a ferramenta \textit{npm-diff}\footnote{https://github.com/danielventurini/npm-diff} e a ferramenta \textit{compare}\footnote{https://github.com/danielventurini/cnlg/compare/1.1.0..1.1.1} do \textit{GitHub}. Com isso, foi possível verificar o que foi adicionado e removido do código do provedor -- até mesmo do cliente -- em um determinado intervalo de versões. Assim, conhecendo exatamente o que foi introduzido e removido em uma determinada \textit{release}, torna-se mais fácil categorizar o tipo de alteração.
 \end{itemize}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.45]{figuras/bc_documentation.jpeg}
-    \caption{Documentação de uma \textit{breaking change} no \textit{CHANGELOG} e nas \textit{release-notes}}
-    \label{fig:bc_documentation}
-\end{figure}{}
+\begin {figure} [h!]
+   \centering
+   \mbox {
+        \subfigure[]{\label{fig:result_rq1_once_twice_three_1} \includegraphics[scale=0.5]{figuras/bc_documentation_mocha.pdf}}\quad
+        \subfigure[]{\label{fig:result_rq1_once_twice_three_2} \includegraphics[scale=0.5]{figuras/bc_documentation_other.pdf}}
+    }
+    \caption{Quantidade de pacotes/\textit{releases} afetados pelo número de casos de \textit{break change}}
+    \label{fig:result_rq1_once_twice_three}
+\end{figure}
 
 Após descobrir as alterações que introduziram uma \textit{breaking change}, categorias foram criadas para agrupar as \textit{breaking changes}. Por exemplo, quando um erro tratava-se de uma alteração de \gls{API}, uma categoria chamada \textit{Função Renomeada} foi criada e as demais \textit{breaking changes} que possuem características comuns a essa também foram categorizadas como \textit{Função Renomeada}. Assim será possível quantificar cada uma das categorias e visualizar as mais comuns. E o mesmo processo foi realizado para as demais \textit{breaking changes}, sempre visando criar categorias da maneira mais genérica que agrupassem os erros semelhantes.
 
@@ -87,7 +89,7 @@ Então, para todas as \textit{releases} analisadas manualmente, foram salvas as 
 
 %---------------------------------------------------%
 
-\section{QP3. Como os pacotes clientes se recuperam das \textit{breaking changes}?}
+\section{QP3. Como os clientes se recuperam das \textit{breaking changes}?}
 \label{sec:qp3}
 
 \subsubsection{Motivação}
