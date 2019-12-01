@@ -7,7 +7,7 @@ O \textit{npm} contém o maior número de dependências entre os diversos gerenc
 
 As \textit{breaking changes}, descritas na Seção \ref{ref-teo:breaking_change}, são alterações nos provedores que os tornam incompatíveis com as suas versões anteriores \cite{intro:break_change}, fazendo com que os provedores tenham um comportamento inesperado. Um exemplo de \textit{breaking change} ocorreu no pacote \textit{optipng},\footnote{https://www.npmjs.com/package/optipng} no qual o método \textit{OptiPng.getBinaryPath} da versão \textit{0.1.1} foi renomado para \textit{OptiPng.getBinPath}\footnote{https://github.com/papandreou/node-optipng/compare/v0.1.1...v0.2.0\#diff-366460cd3c3170c9c84340631e6f8e4fL22-R19} na versão \textit{0.2.0}, fazendo com que todos os clientes que tinham acesso àquele método não o tivessem mais. Assim, o \cref{cod:bc:optipng} executa normalmente no cliente com o \textit{optipng@0.1.1}, mas ao atualizar para o \textit{optipng@0.2.0}, esse código deixa de funcionar devido à introdução de uma \textit{breaking change}.
 
-\begin{lstlisting}[style=Javascript, label=cod:bc:optipng, caption={Código que sofre \textit{breaking change} do pacote \textit{optipng}}]
+\begin{lstlisting}[style=Javascript, label=cod:bc:optipng, caption={Código que sofre \textit{breaking change} do pacote \textit{optipng}.}]
 var OptiPng = require('optipng');
 var cb = {apply: () => {}};
 OptiPng.getBinaryPath(cb);
@@ -18,7 +18,7 @@ Apesar de ser um erro facilmente detectável pelo provedor, foi consertado somen
 \begin{figure}
     \centering
     \includegraphics[scale=0.75]{figuras/bc_example.pdf}
-    \caption{\textit{Commit} que corrigiu a \textit{breaking change}}
+    \caption{\textit{Commit} que corrigiu a \textit{breaking change}.}
     \label{fig:bc_optipng}
 \end{figure}{}
 
