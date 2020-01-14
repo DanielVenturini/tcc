@@ -83,14 +83,14 @@ Ao todo, foram 43 casos de \textit{breaking changes} distribuídas em 39 cliente
 \centering
 \textbf{Categoria}           & \textbf{Pacotes afetados} & \textbf{\%}   & \textbf{\textit{Release} afetadas} & \textbf{\%}    \\ \hline
 Alteração de regras          & 13              & 30,23 & 67                          & 34,71 \\
-Provedores incompatíveis     & 8               & 18,6  & 32                          & 16,58 \\
+Provedores incompatíveis     & 10              & 23,25 & 37                          & 19,17 \\
 Alteração de tipo de objeto  & 7               & 16,27 & 22                          & 11,39 \\
 Objeto indefinido            & 4               & 9,3   & 25                          & 12,95 \\
-Código errado                & 4               & 9,3   & 13                          & 6,73  \\
 Código não-atualizado        & 3               & 6,97  & 25                          & 12,95 \\
-Renomeação de função         & 3               & 6,97  & 5                           & 2,59  \\
+Código errado                & 3               & 6,97  & 11                          & 5,69  \\
+Renomeação de função         & 2               & 4,65  & 2                           & 1,03  \\
 Arquivo não encontrado       & 1               & 2,32  & 4                           & 2,07  \\ \hline
-\textbf{Total}               & 43              &       & 190                         &       \\ \hline
+\textbf{Total}               & 43              &       & 193                         &       \\ \hline
 \end{tabular}
 \caption{Categorias dos casos de \textit{breaking change}}
 \label{tab:bc_category}
@@ -119,7 +119,7 @@ A seguir, encontra-se uma descrição sobre cada categoria e um exemplo de como 
         \label{fig:bc_category_incompatibles_providers}
     \end{figure}{}
 
-    A \textit{releases escope@3.4} realizou uma alteração no seu código, de acordo com a Figura \ref{fig:bc_category_incompatibles_providers}, mas que não reflete em um erro. Essa alteração impactou diretamente o pacote \textit{babel-eslint}, mesmo o pacote \textit{escope} não sendo um provedor direto do \textit{babel-eslint} e não ter introduzido um erro\footnote{https://github.com/estools/escope/issues/99\#issuecomment-178151491}. Com isso, há uma incompatibilidade entre os provedores e essa incompatibilidade precisou ser corrigida pelo \textit{babel-eslint} e não pelo \textit{escope}. Essa foi a \textit{breaking change} que mais surgiu na análise manual pois, dos 43 casos, 5 (11.6\%) refletiam essa incompatibilidade, uma vez que o \textit{babel-eslint} é provedor direto de 5.8\% de toda o conjunto de dados.
+    A \textit{releases escope@3.4} realizou uma alteração no seu código, de acordo com a Figura \ref{fig:bc_category_incompatibles_providers}, mas que não reflete em um erro. Essa alteração impactou diretamente o pacote \textit{babel-eslint}, mesmo o pacote \textit{escope} não sendo um provedor direto do \textit{babel-eslint} e não ter introduzido um erro\footnote{https://github.com/estools/escope/issues/99\#issuecomment-178151491}. Com isso, há uma incompatibilidade entre os provedores e essa incompatibilidade precisou ser corrigida pelo \textit{babel-eslint} e não pelo \textit{escope}. Essa foi a \textit{breaking change} que mais surgiu na análise manual pois, dos 43 casos, 5 (11.6\%) refletiam essa incompatibilidade, uma vez que o \textit{babel-eslint} é provedor direto de 5.8\% de todo o conjunto de dados.
 
     \item \textbf{Alteração de tipo de objeto}: essa é uma categoria de \textit{break changes} facilmente detectável em linguagens fortemente tipadas, mas no \textit{Javascript} representam um tipo de \textit{break change} que, por muitas vezes, pode nem afetar o código do cliente. Mas, neste trabalho, foram detectados 8 (18.6\%) de casos nos quais os provedores alteraram o tipo de alguma variável.
 
