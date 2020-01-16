@@ -72,25 +72,26 @@ A Figura \ref{fig:result_rq1_once_twice_three_2} apresenta três \textit{boxplot
 %O \textit{npm} contém a maior rede de dependências entre os pacotes dentre os principais repositórios, conforme explicado na Seção \ref{ref-teo:npm}. Nesse emaranhado de projetos dependendo mutuamente uns dos outros, não é difícil pressupor que não somente os provedores diretos podem introduzir as \textit{break changes}. Assim como o cliente usa o provedor direto, o provedor indireto é usado da mesma maneira pelo provedor direto, fazendo do provedor indireto um indivíduo muito influente para a execução do cliente.
 
 \section{RQ2. Como os pacotes provedores introduzem \textit{breaking changes} em uma \textit{release}?}
+\label{sec:qp2:results}
 
 
 \subsubsection{Categorias de \textit{Breaking changes}}
-Ao todo, foram 43 casos de \textit{breaking changes} distribuídas em 39 clientes. Todos esses casos foram agrupados em 8 diferentes categorias das quais se encaixavam os casos semelhantes. A Tabela \ref{tab:bc_category} apresenta cada uma dessas categorias, bem como a quantidade de pacotes e a quantidade de \textit{releases} que cada categoria atingiu.
+Ao todo, foram 45 casos de \textit{breaking changes} distribuídas em 40 clientes. Todos esses casos foram agrupados em 8 diferentes categorias das quais se encaixavam os casos semelhantes. A Tabela \ref{tab:bc_category} apresenta cada uma dessas categorias, bem como a quantidade de pacotes e a quantidade de \textit{releases} que cada categoria atingiu.
 
 \begin{table}[]
 \begin{tabular}{|l|c|c|c|c|}
 \hline
 \centering
 \textbf{Categoria}           & \textbf{Pacotes afetados} & \textbf{\%}   & \textbf{\textit{Release} afetadas} & \textbf{\%}    \\ \hline
-Alteração de regras          & 13              & 30,23 & 67                          & 34,71 \\
-Provedores incompatíveis     & 10              & 23,25 & 37                          & 19,17 \\
-Alteração de tipo de objeto  & 7               & 16,27 & 22                          & 11,39 \\
-Objeto indefinido            & 4               & 9,3   & 25                          & 12,95 \\
-Código não-atualizado        & 3               & 6,97  & 25                          & 12,95 \\
-Código errado                & 3               & 6,97  & 11                          & 5,69  \\
-Renomeação de função         & 2               & 4,65  & 2                           & 1,03  \\
-Arquivo não encontrado       & 1               & 2,32  & 4                           & 2,07  \\ \hline
-\textbf{Total}               & 43              &       & 193                         &       \\ \hline
+Alteração de regras          & 14              & 31,11 & 67                          & 34,71 \\
+Provedores incompatíveis     & 11              & 24,44 & 37                          & 19,17 \\
+Alteração de tipo de objeto  & 7               & 15,55 & 22                          & 11,39 \\
+Objeto indefinido            & 4               & 8,88  & 25                          & 12,95 \\
+Código não-atualizado        & 3               & 6,66  & 25                          & 12,95 \\
+Código errado                & 3               & 6,66  & 11                          & 5,69  \\
+Renomeação de função         & 2               & 4,44  & 2                           & 1,03  \\
+Arquivo não encontrado       & 1               & 2,22  & 4                           & 2,07  \\ \hline
+\textbf{Total}               & 45              &       & 193                         &       \\ \hline
 \end{tabular}
 \caption{Categorias dos casos de \textit{breaking change}}
 \label{tab:bc_category}
@@ -114,7 +115,7 @@ A seguir, encontra-se uma descrição sobre cada categoria e um exemplo de como 
 
     \begin{figure}
         \centering
-        \includegraphics[scale=0.7]{figuras/bc_category_incompatibles_providers.pdf}
+       \includegraphics[scale=0.7]{figuras/bc_category_incompatibles_providers.pdf}
         \caption{Alteração de código do \textit{escope}}
         \label{fig:bc_category_incompatibles_providers}
     \end{figure}{}
@@ -169,12 +170,31 @@ A seguir, encontra-se uma descrição sobre cada categoria e um exemplo de como 
 
 \end{itemize}{}
 
+\subsubsection{Níveis do Versionamento Semântico nos quais as \textit{breaking changes} são introduzidas}
+O Versionamento Semântico foi desenvolvido para padronizar o versionamento de \textit{softwares} e facilitar para o cliente decidir quais as novas atualizações que ele deseja receber de um provedor. Entretanto, por vezes os desenvolvedores realizam o versionamento erroneamente, o que pode impactar os clientes negativamente, principalmente quando há \textit{breaking changes} em \textit{releases não-major}. Foi exatamente isso que ocorreu. Dos 45 casos de \textit{breaking changes}, 26 casos foram introduzidos no nível \textit{minor}; 16 casos, \textit{patch}; 2 casos, \textit{major}; e 1 caso foi introduzido em uma \textit{pre-release}, como pode ser visto na Figura \ref{fig:semver_levels}. Os casos de \textit{breaking changes} que foram introduzidos em \textit{releases major} ou \textit{pre-releases} são \textit{breaking changes} devidamente introduzidas, mas um provedor direto não tratou essas \textit{breaking changes} introduzidas por um provedor indireto, o que acarretou na manifestação da \textit{breaking change} no cliente.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.65]{figuras/semver_levels.pdf}
+    \caption{Porcentagem de \textit{breaking changes} em cada um dos níveis do Versionamento Semântico}
+    \label{fig:semver_levels}
+\end{figure}{}
+
+Mais da metade das \textit{breaking changes} foram introduzidas em \textit{releases minor} (57.78\%). Isso significa que, de acordo com as regras do Versionamento Semântico, os provedores tinham o interesse de publicar novas funcionalidades que mantivessem a compatibilidade com as \textit{releases} anteriores, mas essas novas funcionalidades resultaram em erros nos clientes. Entretanto, essas novas funcionalidades introduzidas pelos provedores podem caracterizar realmente casos de \textit{breaking changes}, no qual os provedores precisaram consertar o código, mas também podem ser apenas novas funcionalidades na qual os clientes precisaram se adequar, pois as \textit{breaking changes} foram causadas não por um erro nos provedores, mas sim por um erro de utilização nos clientes.
+\daniel{Será que é viável retomar o exemplo a seguir?}
+Foi exatamente isso que ocorreu no exemplo da Figura \ref{fig:bc_category_change_rule_1} em Categorias de \textit{Breaking Changes} na Seção \ref{sec:qp2:results}, na categoria \textit{Alterações de regras}, na qual é possível ver que o provedor desenvolveu uma nova funcionalidade que não continha um erro, mas acabou introduzindo uma \textit{breaking change} no cliente, e essa \textit{breaking change} não foi corrigida pelo provedor, uma vez que essa alteração apenas refletia uma evolução do provedor. Assim sendo, para o cliente o código se trata de uma \textit{breaking change}, mas para o provedor, não.
+
+Para verificar se as \textit{breaking changes} introduzidas em \textit{releases minor} refletem em \textit{breaking changes} no qual os provedores consertaram seu código, ou se refletem em uma nova funcionalidade que os clientes tiveram que se adequar, foi analisado para cada caso de \textit{breaking change} introduzida em \textit{releases minor}, qual pacote que consertou a \textit{breaking change} -- cliente ou provedor -- e qual foi o nível do Versionamento Semântico na qual a \textit{release} que contém a correção foi publicada. Esses dados estão na Figura \ref{fig:semver_fixed}, na qual, dos 26 casos de \textit{breaking changes} introduzidas em \textit{releases minor}, 10 casos foram consertados pelos provedores; 14 pelos clientes; e 2 casos não foram consertados por ambos.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{figuras/semver_fixed.pdf}
+    \caption{\textit{Breaking changes} consertadas pelo provedor e pelo cliente e os níveis do Versionamento Semântico das \textit{releases} com a correção}
+    \label{fig:semver_fixed}
+\end{figure}{}
+
+Na Figura \ref{fig:semver_fixed}, é possível verificar que mais da metade dos casos de \textit{breaking changes} que foram introduzidas em \textit{releases minor} (53.8\%) foram consertados pelos clientes. Isso significa que os provedores introduziram novas funcionalidades, que não refletiam em um erro, mas que causaram um comportamento inesperado nos clientes, e foram os clientes os responsáveis por consertar seus códigos para que a nova \textit{release} dos provedores, mesmo sendo retro-compatível, pudesse executar com sucesso. Assim, a maior parte das \textit{breaking changes} não ocorreram porque os provedores introduz um erro em seus códigos e esse erro é cascateado para os clientes, mas sim porque os clientes utilizam o provedor de maneira errada e necessitam consertar o seu código para se adequar às novas funcionalidades introduzidas pelos provedores. Isso é perceptível, pois quando os cliente consertam os seus códigos e os publicam, em 71.4\% dos casos são publicados em uma \textit{release patch}, ou seja, de acordo com as regras do Versionamento Semântico, os clientes estão consertando algum determinado erro, que pode ser o modo como os clientes utilizam os provedores.
+
+Quando os provedores consertam as \textit{breaking changes}, em 100\% dos casos essa correção é publicada em uma \textit{release patch}, que de acordo com as regras do Versionamento Semântico, são alterações no código que os provedores tinha a intenção de consertar algum determinado erro. Assim, pode-se afirmar que todos os 38.5\% dos casos de \textit{breaking changes} em \textit{releases minor} são realmente \textit{breaking changes} que deveriam ter sido publicadas em \textit{releases major}, mas que por algum motivo, os provedores introduziram em \textit{releases minor} e os clientes foram impactados por essas \textit{breaking changes}.
+
 \section{RQ3. Como os pacotes clientes se recuperam das \textit{breaking changes}?}
-
-
-
-
-
-
-
-
