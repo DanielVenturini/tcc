@@ -1,0 +1,19 @@
+\chapter{Ameaças à Validade}
+\label{cap:threats}
+Neste capítulo estão descritos os detalhes sobre as circunstâncias que podem fazer com que os resultados oscilem.
+
+\subsubsection{Ameaças à validade interna}
+A abordagem utilizada para a categorização das \textit{breaking changes} foi verificar o tipo de alteração que o provedor introduziu em uma \textit{release} e criar categorias nas quais os casos semelhantes sejam agrupados. Entretanto, há casos \textit{breaking changes} que se enquadram em mais de uma categoria. Considere que uma \textit{release} contenha várias alterações e esteja categorizada como \textit{Alteração de regras}, mas uma das alterações seja no tipo de objeto que é retornado ao cliente. Dessa maneira, o mesma caso de \textit{breaking change} se enquadra tanto na categoria \textit{Alteração de regras} quanto na \textit{Alteração de tipo de objeto}. Entretanto, como o provedor realizou alterações além do tipo do objeto, esse caso seria mais propenso à categoria \textit{Alteração de regras}.
+
+\subsubsection{Ameaças à validade externa}
+As \textit{breaking changes} foram identificadas a partir da execução dos \textit{scripts} de teste dos clientes. Quanto mais casos de testes e mais funções dos provedores os clientes executam, maiores são as chances dos clientes serem impactados por uma \textit{breaking change}. Desta maneira, um dos fatores determinantes para a ocorrência das \textit{breaking changes} são a qualidade dos testes que os clientes possuem e como eles utilizam os provedores, mas isso não foi analisado em nosso estudo.
+
+A maneira como um cliente se recupera de uma \textit{breaking change}, seja atualizando o seu código, seja fazendo um \textit{downgrade} na versão do provedor, ou tomando outra atitude, é algo variável. Quando dois clientes de um mesmo provedor são impactados pela mesma \textit{breaking change}, eles podem se recuperar de maneiras distintas, uma vez que não há uma maneira correta ou errada de se recuperar.
+
+\subsubsection{Ameaças à validade de construção}
+Após o repositório de um cliente ser copiado localmente, é executado o comando \texttt{git checkout} para restaurar os arquivos para exatamente os mesmo arquivos do momento da publicação de uma \textit{release}. O comando \texttt{git checkout} é executado sobre a \textit{branch master}, que é a \textit{branch} padrão. Dessa maneira, foi considerado que todas as \textit{releases} dos clientes foram publicadas a partir da \textit{branch master} de seu repositório. Assim, se algum cliente publicou uma \textit{release} de outra \textit{branch}, o comando \texttt{git checkout} foi realizado da mesma maneira, mas tendo efeito apenas na \textit{branch master}. O comando utilizado foi:
+
+\begin{lstlisting}[style=bash, label=cod:undefined_object]
+git checkout `git rev-list -1 --before=timestamp --after=timestamp master`
+\end{lstlisting}
+
