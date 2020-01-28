@@ -44,7 +44,7 @@ O \textit{SemVer} é uma \textit{string} de versionamento que especifica um inte
     \item \textit{Tilde Ranges (\textasciitilde)}: neste \textit{range}, o cliente especifica para o \textit{NPM} que somente as \textit{releases patch} do provedor são aceitas.
 \end{itemize}{}
 
-O \textit{npm} utiliza o padrão \textit{SemVer} no arquivo \textit{package.json} pois, através do \textit{SemVer}, o cliente pode decidir o quão flexível será receber as futuras \textit{releases} dos provedores \cite{decan}. Por exemplo, ao executar o \textit{npm install express --save}, para instalar o provedor \textit{express}\footnote{https://www.npmjs.com/package/express} por exemplo, o \textit{npm} -- além de descarregar esse provedor -- irá salvar no \textit{package.json} o nome do provedor com sua versão atual em modo \textit{range}, de acordo com a Figura \ref{fig:dep_express}.
+O \textit{npm} utiliza o padrão \textit{SemVer} no arquivo \textit{package.json} pois, através do \textit{SemVer}, o cliente pode decidir o quão flexível será receber as futuras \textit{releases} dos provedores \cite{decan}. Por exemplo, ao executar o \texttt{npm install express --save}, para instalar o provedor \textit{express}\footnote{https://www.npmjs.com/package/express} por exemplo, o \textit{npm} -- além de descarregar esse provedor -- irá salvar no \textit{package.json} o nome do provedor com sua versão atual em modo \textit{range}, de acordo com a Figura \ref{fig:dep_express}.
 
 \begin{figure}
     \centering

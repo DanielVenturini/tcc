@@ -211,7 +211,6 @@ Quando os provedores consertam as \textit{breaking changes}, em 100\% dos casos 
 
 \subsubsection{Relação entre as categorias das \textit{breaking changes} com os níveis do Versionamento Semântico nos quais foram introduzidas}
 
-
 Quando o provedor não sabe em qual nível do Versionamento Semântico uma determinada alteração deve ser introduzida, ou quando uma \textit{breaking change} é introduzida acidentalmente, o cliente pode ser impactado pela \textit{breaking change} introduzida  errôneamente em qualquer um dos níveis \textit{minor} ou \textit{patch} do Versionamento Semântico. No geral, as \textit{breaking changes} de uma determinada categoria seguem um padrão de versionamento. A Figura \ref{fig:semver_types} apresenta os casos de \textit{breaking changes} por categoria que foram inseridas em cada um dos níveis do Versionamento Semântico, sendo que os dados de cada categoria foram normalizados. \daniel{foi normalizado para ficar em porcentagem}
 
 \begin{figure}[!h]
@@ -227,22 +226,38 @@ Duas categorias que tiveram a mesma porcentagem foram a \textit{Alteração de r
 
 \section{RQ3. Como os pacotes clientes se recuperam das \textit{breaking changes}?}
 
-
 \subsubsection{Os clientes que se recuperaram das \textit{breaking changes}}
-Quando um provedor introduz uma \textit{breaking change}, o cliente tem três opções para se recuperar: alterar o seu código para que execute mesmo com a \textit{breaking change}; aguardar o provedor corrigir o erro e, logo após, uma pratica comum é alterar a versão aceita do provedor no \textit{package.json}; ou regredir a versão do provedor no \textit{package.json} para utilizar uma que não contenha \textit{breaking changes}. Entretanto, a questão é que, por vezes, os clientes realmente se recuperam das \textit{breaking changes} sem a intervenção dos provedores. Do total de 45 casos de \textit{breaking changes} 30 dos casos foram corrigidos pelos clientes contra 12 dos casos que foram corrigidos pelos provedores  e 3 casos não foram corrigidos por ambos.
 
-A Tabela \ref{tab:fix} apresenta a porcentagem das correções das \textit{breaking changes} pelos provedores e pelos clientes e a mediana do tempo gasto por cada um para que as \textit{breaking changes} fossem corrigidas. Os dias que os provedores gastam para corrigir as \textit{breaking changes} são maiores do que os gastos pelos clientes, uma vez que o provedor precisa ser alertado pelos clientes, análisar o caso, alterar o código, revisar as alterações e publicá-las. E muitas vezes, quando já está sendo preparada uma nova \textit{release}, os provedores podem corrigir a \textit{breaking change} mas publicá-las somente quando a proxima \textit{release} estiver pronta. Em contra partida, os clientes não precisam de todas essas etapas para se recuperar de uma \textit{breaking change}, uma vez que, eles podem simplesmente retroceder a versão do provedor no \textit{package.json} para uma em que não há \textit{breaking changes} e esperar que o mesmo publique uma \textit{release} com a correção. De todos os 30 casos de \textit{breaking changes} nos quais os clientes que corrigiram, em 20 casos foi alterada a versão do provedor no \textit{package.json} para uma versão anterior na qual não havia \textit{breaking changes} -- foi realizado um \textit{downgraded} na versão do provedor --, e a mediana do tempo gasto para os clientes corrigirem a \textit{breaking change} com a alteração da versão do provedor é, também, de 4 dias. Entretanto, mesmo alguns casos no qual o provedor corrigiu o erro, ainda em dois casos os clientes realizaram o \textit{downgraded} do provedor.
+Quando um provedor introduz uma \textit{breaking change}, o cliente tem três opções para se recuperar: alterar o seu código para que execute mesmo com a \textit{breaking change}; aguardar o provedor corrigir o erro e, logo após, uma pratica comum é alterar a versão aceita do provedor no \textit{package.json}; ou regredir a versão do provedor no \textit{package.json} para utilizar uma que não contenha \textit{breaking changes}. A questão é que, por vezes, os clientes realmente se recuperam das \textit{breaking changes} sem a intervenção dos provedores. Do total de 45 casos de \textit{breaking changes} 30 dos casos foram corrigidos pelos clientes, enquanto que em 12 casos os provedores foram os responsáveis pela correção  e 3 casos não foram corrigidos por ambos.
+
+A Tabela \ref{tab:fix} apresenta a porcentagem das correções das \textit{breaking changes} pelos provedores e pelos clientes e a mediana do tempo gasto por cada um para que as \textit{breaking changes} fossem corrigidas. Os dias que os provedores gastam para corrigir as \textit{breaking changes} são maiores do que os gastos pelos clientes, uma vez que o provedor precisa ser alertado pelos clientes, analisar o caso, alterar o código, revisar as alterações e publicá-las. E muitas vezes, quando já está sendo preparada uma nova \textit{release}, os provedores podem corrigir a \textit{breaking change} mas publicá-la somente quando a próxima \textit{release} estiver pronta. Em contra partida, os clientes não precisam de todas essas etapas para se recuperar de uma \textit{breaking change}, uma vez que, eles podem simplesmente retroceder a versão do provedor no \textit{package.json} para uma em que não há \textit{breaking changes} e esperar que o mesmo publique uma \textit{release} com a correção.
 
 \begin{table}[!h]
-\centering
-	\begin{tabular}{|l|l|l|l|}
-		\hline
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
 		\centering
-		& Provedor    & Cliente     & Não corrigido                             \\ \hline
-		Corrigiu           & 12 (26.7\%) & 30 (66.7\%) & 3 (6.6\%)    \\ \hline
-		\textit{Dowgraded} & 2  (4.4\%)  & 20 (44.4\%) & -            \\ \hline
-		Dias (mediana)     & 35          & 4           & -            \\ \hline
+		& Provedor    & Cliente     & Não corrigido                             \\ \midrule
+		Corrigiu           & 26.7\% & 66.7\% & 6.6\%    \\ \hline
+		Dias (mediana)     & 35          & 4           & -            \\ \bottomrule
 	\end{tabular}
-	\caption{Pacote que corrigiu a \textit{breaking change}, os \textit{downgrade} e a mediana do tempo gasto para ser corrigida}
+	\caption{Pacote que corrigiu os casos de \textit{breaking changes} e a mediana do tempo gasto para serem corrigidos}
 	\label{tab:fix}
 \end{table}
+
+De todos os 30 casos de \textit{breaking changes} nos quais os clientes que corrigiram, em 20 (66.7\%) casos foi consertado apenas retrocedendo a versão do provedor no \textit{package.json} para uma que não havia \textit{breaking changes}, e a mediana do tempo gasto para os clientes corrigirem a \textit{breaking change} com a alteração da versão do provedor é, também, de 4 dias. A rapidez na correção por parte dos clientes reflete diretamente no tipo de correção que eles fizeram, pois 20 clientes apenas retrocederam a versão dos provedores no \textit{package.json}, que é uma prática comum e eficaz para se recuperar da \textit{breaking change} e não propaga-lá. Entretanto, mesmo em dois casos no qual os provedores corrigiram a \textit{breaking change}, os clientes retrocederam a versão do provedor.
+
+\subsubsection{Clientes que atualizaram para \textit{releases} com \textit{breaking changes}}
+
+Os clientes são facilmente impactados pelas \textit{breaking changes} quando a versão do provedor é salva em modo \textit{range} no \textit{package.json}, fazendo com que novas \textit{releases} sejam aceitas implicitamente. Entretanto, nem sempre o cliente é impactado por causa de uma \textit{release} que foi descarregada implicitamente pelo \textit{npm} devido ao \textit{range} do provedor. Há casos em que o cliente atualiza explicitamente a versão do provedor e o \textit{npm} descarrega uma \textit{release} com \textit{breaking changes}, que antes o cliente não seria impactado pois, por exemplo, a versão do provedor estava em modo específico. A Figura \ref{fig:recovery_clients} contém os dados dos casos de \textit{breaking changes} que impactaram os clientes implicitamente e explicitamente.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.45]{figuras/recovery_clients.pdf}
+	\caption{Os níveis do Versionamento Semântico nos quais as categorias de \textit{breaking changes} foram introduzidas}
+	\label{fig:recovery_clients}
+\end{figure}{}
+
+Dos 45 clientes impactados por \textit{breaking changes}, em 17.8\% dos clientes a \textit{breaking change} surgiu após os clientes atualizarem a versão dos provedores e por isso eles foram impactados explicitamente. Entretanto, essas \textit{breaking changes} foram, em 62.5\% desses casos, consertadas pelos próprios clientes e, em 80\% desses casos, os clientes apenas regrediram a versão dos provedores para uma versão estável que previamente estava sendo usada no \textit{package.json}. Isso significa que os clientes alteraram a versão aceita dos provedores, foram impactados explicitamente por uma \textit{breaking change} e regrediram a versão dos provedores para se recuperarem da \textit{breaking change}.
+
+Quando os clientes são impactados por \textit{breaking changes} de modo implícito, o que ocorreu em 82.2\% dos casos, os clientes também são os que mais consertaram o código, totalizando 67.6\% dos casos, e, novamente, a maneira mais utilizada para se recuperarem das \textit{breaking changes} foi regredindo a versão dos provedores para alguma versão estável. Também, em 12.5\% dos casos os clientes se recuperaram das \textit{breaking changes} mas não alteraram a versão dos provedores, mas mantiveram o \textit{range} de versões aceitas.
