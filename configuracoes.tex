@@ -24,6 +24,13 @@
 \usepackage{hhline}
 \usepackage{xcolor}
 
+
+% better tables
+\usepackage{booktabs}
+
+% frame box
+\usepackage{mdframed}
+
 % Escalar fontes para redimencionar, por exemplo tabelas
 \usepackage{scalefnt}
 
@@ -75,204 +82,65 @@
 
 % --- Estilos para apresentação de Código ----- %
 \usepackage{listings}
+\lstset{escapechar=§}
 \lstloadaspects{formats}
 
-% Opções de listing usados para o código fonte
-% Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
-
-\lstset{ %
-language=Java,                  % choose the language of the code
-basicstyle=\footnotesize,       % the size of the fonts that are used for the code
-%basicstyle=\ttfamily,
-stringstyle=\ttfamily\color[rgb]{0.16,0.16,0.16},
-numbers=left,                   % where to put the line-numbers
-numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
-stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
-numbersep=4pt,                  % how far the line-numbers are from the code
-showspaces=false,               % show spaces adding particular underscores
-showstringspaces=false,         % underline spaces within strings
-showtabs=false,                 % show tabs within strings adding particular underscores
-frame=single,	                % adds a frame around the code
-framerule=0.6pt,
-tabsize=2,	                % sets default tabsize to 2 spaces
-captionpos=b,                   % sets the caption-position to bottom
-breaklines=true,                % sets automatic line breaking
-breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
-escapeinside={\%*}{*)},         % if you want to add a comment within your code
-backgroundcolor=\color[rgb]{1.0,1.0,1.0}, % choose the background color.
-rulecolor=\color[rgb]{0.8,0.8,0.8},
-extendedchars=true,
-xleftmargin=10pt,
-xrightmargin=10pt,
-framexleftmargin=10pt,
-framexrightmargin=10pt
-}
-
-\definecolor{javared}{rgb}{0.6,0,0} % for strings
-\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
-\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
-\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
-
-\definecolor{DarkBlue}{rgb}{0,0,0.61}
-\definecolor{DarkGreen}{rgb}{0,0.4,0}
-
-% Numeros.
-\lstdefinestyle{mynumbers}{
+\lstset{
+	aboveskip=0cm,
+	stringstyle=\ttfamily,
+	showstringspaces = false,
+	basicstyle=\scriptsize\ttfamily,
+	commentstyle=\color{gray!45},
+	keywordstyle=\bfseries,
+	ndkeywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
 	numbers=left,
-	stepnumber=1,
-	numbersep=4pt,
-	numberstyle=\tiny\color{black}
-}
-% Text Code.
-\lstdefinestyle{mytextcode}{
-	basicstyle=\footnotesize,
-	tabsize=2,
-	showspaces=false,
-	showstringspaces=false,
-	extendedchars=true,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
 	breaklines=true
 }
-% Frame.
-\lstdefinestyle{myframe}{
-	backgroundcolor=\color{white},
-	frame=trbl
+
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, const, let, async, await, if, in, while, do, else, case, break, from},
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]"
 }
-% C++ Style.
-\lstdefinestyle{C++}{
-	language=C++,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-  keywordstyle=\color{black}\bfseries,
-  stringstyle=\color{gray},
-  commentstyle=\color[rgb]{0.08,0.08,0.08},
-  morecomment=[s][\color{lightgray}]{/*}{*/},
-  otherkeywords={\#include, \#define, \#pragma, \#typedef, dim3},
-  emph={ __device__, __global__, __shared__, __host__, __constant__},
-  emphstyle=\color{DarkBlue}\bfseries,
-  emph={[2] printf, scanf},
-  emphstyle=[2]\color{DarkGreen},
-}
-% C Style.
-\lstdefinestyle{C}{
-	language=C,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-	keywordstyle=\color{black}\bfseries,
-  	stringstyle=\color{gray},
-  	commentstyle=\color[rgb]{0.08,0.08,0.08},
-  	morecomment=[s][\color{lightgray}]{/*}{*/},
-  	otherkeywords={\#include, \#define, \#pragma, \#typedef, dim3, bool},
-  	emph={ __device__, __global__, __shared__, __host__, __constant__},
-  	emphstyle=\color{DarkBlue}\bfseries,
-  	emph={[2] printf, scanf},
-  	emphstyle=[2]\color{DarkGreen},
-	backgroundcolor={}
-}
-% Javascript Style
-\lstdefinestyle{Javascript}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break, const},
-  keywordstyle=\color{green}\bfseries,
-  ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  sensitive=false,
-  comment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
-  morestring=[b]',
-  morestring=[b]"
-}
+
+% Diff language
+\usepackage{xcolor}
+\definecolor{diffstart}{named}{lightgray}
+\definecolor{diffincl}{named}{blue}
+\definecolor{diffrem}{named}{red}
+
 \lstset{
-  language=Javascript,
-  tabsize=2,
-  literate={{=}{{\textcolor{blue}{=}}}1}
-}
-% Bash Style.
-\lstdefinestyle{bash}{
-	language=bash,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-	backgroundcolor={},
-	frame=single,
-	basicstyle=\scriptsize\ttfamily
-}
-% Python Style.
-\lstdefinestyle{python}{
-	language=python,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-	backgroundcolor={}
-}
-% Java Style.
-\lstdefinestyle{java}{
-	language=java,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-	backgroundcolor={}
-}
-% ASM Style.
-\lstdefinestyle{asm}{
-  %belowcaptionskip=1\baselineskip,
-  %xleftmargin=\parindent,
-  language=[x86masm]Assembler,
-  style=mynumbers,
-  style=mytextcode,
-  style=myframe,
-  backgroundcolor={},
-  frame=single,
-  basicstyle=\scriptsize\ttfamily,
-  commentstyle=\itshape\color{purple!40!black},
-}
-
-% Fortran Style.
-\lstdefinestyle{fortran}{
-  language=[90]Fortran,
-  style=mynumbers,
-  style=mytextcode,
-  style=myframe,
-  backgroundcolor={},
-  frame=single,
-  basicstyle=\footnotesize,
-  commentstyle=\itshape\color{purple!40!black},
-  morecomment=[l]{!\ }% Comment only with space after !
-}
-
-% LLVM Style.
-\lstdefinestyle{llvm}{
-	language=llvm,
-	%inputencoding=utf8,
-	style=mynumbers,
-	style=mytextcode,
-	style=myframe,
-	backgroundcolor={},
-	frame=single,
+	aboveskip=0cm,
+	stringstyle=\scriptsize,
+	showstringspaces = false,
 	basicstyle=\scriptsize\ttfamily,
-  tabsize=4,
-  %rulecolor=,
-  upquote=true,
-% aboveskip={1.5\baselineskip},
-  columns=fixed,
-  prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-  showtabs=false,
-	%basicstyle=\scriptsize\upshape\ttfamily,
-  identifierstyle=\ttfamily,
-  keywordstyle=\ttfamily\bfseries\color[rgb]{0,0,0},
-  %commentstyle=\ttfamily\color[rgb]{0.133,0.545,0.133},
-  commentstyle=\ttfamily\color[rgb]{0.08,0.08,0.08},
-  %stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941}
-  stringstyle=\ttfamily\color[rgb]{0.16,0.16,0.16}
+	commentstyle=\color{gray!45},
+	keywordstyle=\bfseries,
+	ndkeywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true
 }
 
-\lstdefineformat{C}{%
-	\{=\newline\string\newline\indent,%
-	\}=[;]\newline\noindent\string\newline,%
-	\};=\newline\noindent\string\newline,%
-	;=[\ ]\string\space}
-
+\lstdefinelanguage{diff}{
+    basicstyle=\scriptsize\ttfamily,
+	morecomment=[f][\color{diffstart}]{@@},
+	morecomment=[f][\color{diffincl}]{+\ },
+	morecomment=[f][\color{diffrem}]{-\ },
+	morestring=[b]',
+	morestring=[b]",
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, const, let, async, await, if, in, while, do, else, case, break, from},		
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+}
 % --- Fim da Definição de Estilos para apresentação de Código ----- %
